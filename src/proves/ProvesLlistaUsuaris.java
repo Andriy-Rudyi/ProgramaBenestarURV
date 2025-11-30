@@ -1,3 +1,4 @@
+package proves;
 import dades.excepcions.UsuariDuplicatException;
 import dades.usuaris.*;
 

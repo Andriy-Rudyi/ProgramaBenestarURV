@@ -1,3 +1,4 @@
+package proves;
 import dades.usuaris.*;
 public class ProvesUsuari {
     public static void main(String[] args) {
