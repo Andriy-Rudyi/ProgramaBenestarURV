@@ -1,5 +1,7 @@
 package dades;
 
+import dades.excepcions.DataIncorrectaExcepction;
+
 /**
  * Classe per guardar dates.
  * @author Professores de programació.
@@ -34,6 +36,7 @@ public class Data {
 			this.mes = mes;
 			this.any = any;
 		} else { // posem la data de referència com a senyal d'error
+			System.out.println("Data incorrecta. " + new DataIncorrectaExcepction(dia, mes, any));
 			this.dia = 1;
 			this.mes = 1;
 			this.any = 2000;
@@ -61,12 +64,12 @@ public class Data {
 	 * @param mes
 	 * @param any
 	 */
-	public void setData(int dia, int mes, int any) {
+	public void setData(int dia, int mes, int any) throws DataIncorrectaExcepction{
 		if(esDataCorrecta(dia, mes, any)){
 			this.dia = dia;
 			this.mes = mes;
 			this.any = any;
-		}
+		} else throw new DataIncorrectaExcepction(dia, mes, any);
 	}
 
 	/**
