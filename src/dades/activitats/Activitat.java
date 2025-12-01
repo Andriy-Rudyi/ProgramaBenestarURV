@@ -1,7 +1,6 @@
 package dades.activitats;
 
 import dades.Data;
-import dades.inscripcions.LlistaEspera;
 import dades.usuaris.Usuari;
 
 /**
