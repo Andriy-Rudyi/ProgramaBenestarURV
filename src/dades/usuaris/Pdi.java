@@ -7,28 +7,20 @@ import dades.excepcions.ColectiuInvalidException;
  * @author PROG4 - Tiago Amarelle Rodrigues
  */
 public class Pdi extends Usuari{
-    private String  departament;
+    private String departament;
     private String campus;
 
     /**
      * Constructor de PDI
      * @param alies Àlies de l'usuari
      * @param adreca Part del correu abans de @urv.cat
-     * @param colectiu Col·lectiu (ha de ser "PDI")
      * @param departament Departament on treballa
      * @param campus Campus on treballa
      * @throws ColectiuInvalidException si el col·lectiu no és "PDI"
      */
-    public Pdi(String alies, String adreca, String colectiu, String departament, String campus) 
-            throws ColectiuInvalidException {
-        if (!COLECTIU_PDI.equals(colectiu)) {
-            throw new ColectiuInvalidException(
-                "El col·lectiu ha de ser '" + COLECTIU_PDI + "' per a PDI. S'ha rebut: " + colectiu);
-        }
-        
+    public Pdi(String alies, String adreca, String departament, String campus){
         this.alies = alies;
         this.adreca = adreca;
-        this.colectiu = colectiu;
         this.departament = departament;
         this.campus = campus;
     }
@@ -56,15 +48,14 @@ public class Pdi extends Usuari{
     }
 
     @Override
-    public Usuari copia() {
-        try {
-            return new Pdi(alies, adreca, colectiu, departament, campus);
-        } catch (ColectiuInvalidException e) {
-            // no hauria de passar mai perquè estem copiant un objecte vàlid
-            throw new RuntimeException("Error inesperat copiant PDI", e);
-        }
+    public String getColectiu() {
+        return "PDI";
     }
 
+    @Override
+    public Usuari copia() {
+        return new Pdi(alies, adreca, departament, campus);
+    }
 
     @Override
     public boolean equals(Object obj) {

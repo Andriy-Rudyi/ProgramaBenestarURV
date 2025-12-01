@@ -8,14 +8,6 @@ package dades.usuaris;
 public abstract class Usuari {
     protected String alies;
     protected String adreca;
-    protected String colectiu;
-
-    /**
-     * Col·lectius vàlids de la URV
-     */
-    public static final String COLECTIU_PDI = "PDI";
-    public static final String COLECTIU_PTGAS = "PTGAS";
-    public static final String COLECTIU_ESTUDIANTS = "Estudiants";
 
     /**
      * Dominis de correu electrònic segons el col·lectiu
@@ -43,9 +35,7 @@ public abstract class Usuari {
      * Obté el col·lectiu al qual pertany l'usuari
      * @return Col·lectiu (PDI, PTGAS o Estudiants)
      */
-    public String getColectiu(){
-        return colectiu;
-    }
+    public abstract String getColectiu();
 
     /**
      * Obté l'adreça de correu completa segons el tipus d'usuari
@@ -60,18 +50,6 @@ public abstract class Usuari {
         } else {
             return adreca + DOMINI_URV;
         }
-    }
-    
-    /**
-     * Valida que el col·lectiu sigui un dels valors permesos
-     * @param colectiu Col·lectiu a validar
-     * @return true si el col·lectiu és vàlid, false en cas contrari
-     */
-    public static boolean esColectiuValid(String colectiu) {
-        return colectiu != null && 
-               (colectiu.equals(COLECTIU_PDI) || 
-                colectiu.equals(COLECTIU_PTGAS) || 
-                colectiu.equals(COLECTIU_ESTUDIANTS));
     }
 
     /**
