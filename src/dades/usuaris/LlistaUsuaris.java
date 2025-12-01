@@ -36,7 +36,10 @@ public class LlistaUsuaris {
      * @throws UsuariDuplicatException si l'usuari ja existeix
      */
     public void afegir(Usuari usuari) throws UsuariDuplicatException {
-        if (usuari == null) return;
+        // null check
+        if (usuari == null) {
+            return;
+        }
         
         // Comprovar si ja existeix
         if (buscar(usuari.getAlies()) != null) {
@@ -70,6 +73,11 @@ public class LlistaUsuaris {
      * @return Usuari trobat o null si no existeix
      */
     public Usuari buscar(String alies) {
+        // null check
+        if (alies == null) {
+            return null;
+        }
+
         int esquerra = 0;
         int dreta = numUsuaris - 1;
         
@@ -101,34 +109,87 @@ public class LlistaUsuaris {
     }
     
     /**
-     * Obté usuaris d'un tipus concret
-     * @param tipus 0=PDI, 1=PTGAS, 2=Estudiant
-     * @return Array d'usuaris del tipus especificat
+     * Obté usuaris d'un col·lectiu concret
+     * @param colectiu Col·lectiu a filtrar ("PDI", "PTGAS" o "Estudiants")
+     * @return Array d'usuaris del col·lectiu especificat
      */
-    public Usuari[] obtenirPerTipus(int tipus) {
-        // Primer contar quants hi ha
-        int count = 0;
-        for (int i = 0; i < numUsuaris; i++) {
-            if (llista[i] instanceof Pdi && tipus == 0) count++;
-            else if (llista[i] instanceof Ptgas && tipus == 1) count++;
-            else if (llista[i] instanceof Estudiant && tipus == 2) count++;
+    public Usuari[] obtenirPerColectiu(String colectiu) {
+        if (colectiu == null) {
+            return new Usuari[0];
         }
         
-        // Crear array i omplir-lo
+        // primer comptar quants usuaris hi ha del col·lectiu especificat
+        int count = 0;
+        for (int i = 0; i < numUsuaris; i++) {
+            if (llista[i].getColectiu().equals(colectiu)) {
+                count++;
+            }
+        }
+        
+        // crear array i omplir-lo
         Usuari[] resultat = new Usuari[count];
         int index = 0;
         for (int i = 0; i < numUsuaris; i++) {
-            if (llista[i] instanceof Pdi && tipus == 0) resultat[index++] = llista[i];
-            else if (llista[i] instanceof Ptgas && tipus == 1) resultat[index++] = llista[i];
-            else if (llista[i] instanceof Estudiant && tipus == 2) resultat[index++] = llista[i];
+            if (llista[i].getColectiu().equals(colectiu)) {
+                resultat[index++] = llista[i];
+            }
         }
         return resultat;
     }
-    
+
+    /**
+     * Elimina un usuari de la llista per àlies
+     * @param alies Àlies de l'usuari a eliminar
+     * @return true si s'ha eliminat, false si no existia
+     */
+    public boolean eliminar(String alies) {
+        // null check
+        if (alies == null) {
+            return false;
+        }
+        
+        // Buscar la posició de l'usuari
+        int pos = -1;
+        for (int i = 0; i < numUsuaris; i++) {
+            if (llista[i].getAlies().equals(alies)) {
+                pos = i;
+                break;
+            }
+        }
+        
+        // Si no s'ha trobat, retornar false
+        if (pos == -1) {
+            return false;
+        }
+        
+        // Desplaçar elements cap a l'esquerra
+        for (int i = pos; i < numUsuaris - 1; i++) {
+            llista[i] = llista[i + 1];
+        }
+        
+        // Alliberar la darrera posició
+        llista[numUsuaris - 1] = null;
+        numUsuaris--;
+        
+        return true;
+    }
+
+    /**
+     * Obté el nombre d'usuaris de la llista
+     * @return Nombre d'usuaris
+     */
     public int getNumUsuaris() { return numUsuaris; }
     
+    /**
+     * Comprova si la llista està buida
+     * @return true si la llista està buida, false en cas contrari
+     */
     public boolean esBuida() { return numUsuaris == 0; }
     
+    /**
+     * Obté una representació en text de la llista
+     * @return Cadena amb tots els usuaris
+     */
     @Override
     public String toString() {
         String info = "LLISTA USUARIS amb " + numUsuaris + " usuaris:\n";
