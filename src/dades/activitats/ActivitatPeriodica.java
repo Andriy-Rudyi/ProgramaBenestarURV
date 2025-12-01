@@ -42,12 +42,20 @@ public class ActivitatPeriodica extends Activitat {
         this.nomCentre = nomCentre;
         this.ciutat = ciutat;
     }
+
+    // Getters
+    public int getDiaSetmana() { return diaSetmana; }
+    public String getHorari() { return horari; }
+    public Data getDataInici() { return dataInici; }
+    public int getNumSetmanes() { return numSetmanes; }
+    public String getNomCentre() { return nomCentre; }
+    public String getCiutat() { return ciutat; }
     
     /**
      * Calcula el dia de la setmana d'una data (1=Dilluns, ..., 7=Diumenge)
      * Algorisme de Zeller modificat
      */
-    private int getDiaSetmana(Data data) {
+    private int calcularDiaSetmana(Data data) {
         int d = data.getDia();
         int m = data.getMes();
         int a = data.getAny();
@@ -65,32 +73,58 @@ public class ActivitatPeriodica extends Activitat {
         return diaSetmana;
     }
     
+    // substiuït pel metode getDataFi()
+    //
+    // /**
+    //  * Afegeix setmanes a una data
+    //  */
+    // private Data afegirSetmanes(Data data, int setmanes) {
+    //     Data nova = new Data(data.getDia(), data.getMes(), data.getAny());
+    //     for (int i = 0; i < setmanes * 7; i++) {
+    //         nova = nova.diaSeguent();
+    //     }
+    //     return nova;
+    // }
+    
     /**
-     * Afegeix setmanes a una data
+     * Calcula la data de fi de l'activitat
+     * @return Data de fi (dataInici + numSetmanes setmanes)
      */
-    private Data afegirSetmanes(Data data, int setmanes) {
-        Data nova = new Data(data.getDia(), data.getMes(), data.getAny());
-        for (int i = 0; i < setmanes * 7; i++) {
-            nova = nova.diaSeguent();
+    public Data getDataFi() {
+        Data dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+        for (int i = 0; i < numSetmanes * 7; i++) {
+            dataFi = dataFi.diaSeguent();
         }
-        return nova;
+        return dataFi;
+    }
+
+    /**
+     * Retorna el nom del dia de la setmana
+     * @return Nom del dia
+     */
+    public String getNomDiaSetmana() {
+        String[] dies = {"", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"};
+        if (diaSetmana >= 1 && diaSetmana <= 7) {
+            return dies[diaSetmana];
+        }
+        return "Desconegut";
     }
     
     @Override
     public boolean estaActiva(Data dataAvui) {
-        Data dataFi = afegirSetmanes(dataInici, numSetmanes);
+        Data dataFi = getDataFi();
         return !dataAvui.dataInferiorAltra(dataInici) && !dataFi.dataInferiorAltra(dataAvui);
     }
     
     @Override
     public boolean teClasseAvui(Data dataAvui) {
         if (!estaActiva(dataAvui)) return false;
-        return getDiaSetmana(dataAvui) == diaSetmana;
+        return calcularDiaSetmana(dataAvui) == diaSetmana;
     }
     
     @Override
     public boolean haAcabat(Data dataAvui) {
-        Data dataFi = afegirSetmanes(dataInici, numSetmanes);
+        Data dataFi = getDataFi();
         return dataFi.dataInferiorAltra(dataAvui);
     }
     
@@ -101,11 +135,11 @@ public class ActivitatPeriodica extends Activitat {
     
     @Override
     public String getInformacioEspecifica() {
-        String[] dies = {"", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"};
-        return "Dia: " + dies[diaSetmana] + "\n" +
+        return "Dia: " + getNomDiaSetmana() + "\n" +
                "Horari: " + horari + "\n" +
                "Inici: " + dataInici + "\n" +
                "Durada: " + numSetmanes + " setmanes\n" +
+               "Fi: " + getDataFi() + "\n" +
                "Centre: " + nomCentre + ", " + ciutat + "\n";
     }
     
@@ -114,8 +148,10 @@ public class ActivitatPeriodica extends Activitat {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
-        return new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                      limitPlaces, preu, diaSetmana, horari, dataInici,
-                                      numSetmanes, nomCentre, ciutat);
+        ActivitatPeriodica copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
+                                                          limitPlaces, preu, diaSetmana, horari, dataInici,
+                                                          numSetmanes, nomCentre, ciutat);
+        copia.setNumInscripcions(this.numInscripcions);
+        return copia;
     }
 }

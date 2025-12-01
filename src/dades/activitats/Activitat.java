@@ -2,6 +2,7 @@ package dades.activitats;
 
 import dades.Data;
 import dades.inscripcions.LlistaEspera;
+import dades.usuaris.Usuari;
 
 /**
  * Classe abstracta que representa una activitat del programa Benestar URV.
@@ -32,7 +33,11 @@ public abstract class Activitat {
     public Activitat(String nom, boolean[] collectius, Data dataIniciInscripcio, 
                      Data dataFiInscripcio, int limitPlaces, double preu) {
         this.nom = nom;
-        this.collectius = collectius;
+        // copia defensiva de l'array de collectius
+        this.collectius = new boolean[3];
+        for (int i = 0; i < 3; i++) {
+            this.collectius[i] = collectius[i];
+        }
         this.dataIniciInscripcio = dataIniciInscripcio;
         this.dataFiInscripcio = dataFiInscripcio;
         this.limitPlaces = limitPlaces;
@@ -45,14 +50,37 @@ public abstract class Activitat {
     
     // Getters
     public String getNom() { return nom; }
-    public boolean[] getCollectius() { return collectius; }
+
+    /**
+     * Obté una còpia de l'array de col.lectius (protecció d'encapsulació)
+     * @return Còpia de l'array de col.lectius
+     */
+    public boolean[] getCollectius() { 
+        boolean[] copia = new boolean[3];
+        for (int i = 0; i < 3; i++) {
+            copia[i] = collectius[i];
+        }
+        return copia;
+    }
+
     public Data getDataIniciInscripcio() { return dataIniciInscripcio; }
     public Data getDataFiInscripcio() { return dataFiInscripcio; }
     public int getLimitPlaces() { return limitPlaces; }
     public double getPreu() { return preu; }
     public int getNumInscripcions() { return numInscripcions; }
     public LlistaEspera getLlistaEspera() { return llistaEspera; }
+    public int getNumValoracions() { return numValoracions; }
     
+    /**
+     * Estableix el número d'inscripcions (útil per carregar des de fitxer)
+     * @param num Número d'inscripcions
+     */
+    public void setNumInscripcions(int num) {
+        if (num >= 0) {
+            this.numInscripcions = num;
+        }
+    }
+
     /**
      * Comprova si l'activitat està en període d'inscripció
      * @param dataAvui Data actual
@@ -70,6 +98,15 @@ public abstract class Activitat {
     public boolean hiHaPlacesDisponibles() {
         if (limitPlaces == 0) return true; // Il·limitat
         return numInscripcions < limitPlaces;
+    }
+
+    /**
+     * Obté el nombre de places disponibles
+     * @return Nombre de places disponibles, o -1 si és il·limitat
+     */
+    public int getPlacesDisponibles() {
+        if (limitPlaces == 0) return -1; // Il·limitat
+        return limitPlaces - numInscripcions;
     }
     
     /**
@@ -89,10 +126,15 @@ public abstract class Activitat {
     /**
      * Afegeix una valoració a l'activitat
      * @param valoracio Nota entre 0 i 10
+     * @return true si la valoració s'ha afegit correctament
      */
-    public void afegirValoracio(double valoracio) {
+    public boolean afegirValoracio(double valoracio) {
+        if (valoracio < 0 || valoracio > 10) {
+            return false;
+        }
         sumaValoracions += valoracio;
         numValoracions++;
+        return true;
     }
     
     /**
@@ -104,15 +146,17 @@ public abstract class Activitat {
         return sumaValoracions / numValoracions;
     }
     
-    public int getNumValoracions() { return numValoracions; }
-    
     /**
-     * Comprova si l'activitat està oferida per a un col·lectiu concret
-     * @param tipusCollectiu 0=PDI, 1=PTGAS, 2=Estudiants
+     * Comprova si l'activitat està oferida per a un col·lectiu concret (per nom String)
+     * @param nomCollectiu "PDI", "PTGAS" o "Estudiants"
      * @return true si l'activitat està oferida al col·lectiu
      */
-    public boolean esPerCollectiu(int tipusCollectiu) {
-        return collectius[tipusCollectiu];
+    public boolean esPerCollectiu(String nomCollectiu) {
+        if (nomCollectiu == null) return false;
+        if (nomCollectiu.equals(Usuari.COLECTIU_PDI)) return collectius[0];
+        if (nomCollectiu.equals(Usuari.COLECTIU_PTGAS)) return collectius[1];
+        if (nomCollectiu.equals(Usuari.COLECTIU_ESTUDIANTS)) return collectius[2];
+        return false;
     }
     
     /**
@@ -123,29 +167,97 @@ public abstract class Activitat {
         if (limitPlaces == 0) return 100.0; // Online
         return (numInscripcions * 100.0) / limitPlaces;
     }
+
+    /**
+     * Obté els col·lectius com a String
+     * @return String amb els col·lectius separats per espai
+     */
+    public String getCollectiusString() {
+        String resultat = "";
+        if (collectius[0]) resultat += "PDI ";
+        if (collectius[1]) resultat += "PTGAS ";
+        if (collectius[2]) resultat += "Estudiants ";
+        return resultat.trim();
+    }
+
+    /**
+     * Comprova si l'activitat té llista d'espera amb gent
+     * @return true si hi ha usuaris en llista d'espera
+     */
+    public boolean teUsuarisEnEspera() {
+        return !llistaEspera.esBuida();
+    }
     
     // Mètodes abstractes que implementaran les subclasses
+    /**
+     * Comprova si l'activitat està activa en una data
+     * @param dataAvui Data a comprovar
+     * @return true si l'activitat està activa
+     */
     public abstract boolean estaActiva(Data dataAvui);
+
+    /**
+     * Comprova si l'activitat té classe en una data
+     * @param dataAvui Data a comprovar
+     * @return true si hi ha classe
+     */
     public abstract boolean teClasseAvui(Data dataAvui);
+
+    /**
+     * Comprova si l'activitat ha acabat
+     * @param dataAvui Data actual
+     * @return true si l'activitat ja ha acabat
+     */
     public abstract boolean haAcabat(Data dataAvui);
+
+    /**
+     * Obté el tipus d'activitat
+     * @return "UN DIA", "PERIÒDICA" o "ONLINE"
+     */
     public abstract String getTipus();
+
+    /**
+     * Obté la informació específica del tipus d'activitat
+     * @return String amb la informació específica
+     */
     public abstract String getInformacioEspecifica();
+
+    /**
+     * Crea una còpia de l'activitat
+     * @return Nova instància amb les mateixes dades
+     */
     public abstract Activitat copia();
     
     @Override
     public String toString() {
         String info = "Nom: " + nom + "\n";
-        info += "Col·lectius: ";
-        if (collectius[0]) info += "PDI ";
-        if (collectius[1]) info += "PTGAS ";
-        if (collectius[2]) info += "Estudiants ";
-        info += "\n";
-        info += "Inscripcions: " + dataIniciInscripcio + " - " + dataFiInscripcio + "\n";
+        info += "Tipus: " + getTipus() + "\n";
+        info += "Col·lectius: " + getCollectiusString() + "\n";
+        info += "Període inscripció: " + dataIniciInscripcio + " - " + dataFiInscripcio + "\n";
         info += "Preu: " + preu + "€\n";
         info += "Places: " + numInscripcions;
-        if (limitPlaces > 0) info += "/" + limitPlaces;
+        if (limitPlaces > 0) {
+            info += "/" + limitPlaces;
+        } else {
+            info += " (il·limitades)";
+        }
         info += "\n";
+        if (numValoracions > 0) {
+            info += "Valoració: " + String.format("%.1f", getMitjanaValoracions()) + "/10";
+            info += " (" + numValoracions + " valoracions)\n";
+        }
+        if (teUsuarisEnEspera()) {
+            info += "Llista espera: " + llistaEspera.getNumUsuaris() + " persones\n";
+        }
         info += getInformacioEspecifica();
         return info;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || !(obj instanceof Activitat)) return false;
+        Activitat altra = (Activitat) obj;
+        return this.nom != null && this.nom.equals(altra.nom);
     }
 }
