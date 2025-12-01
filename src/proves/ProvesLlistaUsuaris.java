@@ -38,8 +38,9 @@ public class ProvesLlistaUsuaris {
 
         System.out.println(usuaris);
         
+
         LlistaUsuaris usuaris2 = new LlistaUsuaris();
-        System.out.println("Inserció amb àlies desordenats");
+        System.out.println("Inserció amb àlies desordenats i intent de afegir duplicat");
         for (int i = 0; i < 9; i++){
             try {
                 usuaris2.afegir(llista[9-i-1]);
@@ -49,12 +50,54 @@ public class ProvesLlistaUsuaris {
         }
 
         try {
-                usuaris2.afegir(llista[0]);
-            } catch (UsuariDuplicatException e){
-                System.out.println(e);
-            }
+            usuaris2.afegir(llista[0]);
+        } catch (UsuariDuplicatException e){
+            System.out.println(e);
+        }
 
         System.out.println(usuaris2);
+
+
+        System.out.println("Probem a eliminar usuari");
+        
+        usuaris2.eliminar("Alies4");
+        System.out.println(usuaris2);
+        
+
+        System.out.println("Probem a eliminar usuari inexistent");
+
+        usuaris2.eliminar("test1234");
+        System.out.println(usuaris2);
+
+
+        System.out.println("Probem a buscar un usuari");
+
+        System.out.println(usuaris2.buscar("Alies2"));
+        
+        
+        System.out.println("Probem a buscar un usuari inexistent");
+        
+        System.out.println(usuaris2.buscar("Tiago"));
+
+
+        System.out.println("Obtenim del colectiu PDI");
+
+        System.out.println(usuaris2.obtenirPerColectiu("PDI"));
+        
+        System.out.println("Obtenim del colectiu PTGAS");
+
+        System.out.println(usuaris2.obtenirPerColectiu("PTGAS"));
+        
+        System.out.println("Obtenim del colectiu Estudiants");
+
+        System.out.println(usuaris2.obtenirPerColectiu("Estudiants"));
+        
+        System.out.println("Obtenim de colectiu inexistent");
+
+        System.out.println(usuaris2.obtenirPerColectiu("test1234"));
+
+
+        
 
     }
 }

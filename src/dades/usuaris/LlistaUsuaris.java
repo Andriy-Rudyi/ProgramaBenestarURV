@@ -95,7 +95,7 @@ public class LlistaUsuaris {
         }
         return null;
     }
-    
+        
     /**
      * Obté tots els usuaris
      * @return Array d'usuaris
@@ -113,27 +113,23 @@ public class LlistaUsuaris {
      * @param colectiu Col·lectiu a filtrar ("PDI", "PTGAS" o "Estudiants")
      * @return Array d'usuaris del col·lectiu especificat
      */
-    public Usuari[] obtenirPerColectiu(String colectiu) {
+    public LlistaUsuaris obtenirPerColectiu(String colectiu) {
         if (colectiu == null) {
-            return new Usuari[0];
+            return new LlistaUsuaris();
         }
-        
-        // primer comptar quants usuaris hi ha del col·lectiu especificat
-        int count = 0;
-        for (int i = 0; i < numUsuaris; i++) {
-            if (llista[i].getColectiu().equals(colectiu)) {
-                count++;
-            }
-        }
-        
+    
         // crear array i omplir-lo
-        Usuari[] resultat = new Usuari[count];
-        int index = 0;
+        LlistaUsuaris resultat = new LlistaUsuaris();
         for (int i = 0; i < numUsuaris; i++) {
             if (llista[i].getColectiu().equals(colectiu)) {
-                resultat[index++] = llista[i];
+                try {
+                    resultat.afegir(llista[i]);
+                } catch (UsuariDuplicatException e) {
+                    System.out.println("Error inesperat en obtenirPerColectiu. " + e);
+                }
             }
         }
+
         return resultat;
     }
 
