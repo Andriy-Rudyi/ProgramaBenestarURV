@@ -1,7 +1,5 @@
 package dades.usuaris;
 
-import dades.excepcions.ColectiuInvalidException;
-
 /**
  * Representa un membre del Personal Docent i Investigador (PDI) de la URV
  * @author PROG4 - Tiago Amarelle Rodrigues
@@ -55,13 +53,5 @@ public class Pdi extends Usuari{
     @Override
     public Usuari copia() {
         return new Pdi(alies, adreca, departament, campus);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Pdi altre = (Pdi)obj;
-        if (this.alies.equals(altre.alies)) return true;    // no hi haurà dues persones amb el mateix alies
-        else return false;
-
     }
 }
