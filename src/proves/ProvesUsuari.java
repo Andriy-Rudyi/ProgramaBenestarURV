@@ -19,5 +19,9 @@ public class ProvesUsuari {
         for (int i = 0; i < 9; i++){
             System.out.println(llista[i]);
         }
+        
+        Usuari duplicat = llista[2].copia();
+        System.out.println(duplicat);
     }
+
 }
