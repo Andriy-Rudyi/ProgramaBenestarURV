@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"dades"},{"l":"dades.activitats"},{"l":"dades.excepcions"},{"l":"dades.inscripcions"},{"l":"dades.usuaris"}]
