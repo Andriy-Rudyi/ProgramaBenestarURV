@@ -1,7 +1,6 @@
 package dades.activitats;
 
 import dades.Data;
-import dades.usuaris.Usuari;
 
 /**
  * Classe abstracta que representa una activitat del programa Benestar URV.
@@ -9,6 +8,11 @@ import dades.usuaris.Usuari;
  * @author PROG1 - Pau Font
  */
 public abstract class Activitat {
+    
+    public static final String COLECTIU_PDI = "PDI";
+    public static final String COLECTIU_PTGAS = "PTGAS";
+    public static final String COLECTIU_ESTUDIANTS = "Estudiants";
+
     protected String nom;
     protected boolean[] collectius; // [0]=PDI, [1]=PTGAS, [2]=Estudiants
     protected Data dataIniciInscripcio;
@@ -152,9 +156,9 @@ public abstract class Activitat {
      */
     public boolean esPerCollectiu(String nomCollectiu) {
         if (nomCollectiu == null) return false;
-        if (nomCollectiu.equals(Usuari.COLECTIU_PDI)) return collectius[0];
-        if (nomCollectiu.equals(Usuari.COLECTIU_PTGAS)) return collectius[1];
-        if (nomCollectiu.equals(Usuari.COLECTIU_ESTUDIANTS)) return collectius[2];
+        if (nomCollectiu.equals(COLECTIU_PDI)) return collectius[0];
+        if (nomCollectiu.equals(COLECTIU_PTGAS)) return collectius[1];
+        if (nomCollectiu.equals(COLECTIU_ESTUDIANTS)) return collectius[2];
         return false;
     }
     
