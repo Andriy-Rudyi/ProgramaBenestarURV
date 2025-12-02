@@ -73,7 +73,7 @@ public class ActivitatOnline extends Activitat {
     
     @Override
     public String getInformacioEspecifica() {
-        return "Data inici: " + dataInici + "\n" +
+        return "\nData inici: " + dataInici + "\n" +
                "Període visualització: " + periodeVisualitzacio + " dies\n" +
                "Data fi: " + getDataFi() + "\n" +
                "Enllaç: " + enllac + "\n";
@@ -85,7 +85,7 @@ public class ActivitatOnline extends Activitat {
     }
     
     @Override
-    public Activitat copia() {
+    public ActivitatOnline copia() {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         

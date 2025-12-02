@@ -21,7 +21,7 @@ public class LlistaEspera {
     }
 
     /**
-     * Afegeix un usuari a la cua d'espera
+     * Afegeix un usuari a la cua d'espera (FIFO)
      * @param usuari Usuari a afegir (no nul)
      * @return true si s'ha afegit, false si la llista està plena o usuari és null
      */
