@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.usuaris.LlistaEspera;
 
 /**
  * Classe abstracta que representa una activitat del programa Benestar URV.

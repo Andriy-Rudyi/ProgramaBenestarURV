@@ -1,6 +1,4 @@
-package dades.activitats;
-
-import dades.usuaris.Usuari;
+package dades.usuaris;
 
 /**
  * Llista d'espera per a una activitat
@@ -59,11 +57,11 @@ public class LlistaEspera {
      * @param usuari Usuari a eliminar
      * @return true si s'ha eliminat, false si no existia
      */
-    public boolean eliminar(Usuari usuari) {
-        if (usuari == null) return false;
+    public boolean eliminar(String alies) {
+        if (alies == null) return false;
         
         for (int i = 0; i < numUsuaris; i++) {
-            if (llista[i].equals(usuari)) {
+            if (llista[i].getAlies().equals(alies)) {
                 // Desplaçar elements cap a l'esquerra
                 for (int j = i; j < numUsuaris - 1; j++) {
                     llista[j] = llista[j + 1];
