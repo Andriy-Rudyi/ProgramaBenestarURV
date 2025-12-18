@@ -1,7 +1,9 @@
 package dades.activitats;
 
 import dades.Data;
-import dades.usuaris.LlistaEspera;
+import dades.excepcions.UsuariDuplicatException;
+import dades.inscripcions.*;
+import dades.usuaris.*;
 
 /**
  * Classe abstracta que representa una activitat del programa Benestar URV.
@@ -21,9 +23,8 @@ public abstract class Activitat {
     protected int limitPlaces;
     protected double preu;
     protected int numInscripcions;
-    protected double sumaValoracions;
-    protected int numValoracions;
-    protected LlistaEspera llistaEspera;
+    protected LlistaInscripcions llistaInscripcions;
+    protected LlistaValoracions llistaValoracions;
     
     /**
      * Constructor de la classe Activitat
@@ -47,9 +48,8 @@ public abstract class Activitat {
         this.limitPlaces = limitPlaces;
         this.preu = preu;
         this.numInscripcions = 0;
-        this.sumaValoracions = 0.0;
-        this.numValoracions = 0;
-        this.llistaEspera = new LlistaEspera();
+        llistaInscripcions = new LlistaInscripcions(limitPlaces);
+        llistaValoracions = new LlistaValoracions(limitPlaces);
     }
     
     // Getters
@@ -72,8 +72,6 @@ public abstract class Activitat {
     public int getLimitPlaces() { return limitPlaces; }
     public double getPreu() { return preu; }
     public int getNumInscripcions() { return numInscripcions; }
-    public LlistaEspera getLlistaEspera() { return llistaEspera; }
-    public int getNumValoracions() { return numValoracions; }
     
     /**
      * Estableix el número d'inscripcions (útil per carregar des de fitxer)
@@ -132,22 +130,12 @@ public abstract class Activitat {
      * @param valoracio Nota entre 0 i 10
      * @return true si la valoració s'ha afegit correctament
      */
-    public boolean afegirValoracio(double valoracio) {
+    public boolean afegirValoracio(Usuari usuari, int valoracio) throws UsuariDuplicatException{
         if (valoracio < 0 || valoracio > 10) {
             return false;
         }
-        sumaValoracions += valoracio;
-        numValoracions++;
+        llistaValoracions.afegirValoracio(usuari, valoracio);
         return true;
-    }
-    
-    /**
-     * Obté la mitjana de valoracions
-     * @return Mitjana de valoracions o 0 si no n'hi ha cap
-     */
-    public double getMitjanaValoracions() {
-        if (numValoracions == 0) return 0.0;
-        return sumaValoracions / numValoracions;
     }
     
     /**
@@ -168,8 +156,8 @@ public abstract class Activitat {
      * @return Percentatge d'ocupació (0-100)
      */
     public double getPercentatgeOcupacio() {
-        if (limitPlaces == 0) return 100.0; // Online
-        return (numInscripcions * 100.0) / limitPlaces;
+        if (llistaInscripcions.getNumPlaces() == 0) return 100.0; // Online
+        return (llistaInscripcions.getNumInscrits() * 100.0) / llistaInscripcions.getNumPlaces();
     }
 
     /**
@@ -182,14 +170,6 @@ public abstract class Activitat {
         if (collectius[1]) resultat += "PTGAS ";
         if (collectius[2]) resultat += "Estudiants ";
         return resultat.trim();
-    }
-
-    /**
-     * Comprova si l'activitat té llista d'espera amb gent
-     * @return true si hi ha usuaris en llista d'espera
-     */
-    public boolean teUsuarisEnEspera() {
-        return !llistaEspera.esBuida();
     }
     
     // Mètodes abstractes que implementaran les subclasses
@@ -246,12 +226,12 @@ public abstract class Activitat {
             info += " (il·limitades)";
         }
         info += "\n";
-        if (numValoracions > 0) {
-            info += "Valoració: " + String.format("%.1f", getMitjanaValoracions()) + "/10";
-            info += " (" + numValoracions + " valoracions)\n";
+        if (llistaValoracions.getNumValoracions() > 0) {
+            info += "Valoració: " + String.format("%.1f", llistaValoracions.getMitjanaValoracions()) + "/10";
+            info += " (" + llistaValoracions.getNumValoracions() + " valoracions)\n";
         }
-        if (teUsuarisEnEspera()) {
-            info += "Llista espera: " + llistaEspera.getNumUsuaris() + " persones\n";
+        if (llistaInscripcions.teUsuarisEnEspera()) {
+            info += "Llista espera: " + llistaInscripcions.getUsuarisEnEspera() + " persones\n";
         }
         info += getInformacioEspecifica();
         return info;
