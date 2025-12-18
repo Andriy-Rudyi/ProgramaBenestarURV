@@ -12,12 +12,13 @@ public class LlistaInscripcions{
     private LlistaUsuaris inscrits;
     private LlistaEspera espera;
     int numPlaces;
-    public LlistaInscripcions (){
+
+    public LlistaInscripcions(){    // Constructor amb infinites places
         inscrits = new LlistaUsuaris();
         numPlaces = 0;
     }
 
-    public LlistaInscripcions(int numPlaces){
+    public LlistaInscripcions(int numPlaces){   // Constructor amb places finites
         inscrits = new LlistaUsuaris();
         this.numPlaces = numPlaces;
         espera = new LlistaEspera();
@@ -37,6 +38,22 @@ public class LlistaInscripcions{
             espera.eliminar(nom);
             inscrits.afegir(espera.treurePrimer());
         }
+    }
+
+    public int getNumInscrits(){
+        return inscrits.getNumUsuaris();
+    }
+
+    public int getNumPlaces(){
+        return numPlaces;
+    }
+
+    public int getUsuarisEnEspera(){
+        return espera.getNumUsuaris();
+    }
+
+    public boolean teUsuarisEnEspera(){
+        return !espera.esBuida();
     }
 
     
