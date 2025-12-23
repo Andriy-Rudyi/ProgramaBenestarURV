@@ -1,30 +1,38 @@
 package aplicacio;
 import java.util.Scanner;
 
-import dades.*;
-import dades.excepcions.DataIncorrectaExcepction;
+import dades.activitats.*;
+import dades.excepcions.*;
+import dades.usuaris.*;
+import dades.Data;
 
 public class App {
     static Scanner teclat = new Scanner(System.in);
-    public static void main(String[] args) {
-        mostrarMenuActivitats();
+    static Data avui = new Data();
+    static LlistaUsuaris baseDadesUsuaris = new LlistaUsuaris();
+    static LlistaActivitats llistaActivitats = new LlistaActivitats();
+    public static void main(String[] args){
         int opcio;
-        Data avui = null;
-
-
+        
         do {
-            opcio = Integer.parseInt(teclat.nextLine());
+            mostrarMenuActivitats();
+            opcio = teclat.nextInt();
             switch (opcio) {
                 case 1:
-                    opcio1(avui); 
+                    opcio1(); 
                     break;
                 case 2:
-                    
+                    opcio2();
+                    break;
+                case 13:
+                    opcio13();
                     break;
                 default:
                     break;
             }
         } while (opcio != 22);
+
+        teclat.close();
     }
 
     private static void mostrarMenuActivitats() {
@@ -54,15 +62,15 @@ public class App {
         System.out.print("\nSelecciona una opció: ");
     }
 
-    private static void opcio1(Data avui){  
+    private static void opcio1(){  
         System.out.println("Introdueix la data d'avui, en el seguent format DD MM YYYY:");
         int dia, mes, any;
         boolean correcte = false;
         while(!correcte){
             try {
-                dia = Integer.parseInt(teclat.nextLine());
-                mes = Integer.parseInt(teclat.nextLine());
-                any = Integer.parseInt(teclat.nextLine());
+                dia = teclat.nextInt();
+                mes = teclat.nextInt();
+                any = teclat.nextInt();
                 avui.setData(dia, mes, any);
                 correcte = true;
             } catch (NumberFormatException e) {
@@ -70,6 +78,104 @@ public class App {
             } catch (DataIncorrectaExcepction e){
                 System.out.println(e);
             }
+        }
+    }
+
+    private static void opcio2(){
+        System.out.println(llistaActivitats);   //TODO això és per poder fer testing abans de fer la opció completa
+    }
+
+    private static void opcio13(){
+        String nom;
+        boolean[] collectius = new boolean[3];
+        Activitat activitat;
+        int dia,mes,any;
+        Data dataIniciInscripcio = null;
+        Data dataFiInscripcio = null;
+        Data dataActivitat = null;
+        int limitPlaces;
+        double preu;
+        String horari, ciutat;
+        
+        try {
+            System.out.println("Introdueix el nom de l'activitat");
+            nom = teclat.next();
+    
+            System.out.println("Colectius (respon 0 per false, 1 per true)"); 
+            System.out.println("És per PDI?");
+            collectius[0] = teclat.nextInt() == 1;
+            System.out.println("És per PTGAS?");
+            collectius[1] = teclat.nextInt() == 1;
+            System.out.println("És per Estudiants?");
+            collectius[2] = teclat.nextInt() == 1;
+            
+            boolean correcte = false;
+            while(!correcte){
+                System.out.println("Introdueix la data d'inici d'inscripcions, en el següent format DD MM YYYY:");
+                try {
+                    dia = teclat.nextInt();
+                    mes = teclat.nextInt();
+                    any = teclat.nextInt();
+                    dataIniciInscripcio = new Data(dia, mes, any);
+                    correcte = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("S'ha d'entrar la data en nombres enters" + e);
+                } /*catch (DataIncorrectaExcepction e){
+                    System.out.println(e);              TREURE COMENTARI QUAN DATA LLENCI EXCEPCIO EN EL CONSTRUCTOR
+                }*/ 
+            }
+    
+            correcte = false;
+            while(!correcte){
+                System.out.println("Introdueix la data de fi d'inscripcions, en el següent format DD MM YYYY:");
+                try {
+                    dia = teclat.nextInt();
+                    mes = teclat.nextInt();
+                    any = teclat.nextInt();
+                    dataFiInscripcio = new Data(dia, mes, any);
+                    correcte = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("S'ha d'entrar la data en nombres enters" + e);
+                } /*catch (DataIncorrectaExcepction e){
+                    System.out.println(e);              TREURE COMENTARI QUAN DATA LLENCI EXCEPCIO EN EL CONSTRUCTOR
+                }*/ 
+            }
+    
+            System.out.println("Introdueix el nombre de places de l'activitat");
+            limitPlaces = teclat.nextInt();
+            
+            System.out.println("Introdueix el preu de l'activitat");
+            preu = teclat.nextDouble();
+    
+            correcte = false;
+            while(!correcte){
+                System.out.println("Introdueix el dia en que es fa l'activitat, en el següent format DD MM YYYY:");
+                try {
+                    dia = teclat.nextInt();
+                    mes = teclat.nextInt();
+                    any = teclat.nextInt();
+                    dataActivitat = new Data(dia, mes, any);
+                    correcte = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("S'ha d'entrar la data en nombres enters" + e);
+                } /*catch (DataIncorrectaExcepction e){
+                    System.out.println(e);              TREURE COMENTARI QUAN DATA LLENCI EXCEPCIO EN EL CONSTRUCTOR
+                }*/ 
+            }
+    
+            System.out.println("Introdueix l'horari de l'activitat");
+            horari = teclat.next();
+            
+            System.out.println("Introdueix la ciutat de l'activitat");
+            ciutat = teclat.next();
+    
+            activitat = new ActivitatUnDia(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 
+                limitPlaces, preu, dataActivitat, horari, ciutat);
+            
+            llistaActivitats.afegir(activitat);
+            
+        } catch (ActivitatDuplicadaException e) {
+            System.out.println(e);
         }
     }
 }

@@ -35,7 +35,7 @@ public class Data {
 			this.dia = dia;
 			this.mes = mes;
 			this.any = any;
-		} else { // posem la data de referència com a senyal d'error
+		} else { // TODO eliminar això i posar excepció
 			System.out.println("Data incorrecta. " + new DataIncorrectaExcepction(dia, mes, any));
 			this.dia = 1;
 			this.mes = 1;
