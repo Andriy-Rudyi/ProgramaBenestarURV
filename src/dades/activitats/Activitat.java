@@ -130,8 +130,8 @@ public abstract class Activitat {
      * @param valoracio Nota entre 0 i 10
      * @return true si la valoració s'ha afegit correctament
      */
-    public boolean afegirValoracio(Usuari usuari, int valoracio) throws UsuariDuplicatException{
-        if (valoracio < 0 || valoracio > 10) {
+    public boolean afegirValoracio(Data avui, Usuari usuari, int valoracio) throws UsuariDuplicatException{
+        if (valoracio < 0 || valoracio > 10 || this.estaActiva(avui)) {     //CAL COMPROVAR USUARI INSCRIT.
             return false;
         }
         llistaValoracions.afegirValoracio(usuari, valoracio);

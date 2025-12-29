@@ -24,6 +24,24 @@ public class App {
                 case 2:
                     opcio2();
                     break;
+                case 3:
+                    opcio3();
+                    break;
+                case 4:
+                    opcio4();
+                    break;
+                case 5:
+                    opcio5();
+                    break;
+                case 6:
+                    opcio6();
+                    break;
+                case 7:
+                    opcio7();
+                    break;
+                case 8:
+                    opcio8();
+                    break;
                 case 13:
                     opcio13();
                     break;
@@ -83,6 +101,39 @@ public class App {
 
     private static void opcio2(){
         System.out.println(llistaActivitats);   //TODO això és per poder fer testing abans de fer la opció completa
+    }
+
+    private static void opcio3(){
+        Activitat[] enInscripcio = llistaActivitats.obtenirEnPeriodeInscripcio(avui);
+        for (int i = 0; i < enInscripcio.length; i++){
+            int placesDisp = enInscripcio[i].getPlacesDisponibles();
+            if (placesDisp == 0){
+                System.out.println(enInscripcio[i].getNom() + ": No té places disponibles");
+            } else if (placesDisp == -1){
+                System.out.println(enInscripcio[i].getNom() + ": Té places infinites");
+            } else System.out.println(enInscripcio[i].getNom() + ": Té " + placesDisp + " places disponibles");
+        }
+    }
+
+    public static void opcio4(){
+        Activitat[] ambClasseAvui = llistaActivitats.obtenirAmbClasseAvui(avui);
+        for (int i = 0; i < ambClasseAvui.length; i++) System.out.println(ambClasseAvui[i]);
+    }
+
+    public static void opcio5(){
+        Activitat[] activesAvui = llistaActivitats.obtenirActives(avui);
+        for (int i = 0; i < activesAvui.length; i++) System.out.println(activesAvui[i].getNom());
+    }
+
+    public static void opcio6(){
+        Activitat[] ambPlacesDisp = llistaActivitats.obtenirAmbPlaces();
+        for (int i = 0; i < ambPlacesDisp.length; i++) System.out.println(ambPlacesDisp[i].getNom());
+    }
+
+    private static void opcio7(){
+        System.out.println("Introdueix el nom de l'activitat a buscar:");
+        String nomActivitat = teclat.next();
+        System.out.println(llistaActivitats.buscar(nomActivitat));
     }
 
     private static void opcio13(){
