@@ -32,10 +32,10 @@ public class ActivitatPeriodica extends Activitat {
      */
     public ActivitatPeriodica(String nom, boolean[] collectius, Data dataIniciInscripcio,
                               Data dataFiInscripcio, int limitPlaces, double preu,
-                              int diaSetmana, String horari, Data dataInici, 
+                              String horari, Data dataInici, 
                               int numSetmanes, String nomCentre, String ciutat) {
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu);
-        this.diaSetmana = diaSetmana;
+        this.diaSetmana = calcularDiaSetmana(dataInici);
         this.horari = horari;
         this.dataInici = dataInici;
         this.numSetmanes = numSetmanes;
@@ -149,7 +149,7 @@ public class ActivitatPeriodica extends Activitat {
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
         ActivitatPeriodica copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                          limitPlaces, preu, diaSetmana, horari, dataInici,
+                                                          limitPlaces, preu, horari, dataInici,
                                                           numSetmanes, nomCentre, ciutat);
         copia.setNumInscripcions(this.numInscripcions);
         return copia;
