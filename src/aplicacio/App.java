@@ -11,6 +11,7 @@ public class App {
     static Data avui = new Data();
     static LlistaUsuaris baseDadesUsuaris = new LlistaUsuaris();
     static LlistaActivitats llistaActivitats = new LlistaActivitats();
+    static boolean correcte = false; //pels try catch
     public static void main(String[] args){
         int opcio;
         
@@ -38,6 +39,15 @@ public class App {
                     break;
                 case 7:
                     opcio7();
+                    break;
+                case 8:
+                    opcio8();
+                    break;
+                case 9:
+                    opcio9();
+                    break;
+                case 10:
+                    opcio10();
                     break;
                 case 13:
                     opcio13();
@@ -146,6 +156,116 @@ public class App {
         System.out.println("Introdueix el nom de l'activitat a buscar:");
         String nomActivitat = teclat.nextLine();
         System.out.println(llistaActivitats.buscar(nomActivitat));
+    }
+
+    private static void opcio8(){
+        System.out.println("Introdueix el nom de l'usuari a buscar:");
+        String nomUsuari = teclat.nextLine();
+        System.out.println(baseDadesUsuaris.buscar(nomUsuari));
+    }
+
+    private static void opcio9(){
+        System.out.println("Introdueix el nom de l'usuari a buscar:");
+        String nomUsuari = teclat.nextLine();
+        System.out.println(baseDadesUsuaris.buscar(nomUsuari).getLlistaActivitats());
+    }
+
+    private static void opcio10(){
+        System.out.println("Introdueix el nom de l'activitat a inscriure's:");
+        Activitat activitat = llistaActivitats.buscar(teclat.nextLine());
+
+        if (!activitat.hiHaPlacesDisponibles()){
+            System.out.println("No hi ha places disponibles");
+            return;
+        }
+
+        System.out.println("Introdueix el nom de l'usuari a registrar:");
+        String nomUsuari = teclat.nextLine();
+        Usuari usuari = baseDadesUsuaris.buscar(nomUsuari);
+        if (usuari == null){
+            registrarUsuari(nomUsuari);
+            usuari = baseDadesUsuaris.buscar(nomUsuari);
+        }
+        if (activitat.esPerCollectiu(usuari.getColectiu())){
+            correcte = false;
+            while (!correcte) {
+                try {
+                    activitat.inscriureUsuari(usuari);
+                    correcte = true;
+                } catch (UsuariDuplicatException e) {
+                    System.out.println(e);
+                } catch (ActivitatDuplicadaException e) {
+                    System.out.println("Inesperat. L'usuari ja està registrat en aquesta activitat. " + e);
+                }
+            }
+        } else System.out.println("L'activitat no és per el teu col·lectiu!");
+
+    }
+
+    private static void registrarUsuari(String nom){
+        System.out.println("Usuari no trobat. Començant registre...");
+        System.out.println("Tria el numero del teu col·lectiu:\n");
+        System.out.println("1. Estudiant"); 
+        System.out.println("2. PDI"); 
+        System.out.println("3. PTGAS");
+        int colectiu = Integer.parseInt(teclat.nextLine());
+        String adreca;
+        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+        adreca = teclat.nextLine();
+        correcte = false;
+        switch (colectiu) {
+            case 1:
+                while (!correcte) {
+                    try {
+                        String ensenyament;
+                        int anyInici;
+                        System.out.println("Introdueix el teu ensenyament");
+                        ensenyament = teclat.nextLine();
+                        System.out.println("Introdueix el any d'inici del teu ensenyament");
+                        anyInici = Integer.parseInt(teclat.nextLine());
+                        Estudiant estudiant = new Estudiant(nom, adreca, ensenyament, anyInici);
+                        baseDadesUsuaris.afegir(estudiant);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                }
+                break;
+            case 2:
+                while (!correcte) {
+                    try {
+                        String departament, campus;
+                        System.out.println("Introdueix el teu departament");
+                        departament = teclat.nextLine();
+                        System.out.println("Introdueix el teu campus");
+                        campus = teclat.nextLine();
+                        Pdi pdi = new Pdi(nom, adreca, departament, campus);
+                        baseDadesUsuaris.afegir(pdi);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                }
+                break;
+            case 3:
+                while (!correcte) {
+                    try {
+                        String campus;
+                        System.out.println("Introdueix el teu campus");
+                        campus = teclat.nextLine();
+                        Ptgas ptgas = new Ptgas(nom, adreca, campus);
+                        baseDadesUsuaris.afegir(ptgas);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                }
+                break;
+        
+            default:
+                break;
+        }
+    
     }
 
     private static void opcio13(){

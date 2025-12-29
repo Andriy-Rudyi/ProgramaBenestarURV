@@ -1,5 +1,9 @@
 package dades.usuaris;
 
+import dades.activitats.Activitat;
+import dades.activitats.LlistaActivitats;
+import dades.excepcions.ActivitatDuplicadaException;
+
 /**
  * Classe Pare Usuari
  * @author PROG4 - Tiago Amarelle Rodrigues
@@ -8,6 +12,7 @@ package dades.usuaris;
 public abstract class Usuari {
     protected String alies;
     protected String adreca;
+    protected LlistaActivitats llistaActivitats = new LlistaActivitats();
 
     /**
      * Dominis de correu electrònic segons el col·lectiu
@@ -50,6 +55,14 @@ public abstract class Usuari {
         } else {
             return adreca + DOMINI_URV;
         }
+    }
+
+    public void afegirActivitat(Activitat activitat) throws ActivitatDuplicadaException{
+        llistaActivitats.afegir(activitat);
+    }
+
+    public LlistaActivitats getLlistaActivitats(){
+        return llistaActivitats;
     }
 
     /**

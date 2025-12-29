@@ -41,4 +41,10 @@ public class LlistaValoracions {
         valoracions[numValoracions] = valoracio;
     }
 
+    public LlistaValoracions copia() {
+        LlistaValoracions copia = new LlistaValoracions(llistaUsuaris.length);
+        copia.numValoracions = numValoracions;
+        copia.valoracions = valoracions.clone();
+        return copia;
+    }
 }

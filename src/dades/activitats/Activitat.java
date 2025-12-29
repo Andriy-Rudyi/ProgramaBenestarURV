@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.excepcions.ActivitatDuplicadaException;
 import dades.excepcions.UsuariDuplicatException;
 import dades.inscripcions.*;
 import dades.usuaris.*;
@@ -136,6 +137,10 @@ public abstract class Activitat {
         }
         llistaValoracions.afegirValoracio(usuari, valoracio);
         return true;
+    }
+
+    public void inscriureUsuari(Usuari usuari) throws UsuariDuplicatException, ActivitatDuplicadaException{
+        if (llistaInscripcions.afegir(usuari)) usuari.afegirActivitat(this);
     }
     
     /**

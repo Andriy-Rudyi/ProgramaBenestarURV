@@ -194,5 +194,19 @@ public class LlistaUsuaris {
         }
         return info;
     }
+
+    public LlistaUsuaris copia() {
+        LlistaUsuaris copia = new LlistaUsuaris();
+
+        for (int i = 0; i < numUsuaris; i++){
+            try {
+                copia.afegir(this.llista[i].copia());
+            } catch (UsuariDuplicatException e) {
+                System.out.println("Error inesperat copiant usuari. " + e);
+            }
+        }
+
+        return copia;
+    }
 }
 

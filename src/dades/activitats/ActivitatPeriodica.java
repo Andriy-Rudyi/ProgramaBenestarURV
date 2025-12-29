@@ -152,6 +152,9 @@ public class ActivitatPeriodica extends Activitat {
                                                           limitPlaces, preu, horari, dataInici,
                                                           numSetmanes, nomCentre, ciutat);
         copia.setNumInscripcions(this.numInscripcions);
+        copia.setNumInscripcions(this.numInscripcions);
+        copia.llistaInscripcions = llistaInscripcions.copia();
+        copia.llistaValoracions = llistaValoracions.copia();
         return copia;
     }
 }

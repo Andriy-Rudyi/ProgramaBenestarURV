@@ -92,6 +92,8 @@ public class ActivitatOnline extends Activitat {
         ActivitatOnline copia = new ActivitatOnline(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                      dataInici, periodeVisualitzacio, enllac);
         copia.setNumInscripcions(this.numInscripcions);
+        copia.llistaInscripcions = llistaInscripcions.copia();
+        copia.llistaValoracions = llistaValoracions.copia();
         return copia;
     }
 }

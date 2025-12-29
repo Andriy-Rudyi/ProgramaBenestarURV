@@ -24,12 +24,16 @@ public class LlistaInscripcions{
         espera = new LlistaEspera();
     }
     
-    public void afegir(Usuari usuari) throws UsuariDuplicatException{
+    public boolean afegir(Usuari usuari) throws UsuariDuplicatException{
         if (usuari != null && (inscrits.getNumUsuaris() < numPlaces || numPlaces == 0)){
             inscrits.afegir(usuari);
+            return true;
         }
         else if (!espera.estaPlena()){
             espera.afegir(usuari);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -59,6 +63,13 @@ public class LlistaInscripcions{
     public boolean teUsuariInscrit(String nom){
         return inscrits.buscar(nom) != null;
     }
-    
+
+    public LlistaInscripcions copia() {
+        LlistaInscripcions copia = new LlistaInscripcions(numPlaces);
+        copia.inscrits = this.inscrits.copia();
+        copia.espera = this.espera.copia();
+        copia.numPlaces = this.numPlaces;
+        return copia;
+    }
 
 }

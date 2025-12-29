@@ -154,4 +154,12 @@ public class LlistaEspera {
         }
         return info;
     }
+
+    public LlistaEspera copia() {
+        LlistaEspera copia = new LlistaEspera();
+        for (int i = 0; i < numUsuaris; i++){
+            copia.afegir(llista[i].copia());
+        }
+        return copia;
+    }
 }
