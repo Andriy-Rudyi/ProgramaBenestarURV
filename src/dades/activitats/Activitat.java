@@ -171,6 +171,14 @@ public abstract class Activitat {
         if (collectius[2]) resultat += "Estudiants ";
         return resultat.trim();
     }
+
+    public LlistaInscripcions getLlistaInscripcions() {
+    return llistaInscripcions;
+    }
+
+    public boolean HiHaUsuariInscrit(String usuari) {
+    return llistaInscripcions.teUsuariInscrit(usuari);
+    }
     
     // Mètodes abstractes que implementaran les subclasses
     /**

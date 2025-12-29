@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import dades.activitats.*;
 import dades.excepcions.*;
+import dades.inscripcions.*;
 import dades.usuaris.*;
 import dades.Data;
 
@@ -41,6 +42,18 @@ public class App {
                     break;
                 case 8:
                     opcio8();
+                    break;
+                case 9:
+                    opcio9();
+                    break;
+                case 10:
+                    opcio10();
+                    break;
+                case 11:
+                    opcio11();
+                    break;
+                case 12:
+                    opcio12();
                     break;
                 case 13:
                     opcio13();
@@ -134,6 +147,156 @@ public class App {
         System.out.println("Introdueix el nom de l'activitat a buscar:");
         String nomActivitat = teclat.next();
         System.out.println(llistaActivitats.buscar(nomActivitat));
+    }
+
+        private static void opcio8(){
+        String alies = teclat.next();
+        Usuari usuari= baseDadesUsuaris.buscar(alies);
+
+        if (usuari!= null) {
+        System.out.println("Detalls de l'usuari:");
+        System.out.println(usuari.toString());
+        } else {
+        System.out.println("No s'ha trobat cap usuari amb l'àlies: " + alies);
+        }
+    }
+    private static void opcio9(){
+        System.out.println("Introdueix l'àlies de l'usuari per veure les seves activitats:");
+        String alies = teclat.next();
+        Usuari usuari = baseDadesUsuaris.buscar(alies);
+
+        if (usuari!= null) {
+        System.out.println("L'usuari " + alies + " està inscrit a:");
+        boolean teInscripcions = false;
+        Activitat[] totesLesActivitats = llistaActivitats.obtenirTotes();
+        for (Activitat activitat : totesLesActivitats) {
+            if (activitat.HiHaUsuariInscrit(alies)) { // NOU Metode creat a llista inscripcions
+                System.out.println("- " + activitat.getNom() + " (" + activitat.getTipus() + ")");
+                teInscripcions = true;
+            }
+        }
+
+        if (!teInscripcions) {
+            System.out.println("No està inscrit a cap activitat actualment.");
+        }
+
+    } else {
+        System.out.println("Error: No existeix cap usuari amb l'àlies " + alies);
+    }
+
+
+
+    }
+    private static void opcio10(){
+        System.out.println("--- INSCRIPCIÓ A UNA ACTIVITAT ---");
+        System.out.print("Introdueix l'àlies de l'usuari: ");
+        String aliesInscripcio = teclat.next();
+        teclat.nextLine(); // Netejar buffer
+        System.out.print("Introdueix el nom de l'activitat: ");
+        String nomActivitat = teclat.nextLine();
+
+        Usuari usuariInscripcio = baseDadesUsuaris.buscar(aliesInscripcio); 
+        Activitat activitatInscripcio = llistaActivitats.buscar(nomActivitat); 
+
+ 
+        if (usuariInscripcio != null && activitatInscripcio != null) {
+            if (activitatInscripcio.estaEnPeriodeInscripcio(avui)) { 
+                if (activitatInscripcio.esPerCollectiu(usuariInscripcio.getColectiu())) { //
+                    try {
+                  
+                    LlistaInscripcions llista = activitatInscripcio.getLlistaInscripcions();
+                    int inscritsAbans = llista.getNumInscrits(); 
+                    llista.afegir(usuariInscripcio); 
+                    if (llista.getNumInscrits() > inscritsAbans) {
+                        activitatInscripcio.incrementarInscripcions(); 
+                        System.out.println("Usuari inscrit oficialment.");
+                    } 
+                    else {
+                        
+                        System.out.println("Activitat plena: L'usuari ha anat a la LLISTA D'ESPERA.");
+                    }
+
+                } catch (UsuariDuplicatException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+
+            } else {
+                System.out.println("Error: Aquesta activitat no és per al col·lectiu " + usuariInscripcio.getColectiu());
+            }
+        } else {
+            System.out.println("Error: Fora de termini d'inscripció.");
+        }
+    } else {
+        System.out.println("Error: Usuari o activitat no trobats.");
+    }
+        
+    }
+
+    private static void opcio11(){
+        System.out.print("Nom de l'activitat: ");
+        teclat.nextLine(); // Netejar buffer
+        Activitat act = llistaActivitats.buscar(teclat.nextLine()); 
+
+        if (act != null) {
+            LlistaInscripcions inscripcions = act.getLlistaInscripcions(); 
+        
+            System.out.println("\n--- DADES DE: " + act.getNom() + " ---\n");
+            System.out.println(inscripcions.getLlistaInscrits()); 
+       
+       
+        if (inscripcions.getLlistaEspera() != null) {
+            System.out.println(inscripcions.getLlistaEspera());
+        } else {
+            System.out.println("Llista d'espera: (Activitat Il·limitada)");
+        }
+
+        } else {
+        System.out.println("Activitat no trobada.");
+        }
+
+    }
+
+
+    private static void opcio12() {
+        System.out.println("--- BAIXA D'UNA ACTIVITAT ---");
+
+        System.out.println("Introdueix l'àlies de l'usuari a eliminar: ");
+        String aliesBaixa = teclat.next();
+        teclat.nextLine();
+        System.out.println("Introdueix el nom de l'activitat: ");
+        String nomActBaixa = teclat.nextLine();
+
+        Activitat activitatBaixa = llistaActivitats.buscar(nomActBaixa); 
+
+        if (activitatBaixa != null) {
+  
+            LlistaInscripcions llista = activitatBaixa.getLlistaInscripcions(); 
+
+        try {
+ 
+            int inscritsAbans = llista.getNumInscrits(); 
+            boolean teniaEspera = (llista.getLlistaEspera() != null && !llista.getLlistaEspera().esBuida());
+            llista.eliminar(aliesBaixa);
+            
+            activitatBaixa.setNumInscripcions(llista.getNumInscrits()); 
+
+            int inscritsDespres = llista.getNumInscrits();
+            
+            if (inscritsDespres < inscritsAbans) {
+                System.out.println("L'usuari ha estat eliminat. S'ha alliberat una plaça.");
+            } else if (teniaEspera && inscritsDespres == inscritsAbans) {
+                System.out.println("Usuari eliminat. La plaça lliure l'ha ocupat algú de la llista d'espera.");
+            } else {
+                System.out.println("Operació realitzada (si l'usuari existia a la llista d'espera o inscrits).");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error durant l'eliminació: " + e.getMessage());
+        }
+
+    } else {
+        System.out.println("Activitat no trobada.");
+    }
     }
 
     private static void opcio13(){

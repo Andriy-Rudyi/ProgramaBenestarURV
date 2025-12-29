@@ -56,6 +56,17 @@ public class LlistaInscripcions{
         return !espera.esBuida();
     }
 
-    
+    public boolean teUsuariInscrit(String nom){
+        return inscrits.buscar(nom) != null;
+    }
+
+    public LlistaUsuaris getLlistaInscrits() {
+    return inscrits;
+    }
+
+
+    public LlistaEspera getLlistaEspera() {
+    return espera;
+    }
 
 }
