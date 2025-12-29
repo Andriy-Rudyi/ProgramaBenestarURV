@@ -249,6 +249,10 @@ public abstract class Activitat {
         return llistaInscripcions;
     }
 
+    public LlistaValoracions getLlistaValoracions() {
+        return llistaValoracions;
+    }
+
     // Delegate check to the internal list (preferred for encapsulation)
     public boolean teUsuariInscrit(String nom) {
         return llistaInscripcions != null && llistaInscripcions.teUsuariInscrit(nom);

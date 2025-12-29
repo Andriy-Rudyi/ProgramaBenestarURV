@@ -144,6 +144,27 @@ public class LlistaActivitats {
     }
     
     /**
+     * Obté activitats que no estan en període d'inscripció
+     * @param dataAvui Data actual
+     * @return Array d'activitats que no estan en període d'inscripció
+     */
+    public Activitat[] obtenirEnNoPeriodeInscripcio(Data dataAvui) {
+        int count = 0;
+        for (int i = 0; i < numActivitats; i++) {
+            if (!llista[i].estaEnPeriodeInscripcio(dataAvui)) count++;
+        }
+        
+        Activitat[] resultat = new Activitat[count];
+        int index = 0;
+        for (int i = 0; i < numActivitats; i++) {
+            if (!llista[i].estaEnPeriodeInscripcio(dataAvui)) {
+                resultat[index++] = llista[i];
+            }
+        }
+        return resultat;
+    }
+
+    /**
      * Obté activitats que tenen classe avui
      * @param dataAvui Data actual
      * @return Array d'activitats amb classe avui

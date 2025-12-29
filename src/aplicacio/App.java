@@ -48,6 +48,15 @@ public class App {
                 case 15:
                     opcio15();
                     break;
+                case 16:
+                    opcio16();
+                    break;
+                case 17:
+                    opcio17();
+                    break;
+                case 21:
+                    opcio21();
+                    break;
                 default:
                     break;
             }
@@ -295,6 +304,52 @@ public class App {
         }
     }
 
+    
+    
+    public static void opcio16(){
+        System.out.println("Introdueix el nom de l'activitat a valorar:");
+        String nomActivitat = teclat.next();
+        Activitat activitat = llistaActivitats.buscar(nomActivitat);
+        
+        System.out.println("Introdueix el nom de l'usuari que valora:");
+        String nomUsuari = teclat.next();
+        Usuari usuari = baseDadesUsuaris.buscar(nomUsuari); // restore lookup
+        
+        System.out.println("Introdueix la valoració (1-10 estrelles):");
+        int valoracio = teclat.nextInt();
+        
+        if (activitat != null && usuari != null && activitat.haAcabat(avui) 
+            && activitat.teUsuariInscrit(usuari.getAlies())){
+        try {
+                activitat.afegirValoracio(avui, usuari, valoracio);
+                System.out.println("Valoració afegida.");
+            } catch (UsuariDuplicatException e) {
+                System.out.println("L'usuari ja ha valorat aquesta activitat: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Activitat no trobada, usuari no trobat, activitat no ha acabat o usuari no inscrit.");
+        }
+    }
+
+    private static void opcio17(){
+        Activitat[] activitatsAcabades = llistaActivitats.obtenirAcabades(avui);
+        for (int i = 0; i < activitatsAcabades.length; i++){
+            System.out.println("MITJANA DE VALORACIONS DE" + activitatsAcabades[i].getNom() + ":\n" + 
+            activitatsAcabades[i].getLlistaValoracions().getMitjanaValoracions());
+        }
+    }
+
+    private static void opcio21(){
+        Activitat[] noPeriodeInscripcio = llistaActivitats.obtenirEnPeriodeInscripcio(avui);
+        for (int i = 0; i < llistaActivitats.getNumActivitats(); i++){
+            if (noPeriodeInscripcio[i] instanceof ActivitatOnline && noPeriodeInscripcio[i].getLlistaInscripcions().getNumInscrits() < 20){
+                llistaActivitats.eliminar(noPeriodeInscripcio[i].getNom());
+            } else if (noPeriodeInscripcio[i].getPercentatgeOcupacio() < 10){
+                llistaActivitats.eliminar(noPeriodeInscripcio[i].getNom());
+            }
+        }
+    }
+
     private static Data llegirData(){
         boolean correcte = false;
         Data data = new Data();
@@ -322,31 +377,5 @@ public class App {
             }*/ 
         }
         return data;
-    }
-
-
-    public static void opcio16(){
-        System.out.println("Introdueix el nom de l'activitat a valorar:");
-        String nomActivitat = teclat.next();
-        Activitat activitat = llistaActivitats.buscar(nomActivitat);
-
-        System.out.println("Introdueix el nom de l'usuari que valora:");
-        String nomUsuari = teclat.next();
-        Usuari usuari = baseDadesUsuaris.buscar(nomUsuari); // restore lookup
-
-        System.out.println("Introdueix la valoració (1-10 estrelles):");
-        int valoracio = teclat.nextInt();
-
-        if (activitat != null && usuari != null && activitat.haAcabat(avui) 
-                && activitat.teUsuariInscrit(usuari.getAlies())){
-            try {
-                activitat.afegirValoracio(avui, usuari, valoracio);
-                System.out.println("Valoració afegida.");
-            } catch (UsuariDuplicatException e) {
-                System.out.println("L'usuari ja ha valorat aquesta activitat: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Activitat no trobada, usuari no trobat, activitat no ha acabat o usuari no inscrit.");
-        }
     }
 }
