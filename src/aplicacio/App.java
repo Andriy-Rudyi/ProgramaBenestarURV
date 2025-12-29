@@ -58,13 +58,13 @@ public class App {
 
     private static void mostrarMenuActivitats() {
         System.out.println("\n===== MENÚ PRINCIPAL ACTIVITATS =====");
-        System.out.println("1. Indicar la data del dia d'avui");
-        System.out.println("2. Mostrar les dades de les llistes");
-        System.out.println("3. Mostrar activitats en període d'inscripció");
-        System.out.println("4. Mostrar activitats amb classe avui");
-        System.out.println("5. Mostrar activitats actives avui");
-        System.out.println("6. Mostrar activitats amb places disponibles");
-        System.out.println("7. Mostrar detall d'una activitat a partir del seu nom");
+        System.out.println("1. Indicar la data del dia d'avui"); // fet
+        System.out.println("2. Mostrar les dades de les llistes"); // fet
+        System.out.println("3. Mostrar activitats en període d'inscripció"); // fet
+        System.out.println("4. Mostrar activitats amb classe avui"); // fet
+        System.out.println("5. Mostrar activitats actives avui"); // fet
+        System.out.println("6. Mostrar activitats amb places disponibles");// fet
+        System.out.println("7. Mostrar detall d'una activitat a partir del seu nom"); // fet
         System.out.println("8. Mostrar detall d'un usuari a partir del seu nom");
         System.out.println("9. Mostrar activitats a les que està apuntat un usuari");
         System.out.println("10. Inscriure's a una activitat");
@@ -322,5 +322,31 @@ public class App {
             }*/ 
         }
         return data;
+    }
+
+
+    public static void opcio16(){
+        System.out.println("Introdueix el nom de l'activitat a valorar:");
+        String nomActivitat = teclat.next();
+        Activitat activitat = llistaActivitats.buscar(nomActivitat);
+
+        System.out.println("Introdueix el nom de l'usuari que valora:");
+        String nomUsuari = teclat.next();
+        Usuari usuari = baseDadesUsuaris.buscar(nomUsuari); // restore lookup
+
+        System.out.println("Introdueix la valoració (1-10 estrelles):");
+        int valoracio = teclat.nextInt();
+
+        if (activitat != null && usuari != null && activitat.haAcabat(avui) 
+                && activitat.teUsuariInscrit(usuari.getAlies())){
+            try {
+                activitat.afegirValoracio(avui, usuari, valoracio);
+                System.out.println("Valoració afegida.");
+            } catch (UsuariDuplicatException e) {
+                System.out.println("L'usuari ja ha valorat aquesta activitat: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Activitat no trobada, usuari no trobat, activitat no ha acabat o usuari no inscrit.");
+        }
     }
 }

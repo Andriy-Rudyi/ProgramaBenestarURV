@@ -244,4 +244,13 @@ public abstract class Activitat {
         Activitat altra = (Activitat) obj;
         return this.nom != null && this.nom.equals(altra.nom);
     }
+
+    public LlistaInscripcions getLlistaInscripcions() {
+        return llistaInscripcions;
+    }
+
+    // Delegate check to the internal list (preferred for encapsulation)
+    public boolean teUsuariInscrit(String nom) {
+        return llistaInscripcions != null && llistaInscripcions.teUsuariInscrit(nom);
+    }
 }
