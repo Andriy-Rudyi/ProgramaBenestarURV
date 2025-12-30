@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import dades.activitats.*;
 import dades.excepcions.*;
+import dades.inscripcions.*;
 import dades.usuaris.*;
 import dades.Data;
 
@@ -48,6 +49,12 @@ public class App {
                     break;
                 case 10:
                     opcio10();
+                    break;
+                case 11:
+                    opcio11();
+                    break;
+                case 12:
+                    opcio12();
                     break;
                 case 13:
                     opcio13();
@@ -103,22 +110,8 @@ public class App {
     }
 
     private static void opcio1(){  
-        System.out.println("Introdueix la data d'avui, en el seguent format DD MM YYYY:");
-        int dia, mes, any;
-        boolean correcte = false;
-        while(!correcte){
-            try {
-                dia = teclat.nextInt();
-                mes = teclat.nextInt();
-                any = teclat.nextInt();
-                avui.setData(dia, mes, any);
-                correcte = true;
-            } catch (NumberFormatException e) {
-                System.out.println("S'ha d'entrar la data en nombres enters" + e);
-            } catch (DataIncorrectaExcepction e){
-                System.out.println(e);
-            }
-        }
+        System.out.println("Introdueix la data d'avui:");
+        avui = llegirData();
     }
 
     private static void opcio2(){
@@ -158,114 +151,148 @@ public class App {
         System.out.println(llistaActivitats.buscar(nomActivitat));
     }
 
-    private static void opcio8(){
-        System.out.println("Introdueix el nom de l'usuari a buscar:");
-        String nomUsuari = teclat.nextLine();
-        System.out.println(baseDadesUsuaris.buscar(nomUsuari));
-    }
+        private static void opcio8(){
+        String alies = teclat.next();
+        Usuari usuari= baseDadesUsuaris.buscar(alies);
 
+        if (usuari!= null) {
+        System.out.println("Detalls de l'usuari:");
+        System.out.println(usuari.toString());
+        } else {
+        System.out.println("No s'ha trobat cap usuari amb l'àlies: " + alies);
+        }
+    }
     private static void opcio9(){
-        System.out.println("Introdueix el nom de l'usuari a buscar:");
-        String nomUsuari = teclat.nextLine();
-        System.out.println(baseDadesUsuaris.buscar(nomUsuari).getLlistaActivitats());
-    }
+        System.out.println("Introdueix l'àlies de l'usuari per veure les seves activitats:");
+        String alies = teclat.nextLine();
+        Usuari usuari = baseDadesUsuaris.buscar(alies);
 
-    private static void opcio10(){
-        System.out.println("Introdueix el nom de l'activitat a inscriure's:");
-        Activitat activitat = llistaActivitats.buscar(teclat.nextLine());
-
-        if (!activitat.hiHaPlacesDisponibles()){
-            System.out.println("No hi ha places disponibles");
-            return;
-        }
-
-        System.out.println("Introdueix el nom de l'usuari a registrar:");
-        String nomUsuari = teclat.nextLine();
-        Usuari usuari = baseDadesUsuaris.buscar(nomUsuari);
-        if (usuari == null){
-            registrarUsuari(nomUsuari);
-            usuari = baseDadesUsuaris.buscar(nomUsuari);
-        }
-        if (activitat.esPerCollectiu(usuari.getColectiu())){
-            correcte = false;
-            while (!correcte) {
-                try {
-                    activitat.inscriureUsuari(usuari);
-                    correcte = true;
-                } catch (UsuariDuplicatException e) {
-                    System.out.println(e);
-                } catch (ActivitatDuplicadaException e) {
-                    System.out.println("Inesperat. L'usuari ja està registrat en aquesta activitat. " + e);
-                }
+        if (usuari!= null) {
+        System.out.println("L'usuari " + alies + " està inscrit a:");
+        boolean teInscripcions = false;
+        Activitat[] totesLesActivitats = llistaActivitats.obtenirTotes();
+        for (Activitat activitat : totesLesActivitats) {
+            if (activitat.teUsuariInscrit(alies)) { // NOU Metode creat a llista inscripcions
+                System.out.println("- " + activitat.getNom() + " (" + activitat.getTipus() + ")");
+                teInscripcions = true;
             }
-        } else System.out.println("L'activitat no és per el teu col·lectiu!");
+        }
+
+        if (!teInscripcions) {
+            System.out.println("No està inscrit a cap activitat actualment.");
+        }
+
+    } else {
+        System.out.println("Error: No existeix cap usuari amb l'àlies " + alies);
+    }
+
+
+
+    }
+    private static void opcio10(){
+        System.out.println("--- INSCRIPCIÓ A UNA ACTIVITAT ---");
+        System.out.print("Introdueix l'àlies de l'usuari: ");
+        String aliesInscripcio = teclat.nextLine();
+        System.out.print("Introdueix el nom de l'activitat: ");
+        String nomActivitat = teclat.nextLine();
+
+        Usuari usuariInscripcio = baseDadesUsuaris.buscar(aliesInscripcio); 
+        Activitat activitatInscripcio = llistaActivitats.buscar(nomActivitat); 
+
+        if (usuariInscripcio == null) usuariInscripcio = registrarUsuari(aliesInscripcio);
+        if (activitatInscripcio != null) {
+            if (activitatInscripcio.estaEnPeriodeInscripcio(avui)) { 
+                if (activitatInscripcio.esPerCollectiu(usuariInscripcio.getColectiu())) { //
+                    try {
+                  
+                    LlistaInscripcions llista = activitatInscripcio.getLlistaInscripcions();
+                    int inscritsAbans = llista.getNumInscrits(); 
+                    llista.afegir(usuariInscripcio); 
+                    if (llista.getNumInscrits() > inscritsAbans) {
+                        System.out.println("Usuari inscrit oficialment.");
+                    } 
+                    else {
+                        
+                        System.out.println("Activitat plena: L'usuari ha anat a la LLISTA D'ESPERA.");
+                    }
+
+                } catch (UsuariDuplicatException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+
+            } else {
+                System.out.println("Error: Aquesta activitat no és per al col·lectiu " + usuariInscripcio.getColectiu());
+            }
+        } else {
+            System.out.println("Error: Fora de termini d'inscripció.");
+        }
+    } else {
+        System.out.println("Error: Usuari o activitat no trobats.");
+    }
+        
+    }
+
+    private static void opcio11(){
+        System.out.print("Nom de l'activitat: ");
+        Activitat act = llistaActivitats.buscar(teclat.nextLine()); 
+
+        if (act != null) {
+            LlistaInscripcions inscripcions = act.getLlistaInscripcions(); 
+        
+            System.out.println("\n--- DADES DE: " + act.getNom() + " ---\n");
+            System.out.println(inscripcions.getLlistaInscrits()); 
+       
+       
+        if (inscripcions.getLlistaEspera() != null) {
+            System.out.println(inscripcions.getLlistaEspera());
+        } else {
+            System.out.println("Llista d'espera: (Activitat Il·limitada)");
+        }
+
+        } else {
+        System.out.println("Activitat no trobada.");
+        }
 
     }
 
-    private static void registrarUsuari(String nom){
-        System.out.println("Usuari no trobat. Començant registre...");
-        System.out.println("Tria el numero del teu col·lectiu:\n");
-        System.out.println("1. Estudiant"); 
-        System.out.println("2. PDI"); 
-        System.out.println("3. PTGAS");
-        int colectiu = Integer.parseInt(teclat.nextLine());
-        String adreca;
-        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
-        adreca = teclat.nextLine();
-        correcte = false;
-        switch (colectiu) {
-            case 1:
-                while (!correcte) {
-                    try {
-                        String ensenyament;
-                        int anyInici;
-                        System.out.println("Introdueix el teu ensenyament");
-                        ensenyament = teclat.nextLine();
-                        System.out.println("Introdueix el any d'inici del teu ensenyament");
-                        anyInici = Integer.parseInt(teclat.nextLine());
-                        Estudiant estudiant = new Estudiant(nom, adreca, ensenyament, anyInici);
-                        baseDadesUsuaris.afegir(estudiant);
-                        correcte = true;
-                    } catch (UsuariDuplicatException e) {
-                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    }   //més excepcions
-                }
-                break;
-            case 2:
-                while (!correcte) {
-                    try {
-                        String departament, campus;
-                        System.out.println("Introdueix el teu departament");
-                        departament = teclat.nextLine();
-                        System.out.println("Introdueix el teu campus");
-                        campus = teclat.nextLine();
-                        Pdi pdi = new Pdi(nom, adreca, departament, campus);
-                        baseDadesUsuaris.afegir(pdi);
-                        correcte = true;
-                    } catch (UsuariDuplicatException e) {
-                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    }   //més excepcions
-                }
-                break;
-            case 3:
-                while (!correcte) {
-                    try {
-                        String campus;
-                        System.out.println("Introdueix el teu campus");
-                        campus = teclat.nextLine();
-                        Ptgas ptgas = new Ptgas(nom, adreca, campus);
-                        baseDadesUsuaris.afegir(ptgas);
-                        correcte = true;
-                    } catch (UsuariDuplicatException e) {
-                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    }   //més excepcions
-                }
-                break;
-        
-            default:
-                break;
+
+    private static void opcio12() {
+        System.out.println("--- BAIXA D'UNA ACTIVITAT ---");
+
+        System.out.println("Introdueix l'àlies de l'usuari a eliminar: ");
+        String aliesBaixa = teclat.nextLine();
+        System.out.println("Introdueix el nom de l'activitat: ");
+        String nomActBaixa = teclat.nextLine();
+
+        Activitat activitatBaixa = llistaActivitats.buscar(nomActBaixa); 
+
+        if (activitatBaixa != null) {
+  
+            LlistaInscripcions llista = activitatBaixa.getLlistaInscripcions(); 
+
+        try {
+ 
+            int inscritsAbans = llista.getNumInscrits(); 
+            boolean teniaEspera = (llista.getLlistaEspera() != null && !llista.getLlistaEspera().esBuida());
+            llista.eliminar(aliesBaixa);
+
+            int inscritsDespres = llista.getNumInscrits();
+            
+            if (inscritsDespres < inscritsAbans) {
+                System.out.println("L'usuari ha estat eliminat. S'ha alliberat una plaça.");
+            } else if (teniaEspera && inscritsDespres == inscritsAbans) {
+                System.out.println("Usuari eliminat. La plaça lliure l'ha ocupat algú de la llista d'espera.");
+            } else {
+                System.out.println("Operació realitzada (si l'usuari existia a la llista d'espera o inscrits).");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error durant l'eliminació: " + e.getMessage());
         }
-    
+
+    } else {
+        System.out.println("Activitat no trobada.");
+    }
     }
 
     private static void opcio13(){
@@ -428,15 +455,15 @@ public class App {
     
     public static void opcio16(){
         System.out.println("Introdueix el nom de l'activitat a valorar:");
-        String nomActivitat = teclat.next();
+        String nomActivitat = teclat.nextLine();
         Activitat activitat = llistaActivitats.buscar(nomActivitat);
         
         System.out.println("Introdueix el nom de l'usuari que valora:");
-        String nomUsuari = teclat.next();
+        String nomUsuari = teclat.nextLine();
         Usuari usuari = baseDadesUsuaris.buscar(nomUsuari); // restore lookup
         
         System.out.println("Introdueix la valoració (1-10 estrelles):");
-        int valoracio = teclat.nextInt();
+        int valoracio = Integer.parseInt(teclat.nextLine());
         
         if (activitat != null && usuari != null && activitat.haAcabat(avui) 
             && activitat.teUsuariInscrit(usuari.getAlies())){
@@ -454,7 +481,7 @@ public class App {
     private static void opcio17(){
         Activitat[] activitatsAcabades = llistaActivitats.obtenirAcabades(avui);
         for (int i = 0; i < activitatsAcabades.length; i++){
-            System.out.println("MITJANA DE VALORACIONS DE" + activitatsAcabades[i].getNom() + ":\n" + 
+            System.out.println("MITJANA DE VALORACIONS DE " + activitatsAcabades[i].getNom() + ":\n" + 
             activitatsAcabades[i].getLlistaValoracions().getMitjanaValoracions());
         }
     }
@@ -497,5 +524,75 @@ public class App {
             }*/ 
         }
         return data;
+    }
+
+    private static Usuari registrarUsuari(String nom){
+        boolean correcte = false;
+        System.out.println("Usuari no trobat. Començant registre...");
+        Usuari usuari = null;
+        while (!correcte) {
+            System.out.println("Tria el numero del teu col·lectiu:\n");
+            System.out.println("1. Estudiant"); 
+            System.out.println("2. PDI"); 
+            System.out.println("3. PTGAS");
+            int colectiu = Integer.parseInt(teclat.nextLine());
+            String adreca;
+            switch (colectiu) {
+                case 1:
+                    try {
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        String ensenyament;
+                        int anyInici;
+                        System.out.println("Introdueix el teu ensenyament");
+                        ensenyament = teclat.nextLine();
+                        System.out.println("Introdueix el any d'inici del teu ensenyament");
+                        anyInici = Integer.parseInt(teclat.nextLine());
+                        usuari = new Estudiant(nom, adreca, ensenyament, anyInici);
+                        baseDadesUsuaris.afegir(usuari);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                    break;
+                case 2:
+                    try {
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        String departament, campus;
+                        System.out.println("Introdueix el teu departament");
+                        departament = teclat.nextLine();
+                        System.out.println("Introdueix el teu campus");
+                        campus = teclat.nextLine();
+                        usuari = new Pdi(nom, adreca, departament, campus);
+                        baseDadesUsuaris.afegir(usuari);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                    break;
+                case 3:
+                    try {
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        String campus;
+                        System.out.println("Introdueix el teu campus");
+                        campus = teclat.nextLine();
+                        usuari = new Ptgas(nom, adreca, campus);
+                        baseDadesUsuaris.afegir(usuari);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+        return usuari;
+    
     }
 }

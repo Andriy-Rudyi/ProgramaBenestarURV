@@ -23,7 +23,6 @@ public abstract class Activitat {
     protected Data dataFiInscripcio;
     protected int limitPlaces;
     protected double preu;
-    protected int numInscripcions;
     protected LlistaInscripcions llistaInscripcions;
     protected LlistaValoracions llistaValoracions;
     
@@ -48,7 +47,6 @@ public abstract class Activitat {
         this.dataFiInscripcio = dataFiInscripcio;
         this.limitPlaces = limitPlaces;
         this.preu = preu;
-        this.numInscripcions = 0;
         llistaInscripcions = new LlistaInscripcions(limitPlaces);
         llistaValoracions = new LlistaValoracions(limitPlaces);
     }
@@ -72,17 +70,9 @@ public abstract class Activitat {
     public Data getDataFiInscripcio() { return dataFiInscripcio; }
     public int getLimitPlaces() { return limitPlaces; }
     public double getPreu() { return preu; }
-    public int getNumInscripcions() { return numInscripcions; }
+    public int getNumInscripcions() { return llistaInscripcions.getNumInscrits(); }
     
-    /**
-     * Estableix el número d'inscripcions (útil per carregar des de fitxer)
-     * @param num Número d'inscripcions
-     */
-    public void setNumInscripcions(int num) {
-        if (num >= 0) {
-            this.numInscripcions = num;
-        }
-    }
+    
 
     /**
      * Comprova si l'activitat està en període d'inscripció
@@ -100,7 +90,7 @@ public abstract class Activitat {
      */
     public boolean hiHaPlacesDisponibles() {
         if (limitPlaces == 0) return true; // Il·limitat
-        return numInscripcions < limitPlaces;
+        return getNumInscripcions() < limitPlaces;
     }
 
     /**
@@ -109,21 +99,7 @@ public abstract class Activitat {
      */
     public int getPlacesDisponibles() {
         if (limitPlaces == 0) return -1; // Il·limitat
-        return limitPlaces - numInscripcions;
-    }
-    
-    /**
-     * Incrementa el número d'inscripcions
-     */
-    public void incrementarInscripcions() {
-        numInscripcions++;
-    }
-    
-    /**
-     * Decrementa el número d'inscripcions
-     */
-    public void decrementarInscripcions() {
-        if (numInscripcions > 0) numInscripcions--;
+        return limitPlaces - getNumInscripcions();
     }
     
     /**
@@ -224,7 +200,7 @@ public abstract class Activitat {
         info += "Col·lectius: " + getCollectiusString() + "\n";
         info += "Període inscripció: " + dataIniciInscripcio + " - " + dataFiInscripcio + "\n";
         info += "Preu: " + preu + "€\n";
-        info += "Places: " + numInscripcions;
+        info += "Places: " + getNumInscripcions();
         if (limitPlaces > 0) {
             info += "/" + limitPlaces;
         } else {

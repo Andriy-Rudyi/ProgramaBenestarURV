@@ -151,10 +151,7 @@ public class ActivitatPeriodica extends Activitat {
         ActivitatPeriodica copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                           limitPlaces, preu, horari, dataInici,
                                                           numSetmanes, nomCentre, ciutat);
-        copia.setNumInscripcions(this.numInscripcions);
-        copia.setNumInscripcions(this.numInscripcions);
-        copia.llistaInscripcions = llistaInscripcions.copia();
-        copia.llistaValoracions = llistaValoracions.copia();
+        //TODO FALTA COPIA LES LLISTES D'INSCRITS
         return copia;
     }
 }

@@ -13,17 +13,24 @@ public class LlistaInscripcions{
     private LlistaEspera espera;
     int numPlaces;
 
-    public LlistaInscripcions(){    // Constructor amb infinites places
-        inscrits = new LlistaUsuaris();
-        numPlaces = 0;
+    // public LlistaInscripcions(){    
+    //     inscrits = new LlistaUsuaris();
+    //     numPlaces = 0;
+    // }
+
+    public LlistaInscripcions(int numPlaces){
+        if (numPlaces > 0){                                     // Constructor amb places limitades
+            inscrits = new LlistaUsuaris();         
+            this.numPlaces = numPlaces;
+            espera = new LlistaEspera();
+        } else if (numPlaces == 0) {                            // Constructor amb infinites places
+            inscrits = new LlistaUsuaris();
+            this.numPlaces = 0;
+        } else {                                                // Excecio
+            System.out.println("El número de places no pot ser negatiu");
+        }
     }
 
-    public LlistaInscripcions(int numPlaces){   // Constructor amb places finites
-        inscrits = new LlistaUsuaris();
-        this.numPlaces = numPlaces;
-        espera = new LlistaEspera();
-    }
-    
     public boolean afegir(Usuari usuari) throws UsuariDuplicatException{
         if (usuari != null && (inscrits.getNumUsuaris() < numPlaces || numPlaces == 0)){
             inscrits.afegir(usuari);
@@ -64,12 +71,13 @@ public class LlistaInscripcions{
         return inscrits.buscar(nom) != null;
     }
 
-    public LlistaInscripcions copia() {
-        LlistaInscripcions copia = new LlistaInscripcions(numPlaces);
-        copia.inscrits = this.inscrits.copia();
-        copia.espera = this.espera.copia();
-        copia.numPlaces = this.numPlaces;
-        return copia;
+    public LlistaUsuaris getLlistaInscrits() {
+    return inscrits;
+    }
+
+
+    public LlistaEspera getLlistaEspera() {
+    return espera;
     }
 
 }
