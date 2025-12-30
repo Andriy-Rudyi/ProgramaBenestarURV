@@ -76,6 +76,20 @@ public class LlistaValoracions {
         numValoracions++;
     }
 
+    public boolean teValoracioDeUsuari(Usuari usuari) {
+        for(int i = 0; i < numValoracions; i++){
+            if (usuari.equals(llistaUsuaris[i])) return true;
+        }
+        return false;
+    }
+
+    public int getValoracioDeUsuari(Usuari usuari) {
+        for(int i = 0; i < numValoracions; i++){
+            if (usuari.equals(llistaUsuaris[i])) return valoracions[i];
+        }
+        return -1; // No té valoració
+    }
+
     public LlistaValoracions copia() {
         LlistaValoracions copia = new LlistaValoracions(llistaUsuaris.length);
         copia.numValoracions = numValoracions;

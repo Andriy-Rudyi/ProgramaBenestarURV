@@ -71,6 +71,9 @@ public class App {
                 case 17:
                     opcio17();
                     break;
+                case 18:
+                    opcio18();
+                    break;
                 case 21:
                     opcio21();
                     break;
@@ -484,6 +487,33 @@ public class App {
             System.out.println("MITJANA DE VALORACIONS DE " + activitatsAcabades[i].getNom() + ":\n" + 
             activitatsAcabades[i].getLlistaValoracions().getMitjanaValoracions());
         }
+    }
+
+    private static void opcio18(){
+        System.out.println("Introdueix l'àlies de l'usuari per veure les seves valoracions:");
+        String alies = teclat.nextLine();
+        Usuari usuari = baseDadesUsuaris.buscar(alies);
+
+        if (usuari!= null) {
+            System.out.println("Valoracions fetes per l'usuari " + alies + ":\n");
+            boolean teValoracions = false;
+            Activitat[] totesLesActivitats = llistaActivitats.obtenirTotes();
+            for (Activitat activitat : totesLesActivitats) {
+                if (activitat.getLlistaValoracions().teValoracioDeUsuari(usuari)) { 
+                    int valoracio = activitat.getLlistaValoracions().getValoracioDeUsuari(usuari);
+                    System.out.println("- " + activitat.getNom() + ": " + valoracio + " estrelles");
+                    teValoracions = true;
+                }
+            }
+
+            if (!teValoracions) {
+                System.out.println("No ha fet cap valoració encara.");
+            }
+
+        } else {
+            System.out.println("Error: No existeix cap usuari amb l'àlies " + alies);
+        }
+
     }
 
     private static void opcio21(){
