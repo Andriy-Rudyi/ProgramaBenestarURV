@@ -176,6 +176,11 @@ public class LlistaUsuaris {
      */
     public int getNumUsuaris() { return numUsuaris; }
     
+    public Usuari getUsuari(int index) {
+        if (index < 0 || index >= numUsuaris) return null;
+        return llista[index];
+    }
+
     /**
      * Comprova si la llista està buida
      * @return true si la llista està buida, false en cas contrari

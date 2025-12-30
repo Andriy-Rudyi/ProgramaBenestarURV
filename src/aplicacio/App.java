@@ -77,6 +77,9 @@ public class App {
                 case 19:
                     opcio19();
                     break;
+                case 20:
+                    opcio20();
+                    break;
                 case 21:
                     opcio21();
                     break;
@@ -541,6 +544,37 @@ public class App {
             System.out.println("La mitjana de valoracions per al col·lectiu " + colectiu + " és: " + mitjana);
         } else {
             System.out.println("No hi ha valoracions per al col·lectiu " + colectiu);
+        }
+    }
+
+    private static void opcio20(){
+        System.out.println("Introdueix el nom del col·lectiu (Estudiants / PDI / PTGAS):");
+        String colectiu = teclat.nextLine();
+        Usuari usuariMesActiu = null;
+        int maxInscripcions = 0;
+
+        for (int i = 0; i < baseDadesUsuaris.getNumUsuaris(); i++) {
+            Usuari usuari = baseDadesUsuaris.getUsuari(i);
+            if (usuari.getColectiu().equalsIgnoreCase(colectiu)) {
+                int comptadorInscripcions = 0;
+                Activitat[] totesLesActivitats = llistaActivitats.obtenirTotes();
+                for (Activitat activitat : totesLesActivitats) {
+                    if (activitat.teUsuariInscrit(usuari.getAlies())) {
+                        comptadorInscripcions++;
+                    }
+                }
+                if (comptadorInscripcions > maxInscripcions) {
+                    maxInscripcions = comptadorInscripcions;
+                    usuariMesActiu = usuari;
+                }
+            }
+        }
+
+        if (usuariMesActiu != null) {
+            System.out.println("L'usuari més actiu del col·lectiu " + colectiu + " és " + 
+                usuariMesActiu.getAlies() + " amb " + maxInscripcions + " inscripcions.");
+        } else {
+            System.out.println("No s'han trobat usuaris per al col·lectiu " + colectiu);
         }
     }
 
