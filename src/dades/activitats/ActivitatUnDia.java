@@ -72,7 +72,7 @@ public class ActivitatUnDia extends Activitat {
         
         ActivitatUnDia copia = new ActivitatUnDia(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                    limitPlaces, preu, data, horari, ciutat);
-        copia.setNumInscripcions(this.numInscripcions);
+        //TODO FALTA COPIA LES LLISTES D'INSCRITS
         return copia;
     }
 }

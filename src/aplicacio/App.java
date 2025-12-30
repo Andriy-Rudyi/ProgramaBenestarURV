@@ -109,22 +109,8 @@ public class App {
     }
 
     private static void opcio1(){  
-        System.out.println("Introdueix la data d'avui, en el seguent format DD MM YYYY:");
-        int dia, mes, any;
-        boolean correcte = false;
-        while(!correcte){
-            try {
-                dia = teclat.nextInt();
-                mes = teclat.nextInt();
-                any = teclat.nextInt();
-                avui.setData(dia, mes, any);
-                correcte = true;
-            } catch (NumberFormatException e) {
-                System.out.println("S'ha d'entrar la data en nombres enters" + e);
-            } catch (DataIncorrectaExcepction e){
-                System.out.println(e);
-            }
-        }
+        System.out.println("Introdueix la data d'avui:");
+        avui = llegirData();
     }
 
     private static void opcio2(){
@@ -177,7 +163,7 @@ public class App {
     }
     private static void opcio9(){
         System.out.println("Introdueix l'àlies de l'usuari per veure les seves activitats:");
-        String alies = teclat.next();
+        String alies = teclat.nextLine();
         Usuari usuari = baseDadesUsuaris.buscar(alies);
 
         if (usuari!= null) {
@@ -185,7 +171,7 @@ public class App {
         boolean teInscripcions = false;
         Activitat[] totesLesActivitats = llistaActivitats.obtenirTotes();
         for (Activitat activitat : totesLesActivitats) {
-            if (activitat.HiHaUsuariInscrit(alies)) { // NOU Metode creat a llista inscripcions
+            if (activitat.teUsuariInscrit(alies)) { // NOU Metode creat a llista inscripcions
                 System.out.println("- " + activitat.getNom() + " (" + activitat.getTipus() + ")");
                 teInscripcions = true;
             }
@@ -205,16 +191,15 @@ public class App {
     private static void opcio10(){
         System.out.println("--- INSCRIPCIÓ A UNA ACTIVITAT ---");
         System.out.print("Introdueix l'àlies de l'usuari: ");
-        String aliesInscripcio = teclat.next();
-        teclat.nextLine(); // Netejar buffer
+        String aliesInscripcio = teclat.nextLine();
         System.out.print("Introdueix el nom de l'activitat: ");
         String nomActivitat = teclat.nextLine();
 
         Usuari usuariInscripcio = baseDadesUsuaris.buscar(aliesInscripcio); 
         Activitat activitatInscripcio = llistaActivitats.buscar(nomActivitat); 
 
- 
-        if (usuariInscripcio != null && activitatInscripcio != null) {
+        if (usuariInscripcio == null) usuariInscripcio = registrarUsuari(aliesInscripcio);
+        if (activitatInscripcio != null) {
             if (activitatInscripcio.estaEnPeriodeInscripcio(avui)) { 
                 if (activitatInscripcio.esPerCollectiu(usuariInscripcio.getColectiu())) { //
                     try {
@@ -223,7 +208,6 @@ public class App {
                     int inscritsAbans = llista.getNumInscrits(); 
                     llista.afegir(usuariInscripcio); 
                     if (llista.getNumInscrits() > inscritsAbans) {
-                        activitatInscripcio.incrementarInscripcions(); 
                         System.out.println("Usuari inscrit oficialment.");
                     } 
                     else {
@@ -249,7 +233,6 @@ public class App {
 
     private static void opcio11(){
         System.out.print("Nom de l'activitat: ");
-        teclat.nextLine(); // Netejar buffer
         Activitat act = llistaActivitats.buscar(teclat.nextLine()); 
 
         if (act != null) {
@@ -276,8 +259,7 @@ public class App {
         System.out.println("--- BAIXA D'UNA ACTIVITAT ---");
 
         System.out.println("Introdueix l'àlies de l'usuari a eliminar: ");
-        String aliesBaixa = teclat.next();
-        teclat.nextLine();
+        String aliesBaixa = teclat.nextLine();
         System.out.println("Introdueix el nom de l'activitat: ");
         String nomActBaixa = teclat.nextLine();
 
@@ -292,8 +274,6 @@ public class App {
             int inscritsAbans = llista.getNumInscrits(); 
             boolean teniaEspera = (llista.getLlistaEspera() != null && !llista.getLlistaEspera().esBuida());
             llista.eliminar(aliesBaixa);
-            
-            activitatBaixa.setNumInscripcions(llista.getNumInscrits()); 
 
             int inscritsDespres = llista.getNumInscrits();
             
@@ -474,15 +454,15 @@ public class App {
     
     public static void opcio16(){
         System.out.println("Introdueix el nom de l'activitat a valorar:");
-        String nomActivitat = teclat.next();
+        String nomActivitat = teclat.nextLine();
         Activitat activitat = llistaActivitats.buscar(nomActivitat);
         
         System.out.println("Introdueix el nom de l'usuari que valora:");
-        String nomUsuari = teclat.next();
+        String nomUsuari = teclat.nextLine();
         Usuari usuari = baseDadesUsuaris.buscar(nomUsuari); // restore lookup
         
         System.out.println("Introdueix la valoració (1-10 estrelles):");
-        int valoracio = teclat.nextInt();
+        int valoracio = Integer.parseInt(teclat.nextLine());
         
         if (activitat != null && usuari != null && activitat.haAcabat(avui) 
             && activitat.teUsuariInscrit(usuari.getAlies())){
@@ -543,5 +523,75 @@ public class App {
             }*/ 
         }
         return data;
+    }
+
+    private static Usuari registrarUsuari(String nom){
+        boolean correcte = false;
+        System.out.println("Usuari no trobat. Començant registre...");
+        Usuari usuari = null;
+        while (!correcte) {
+            System.out.println("Tria el numero del teu col·lectiu:\n");
+            System.out.println("1. Estudiant"); 
+            System.out.println("2. PDI"); 
+            System.out.println("3. PTGAS");
+            int colectiu = Integer.parseInt(teclat.nextLine());
+            String adreca;
+            switch (colectiu) {
+                case 1:
+                    try {
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        String ensenyament;
+                        int anyInici;
+                        System.out.println("Introdueix el teu ensenyament");
+                        ensenyament = teclat.nextLine();
+                        System.out.println("Introdueix el any d'inici del teu ensenyament");
+                        anyInici = Integer.parseInt(teclat.nextLine());
+                        usuari = new Estudiant(nom, adreca, ensenyament, anyInici);
+                        baseDadesUsuaris.afegir(usuari);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                    break;
+                case 2:
+                    try {
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        String departament, campus;
+                        System.out.println("Introdueix el teu departament");
+                        departament = teclat.nextLine();
+                        System.out.println("Introdueix el teu campus");
+                        campus = teclat.nextLine();
+                        usuari = new Pdi(nom, adreca, departament, campus);
+                        baseDadesUsuaris.afegir(usuari);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                    break;
+                case 3:
+                    try {
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
+                        adreca = teclat.nextLine();
+                        String campus;
+                        System.out.println("Introdueix el teu campus");
+                        campus = teclat.nextLine();
+                        usuari = new Ptgas(nom, adreca, campus);
+                        baseDadesUsuaris.afegir(usuari);
+                        correcte = true;
+                    } catch (UsuariDuplicatException e) {
+                        System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
+                    }   //més excepcions
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+        return usuari;
+    
     }
 }
