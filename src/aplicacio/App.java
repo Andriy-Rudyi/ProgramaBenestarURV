@@ -74,6 +74,9 @@ public class App {
                 case 18:
                     opcio18();
                     break;
+                case 19:
+                    opcio19();
+                    break;
                 case 21:
                     opcio21();
                     break;
@@ -514,6 +517,31 @@ public class App {
             System.out.println("Error: No existeix cap usuari amb l'àlies " + alies);
         }
 
+    }
+
+    private static void opcio19(){
+        System.out.println("Introdueix el nom del col·lectiu (Estudiants / PDI / PTGAS):");
+        String colectiu = teclat.nextLine();
+        double sumaValoracions = 0;
+        int totalValoracions = 0;
+
+        Activitat[] totesLesActivitats = llistaActivitats.obtenirTotes();
+        for (Activitat activitat : totesLesActivitats) {
+            LlistaValoracions llistaValoracions = activitat.getLlistaValoracions();
+            for (int i = 0; i < llistaValoracions.getNumValoracions(); i++) {
+                Usuari usuari = llistaValoracions.getUsuari(i);
+                if (usuari.getColectiu().equalsIgnoreCase(colectiu)) {
+                    sumaValoracions += llistaValoracions.getValoracioDeUsuari(usuari);
+                    totalValoracions++;
+                }
+            }
+        }
+        if (totalValoracions > 0) {
+            double mitjana = sumaValoracions / totalValoracions;
+            System.out.println("La mitjana de valoracions per al col·lectiu " + colectiu + " és: " + mitjana);
+        } else {
+            System.out.println("No hi ha valoracions per al col·lectiu " + colectiu);
+        }
     }
 
     private static void opcio21(){

@@ -76,6 +76,11 @@ public class LlistaValoracions {
         numValoracions++;
     }
 
+    public Usuari getUsuari(int index) {
+        if (index < 0 || index >= numValoracions) return null;
+        return llistaUsuaris[index];
+    }
+
     public boolean teValoracioDeUsuari(Usuari usuari) {
         for(int i = 0; i < numValoracions; i++){
             if (usuari.equals(llistaUsuaris[i])) return true;
