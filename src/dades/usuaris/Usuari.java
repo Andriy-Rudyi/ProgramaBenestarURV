@@ -1,18 +1,20 @@
 package dades.usuaris;
 
-import dades.activitats.Activitat;
-import dades.activitats.LlistaActivitats;
-import dades.excepcions.ActivitatDuplicadaException;
+import java.io.Serializable;
 
 /**
  * Classe Pare Usuari
  * @author PROG4 - Tiago Amarelle Rodrigues
  */
 
-public abstract class Usuari {
+public abstract class Usuari implements Serializable{
     protected String alies;
     protected String adreca;
-    protected LlistaActivitats llistaActivitats = new LlistaActivitats();
+
+
+    public static final String ESTUDIANTS = "Estudiants";
+    public static final String PDI = "PDI";
+    public static final String PTGAS = "PTGAS";
 
     /**
      * Dominis de correu electrònic segons el col·lectiu
@@ -57,19 +59,13 @@ public abstract class Usuari {
         }
     }
 
-    public void afegirActivitat(Activitat activitat) throws ActivitatDuplicadaException{
-        llistaActivitats.afegir(activitat);
-    }
-
-    public LlistaActivitats getLlistaActivitats(){
-        return llistaActivitats;
-    }
-
     /**
      * Representació en format text de l'usuari
      * @return Cadena amb la informació de l'usuari
      */
     public abstract String toString();
+
+    public abstract String toCSV();
 
     /**
      * Compara si dos usuaris són iguals basant-se en el seu àlies
