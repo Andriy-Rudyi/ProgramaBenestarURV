@@ -1,5 +1,7 @@
 package dades.activitats;
 
+import java.io.Serializable;
+
 import dades.Data;
 import dades.excepcions.ActivitatDuplicadaException;
 
@@ -8,7 +10,7 @@ import dades.excepcions.ActivitatDuplicadaException;
  * @author PROG3 - Andriy Rudyy
  */
 
-public class LlistaActivitats {
+public class LlistaActivitats implements Serializable{
     private Activitat[] llista;
     private int numActivitats;
     private static final int MIDA_INICIAL = 50;

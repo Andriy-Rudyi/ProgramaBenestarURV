@@ -16,7 +16,7 @@ public class Ptgas extends Usuari {
      */
     public Ptgas(String alies, String adreca, String campus){
         this.alies = alies;
-        this.adreca = adreca;
+        this.adreca = adreca.split("@")[0];
         this.campus = campus;
     }
     
@@ -35,6 +35,11 @@ public class Ptgas extends Usuari {
     public String toString() {
         return "PTGAS --- Alies: " + alies + ", Adreça: " + getCorreuComplet() + 
                ", Campus: " + campus + "\n";
+    }
+
+    @Override
+    public String toCSV() {
+        return (PTGAS + ";" + alies + ";" + getCorreuComplet() + ";" + campus + "\n");
     }
     
     @Override

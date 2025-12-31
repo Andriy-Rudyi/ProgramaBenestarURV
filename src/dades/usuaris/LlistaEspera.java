@@ -1,11 +1,13 @@
 package dades.usuaris;
 
+import java.io.Serializable;
+
 /**
  * Llista d'espera per a una activitat
  * @author PROG4 - Tiago Amarelle Rodrigues
  */
 
-public class LlistaEspera {
+public class LlistaEspera implements Serializable{
     Usuari[] llista;
     int numUsuaris;
     private static final int MAX_ESPERA = 10;

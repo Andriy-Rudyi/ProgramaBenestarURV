@@ -1,4 +1,12 @@
 package aplicacio;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 import dades.activitats.*;
@@ -15,6 +23,8 @@ public class App {
     static boolean correcte = false; //pels try catch
     public static void main(String[] args){
         int opcio;
+        llistaActivitats = carregarLlistaActivitats("activitats.bin");
+        baseDadesUsuaris = carregarBaseDadesUsuaris("usuaris.csv");
         
         do {
             mostrarMenuActivitats();
@@ -86,8 +96,26 @@ public class App {
                 default:
                     break;
             }
+            if (opcio != 22){
+                System.out.println("Prèm Enter per a continuar...");
+                teclat.nextLine();
+            }
         } while (opcio != 22);
 
+        System.out.println("Vols sobreescriure les dades actuals per les anteriors? Y/N");
+        correcte = false;
+        while(!correcte){
+            String resposta = teclat.next();
+            if(resposta.equals("Y")){ 
+                guardarLlistaActivitats("activitats.bin");
+                guardarBaseDadesUsuaris("usuaris.csv");
+                correcte = true;
+                System.out.println("Fitxer guardat");
+            } else if (!resposta.equals("N")){
+                System.out.println("Resposta incorrecta. Respon Y o N");
+            } else correcte = true;
+        }
+        System.out.println("Tancant programa...");
         teclat.close();
     }
 
@@ -686,5 +714,68 @@ public class App {
         }
         return usuari;
     
+    }
+
+    private static void guardarLlistaActivitats(String nomFitxer) {
+        try{ 
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomFitxer)); 
+            oos.writeObject(llistaActivitats); // Guarda la lista completa
+            oos.close();
+        } catch (IOException e) {
+            System.err.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    private static void guardarBaseDadesUsuaris(String nomFitxer) {
+        try{ 
+            BufferedWriter w = new BufferedWriter(new FileWriter(nomFitxer));
+            for (int i = 0; i < baseDadesUsuaris.getNumUsuaris(); i++){
+                w.append(baseDadesUsuaris.getUsuari(i).toCSV());
+            }
+            w.close();
+        } catch (IOException e) {
+            System.err.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    public static LlistaActivitats carregarLlistaActivitats(String nomFitxer) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFitxer))) {
+            return (LlistaActivitats) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No s'ha trobat el fitxer d'activitats, es crearà una llista buida." + e);
+            return new LlistaActivitats();
+        }
+    }
+
+    public static LlistaUsuaris carregarBaseDadesUsuaris(String nomFitxer) {
+        try{ 
+            Scanner f = new Scanner(new File(nomFitxer));
+            f.useDelimiter(";");
+            LlistaUsuaris llistaUsuaris = new LlistaUsuaris();
+            String[] linia;
+            String tipusUsuari;
+            while (f.hasNext()){
+                try {
+                    linia = f.nextLine().split(";");
+                    tipusUsuari = linia[0];
+                    if (tipusUsuari.equals(Usuari.ESTUDIANTS)){
+                        llistaUsuaris.afegir(new Estudiant(linia[1], linia[2], linia[3], Integer.parseInt(linia[4])));
+                    } else if (tipusUsuari.equals(Usuari.PDI)){
+                        llistaUsuaris.afegir(new Pdi(linia[1], linia[2], linia[3], linia[4]));
+                    } else if (tipusUsuari.equals(Usuari.PTGAS)){
+                        llistaUsuaris.afegir(new Ptgas(linia[1], linia[2], linia[3]));
+                    } else{
+                        System.out.println("Error afegint usuari.");
+                    }
+                } catch (UsuariDuplicatException e) {
+                    System.out.println("Usuari duplicat en fitxer. " + e.getMessage());
+                }
+            }
+            f.close();
+            return llistaUsuaris;
+        } catch (IOException e) {
+            System.out.println("Error llegint base de usuaris." + e);
+            return new LlistaUsuaris();
+        }
     }
 }

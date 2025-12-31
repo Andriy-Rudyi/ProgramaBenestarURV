@@ -17,7 +17,7 @@ public class Estudiant extends Usuari {
      */
     public Estudiant(String alies, String adreca, String ensenyament, int anyInici){
         this.alies = alies;
-        this.adreca = adreca;
+        this.adreca = adreca.split("@")[0];
         this.ensenyament = ensenyament;
         this.anyInici = anyInici;
     }
@@ -43,6 +43,11 @@ public class Estudiant extends Usuari {
     public String toString() {
         return "ESTUDIANT --- Alies: " + alies + ", Adreça: " + getCorreuComplet() + 
                ", Ensenyament: " + ensenyament + ", Any inici: " + anyInici + "\n";
+    }
+
+    @Override
+    public String toCSV() {
+        return (ESTUDIANTS + ";" + alies + ";" + getCorreuComplet() + ";" + ensenyament + ";" + anyInici + "\n");
     }
     
     @Override

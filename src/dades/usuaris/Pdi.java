@@ -18,7 +18,7 @@ public class Pdi extends Usuari{
      */
     public Pdi(String alies, String adreca, String departament, String campus){
         this.alies = alies;
-        this.adreca = adreca;
+        this.adreca = adreca.split("@")[0];
         this.departament = departament;
         this.campus = campus;
     }
@@ -43,6 +43,11 @@ public class Pdi extends Usuari{
     public String toString() {
         return "PDI --- Alies: " + alies + ", Adreça: " + getCorreuComplet() + 
                ", Departament: " + departament + ", Campus: " + campus + "\n";
+    }
+
+    @Override
+    public String toCSV() {
+        return (PDI + ";" + alies + ";" + getCorreuComplet() + ";" + departament + ";" + campus + "\n");
     }
 
     @Override

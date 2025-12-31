@@ -1,5 +1,7 @@
 package dades.activitats;
 
+import java.io.Serializable;
+
 import dades.Data;
 import dades.excepcions.ActivitatDuplicadaException;
 import dades.excepcions.UsuariDuplicatException;
@@ -11,7 +13,7 @@ import dades.usuaris.*;
  * Conté els atributs i mètodes comuns a tots els tipus d'activitats.
  * @author PROG1 - Pau Font
  */
-public abstract class Activitat {
+public abstract class Activitat implements Serializable{
     
     public static final String COLECTIU_PDI = "PDI";
     public static final String COLECTIU_PTGAS = "PTGAS";
@@ -116,7 +118,7 @@ public abstract class Activitat {
     }
 
     public void inscriureUsuari(Usuari usuari) throws UsuariDuplicatException, ActivitatDuplicadaException{
-        if (llistaInscripcions.afegir(usuari)) usuari.afegirActivitat(this);
+        llistaInscripcions.afegir(usuari);
     }
     
     /**

@@ -2,13 +2,16 @@ package dades.inscripcions;
 import dades.usuaris.LlistaEspera;
 import dades.usuaris.LlistaUsuaris;
 import dades.usuaris.Usuari;
+
+import java.io.Serializable;
+
 import dades.excepcions.UsuariDuplicatException;
 
 /**
  * Llista d'inscripcions que s'inclourà dins de cada activitat. 
  * @author PROG4 - Tiago Amarelle Rodrigues
  */
-public class LlistaInscripcions{
+public class LlistaInscripcions implements Serializable{
     private LlistaUsuaris inscrits;
     private LlistaEspera espera;
     int numPlaces;

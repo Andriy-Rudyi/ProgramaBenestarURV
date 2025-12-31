@@ -1,12 +1,14 @@
 package dades.usuaris;
 
+import java.io.Serializable;
+
 import dades.excepcions.UsuariDuplicatException;
 
 /**
  * Llista d'usuaris ordenada per alias per facilitar les cerques
  * @author PROG1 - Pau Font
  */
-public class LlistaUsuaris {
+public class LlistaUsuaris implements Serializable{
     private Usuari[] llista;
     private int numUsuaris;
     private static final int MIDA_INICIAL = 50;

@@ -1,5 +1,7 @@
 package dades;
 
+import java.io.Serializable;
+
 import dades.excepcions.DataIncorrectaExcepction;
 
 /**
@@ -7,7 +9,7 @@ import dades.excepcions.DataIncorrectaExcepction;
  * @author Professores de programació.
  */
 
-public class Data {
+public class Data implements Serializable{
     private int dia;		//atributs, sempre privats
     private int mes;
     private int any;

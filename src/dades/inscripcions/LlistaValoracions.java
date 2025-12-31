@@ -1,9 +1,11 @@
 package dades.inscripcions;
 
+import java.io.Serializable;
+
 import dades.excepcions.UsuariDuplicatException;
 import dades.usuaris.Usuari;
 
-public class LlistaValoracions {
+public class LlistaValoracions implements Serializable{
     Usuari[] llistaUsuaris;     /*no usem LlistaUsuaris perquè aquí no volem que les ordeni per alies
                                 ja que si no, els índex de LlistaUsuaris no pertanyeran als de int[] */ 
     int[] valoracions;
