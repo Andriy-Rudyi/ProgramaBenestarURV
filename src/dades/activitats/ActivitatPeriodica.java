@@ -36,7 +36,7 @@ public class ActivitatPeriodica extends Activitat {
                               String horari, Data dataInici, 
                               int numSetmanes, String nomCentre, String ciutat) {
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu);
-        this.diaSetmana = calcularDiaSetmana(dataInici);
+        this.diaSetmana = dataInici.calcularDiaSetmana();
         this.horari = horari;
         this.dataInici = dataInici;
         this.numSetmanes = numSetmanes;
@@ -52,27 +52,6 @@ public class ActivitatPeriodica extends Activitat {
     public String getNomCentre() { return nomCentre; }
     public String getCiutat() { return ciutat; }
     
-    /**
-     * Calcula el dia de la setmana d'una data (1=Dilluns, ..., 7=Diumenge)
-     * Algorisme de Zeller modificat
-     */
-    private int calcularDiaSetmana(Data data) {
-        int d = data.getDia();
-        int m = data.getMes();
-        int a = data.getAny();
-        
-        if (m < 3) {
-            m += 12;
-            a--;
-        }
-        int k = a % 100;
-        int j = a / 100;
-        int h = (d + (13 * (m + 1)) / 5 + k + k / 4 + j / 4 - 2 * j) % 7;
-        
-        // Convertir: 0=Dissabte, 1=Diumenge, 2=Dilluns,...
-        int diaSetmana = ((h + 5) % 7) + 1;
-        return diaSetmana;
-    }
     
     // substiuït pel metode getDataFi()
     //
@@ -103,18 +82,6 @@ public class ActivitatPeriodica extends Activitat {
         }
         return dataFi;
     }
-
-    /**
-     * Retorna el nom del dia de la setmana
-     * @return Nom del dia
-     */
-    public String getNomDiaSetmana() {
-        String[] dies = {"", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"};
-        if (diaSetmana >= 1 && diaSetmana <= 7) {
-            return dies[diaSetmana];
-        }
-        return "Desconegut";
-    }
     
     @Override
     public boolean estaActiva(Data dataAvui) {
@@ -125,7 +92,7 @@ public class ActivitatPeriodica extends Activitat {
     @Override
     public boolean teClasseAvui(Data dataAvui) {
         if (!estaActiva(dataAvui)) return false;
-        return calcularDiaSetmana(dataAvui) == diaSetmana;
+        return dataAvui.calcularDiaSetmana() == diaSetmana;
     }
     
     @Override
@@ -141,7 +108,7 @@ public class ActivitatPeriodica extends Activitat {
     
     @Override
     public String getInformacioEspecifica() {
-        return "Dia: " + getNomDiaSetmana() + "\n" +
+        return "Dia: " + dataInici.getNomDiaSetmana() + "\n" +
                "Horari: " + horari + "\n" +
                "Inici: " + dataInici + "\n" +
                "Durada: " + numSetmanes + " setmanes\n" +
