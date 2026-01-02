@@ -189,7 +189,6 @@ public class App {
                 } catch (ActivitatDuplicadaException e) {
                     System.out.println("Error inesperat. " + e);
                 }
-                
             } else if(num.equals("2")){
                 System.out.println("De quin col·lectiu vols veure els usuaris?");
                 System.out.println("1. Tots");
@@ -404,12 +403,61 @@ public class App {
             nom = teclat.nextLine();
             System.out.println("Colectius (respon 0 per false, 1 per true)"); 
             System.out.println("És per PDI?");
-            collectius[0] = Integer.parseInt(teclat.nextLine()) == 1;
-            System.out.println("És per PTGAS?");
-            collectius[1] = Integer.parseInt(teclat.nextLine()) == 1;
-            System.out.println("És per Estudiants?");
-            collectius[2] = Integer.parseInt(teclat.nextLine()) == 1;
+            boolean validInput = false;
+            while (!validInput) {
+                try {
+                    int input = Integer.parseInt(teclat.nextLine());
+                    if (input == 0) {
+                        collectius[0] = false;
+                        validInput = true;
+                    } else if (input == 1) {
+                        collectius[0] = true;
+                        validInput = true;
+                    } else {
+                        System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            }
             
+            System.out.println("És per PTGAS?");
+            validInput = false;
+            while (!validInput) {
+                try {
+                    int input = Integer.parseInt(teclat.nextLine());
+                    if (input == 0) {
+                        collectius[1] = false;
+                        validInput = true;
+                    } else if (input == 1) {
+                        collectius[1] = true;
+                        validInput = true;
+                    } else {
+                        System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            }
+            
+            System.out.println("És per Estudiants?");
+            validInput = false;
+            while (!validInput) {
+                try {
+                    int input = Integer.parseInt(teclat.nextLine());
+                    if (input == 0) {
+                        collectius[2] = false;
+                        validInput = true;
+                    } else if (input == 1) {
+                        collectius[2] = true;
+                        validInput = true;
+                    } else {
+                        System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            }
             System.out.println("Inici d'inscripcions?");
             dataIniciInscripcio = llegirData();
             System.out.println("Fi d'inscripcions?");
@@ -457,11 +505,61 @@ public class App {
             nom = teclat.nextLine();
             System.out.println("Colectius (respon 0 per false, 1 per true)"); 
             System.out.println("És per PDI?");
-            collectius[0] = Integer.parseInt(teclat.nextLine()) == 1;
+            boolean validInput = false;
+            while (!validInput) {
+                try {
+                    int input = Integer.parseInt(teclat.nextLine());
+                    if (input == 0) {
+                        collectius[0] = false;
+                        validInput = true;
+                    } else if (input == 1) {
+                        collectius[0] = true;
+                        validInput = true;
+                    } else {
+                        System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            }
+            
             System.out.println("És per PTGAS?");
-            collectius[1] = Integer.parseInt(teclat.nextLine()) == 1;
+            validInput = false;
+            while (!validInput) {
+                try {
+                    int input = Integer.parseInt(teclat.nextLine());
+                    if (input == 0) {
+                        collectius[1] = false;
+                        validInput = true;
+                    } else if (input == 1) {
+                        collectius[1] = true;
+                        validInput = true;
+                    } else {
+                        System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            }
+            
             System.out.println("És per Estudiants?");
-            collectius[2] = Integer.parseInt(teclat.nextLine()) == 1;
+            validInput = false;
+            while (!validInput) {
+                try {
+                    int input = Integer.parseInt(teclat.nextLine());
+                    if (input == 0) {
+                        collectius[2] = false;
+                        validInput = true;
+                    } else if (input == 1) {
+                        collectius[2] = true;
+                        validInput = true;
+                    } else {
+                        System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            }
             
             System.out.println("Inici d'inscripcions?");
             dataIniciInscripcio = llegirData();
@@ -513,17 +611,61 @@ public class App {
         nom = teclat.nextLine();
         System.out.println("Colectius (respon 0 per false, 1 per true)"); 
         System.out.println("És per PDI?");
-        collectius[0] = Integer.parseInt(teclat.nextLine()) == 1;
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                int input = Integer.parseInt(teclat.nextLine());
+                if (input == 0) {
+                    collectius[0] = false;
+                    validInput = true;
+                } else if (input == 1) {
+                    collectius[0] = true;
+                    validInput = true;
+                } else {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada incorrecta. Respon 0 o 1.");
+            }
+        }
+        
         System.out.println("És per PTGAS?");
-        collectius[1] = Integer.parseInt(teclat.nextLine()) == 1;
+        validInput = false;
+        while (!validInput) {
+            try {
+                int input = Integer.parseInt(teclat.nextLine());
+                if (input == 0) {
+                    collectius[1] = false;
+                    validInput = true;
+                } else if (input == 1) {
+                    collectius[1] = true;
+                    validInput = true;
+                } else {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada incorrecta. Respon 0 o 1.");
+            }
+        }
+        
         System.out.println("És per Estudiants?");
-        collectius[2] = Integer.parseInt(teclat.nextLine()) == 1;
-        
-        System.out.println("Inici d'inscripcions?");
-        dataIniciInscripcio = llegirData();
-        System.out.println("Fi d'inscripcions?");
-        dataFiInscripcio = llegirData();
-        
+        validInput = false;
+        while (!validInput) {
+            try {
+                int input = Integer.parseInt(teclat.nextLine());
+                if (input == 0) {
+                    collectius[2] = false;
+                    validInput = true;
+                } else if (input == 1) {
+                    collectius[2] = true;
+                    validInput = true;
+                } else {
+                    System.out.println("Entrada incorrecta. Respon 0 o 1.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada incorrecta. Respon 0 o 1.");
+            }
+        }
         System.out.println("Quan comença l'activitat?");
         dataActivitat = llegirData();
         
@@ -559,9 +701,27 @@ public class App {
                     try {
                         Usuari usuari = activitat.getLlistaInscripcions().getLlistaInscrits().buscar(nomUsuari);
                         System.out.println("Introdueix la valoració (1-10 estrelles):");
-                        int valoracio = Integer.parseInt(teclat.nextLine());
-                        activitat.afegirValoracio(avui, usuari, valoracio);
-                        System.out.println("Valoració afegida.");
+                        int valoracio;
+                        do {
+                            correcte = false;
+                            while (!correcte) {
+                                try {
+                                    valoracio = Integer.parseInt(teclat.nextLine());
+                                    if (valoracio < 1 || valoracio > 10) {
+                                        System.out.println("Valoració invàlida. Ha de ser entre 1 i 10. Torna-ho a intentar:");
+                                    } else {
+                                        correcte = true;
+                                        activitat.afegirValoracio(avui, usuari, valoracio);
+                                        System.out.println("Valoració afegida.");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Entrada incorrecta. La valoració ha de ser un nombre entre 1 i 10. Torna-ho a intentar:");
+                                }
+                            }
+                        } while (!correcte);
+                        
+                        // activitat.afegirValoracio(avui, usuari, valoracio);
+                        // System.out.println("Valoració afegida.");
                     } catch (UsuariDuplicatException e) {
                         System.out.println("L'usuari ja ha valorat aquesta activitat: " + e.getMessage());
                     }
@@ -664,12 +824,14 @@ public class App {
     }
 
     private static void opcio21(){
-        Activitat[] noPeriodeInscripcio = llistaActivitats.obtenirEnPeriodeInscripcio(avui);
+        Activitat[] noPeriodeInscripcio = llistaActivitats.obtenirEnNoPeriodeInscripcio(avui);
         for (int i = 0; i < noPeriodeInscripcio.length; i++){
             if (noPeriodeInscripcio[i] instanceof ActivitatOnline && noPeriodeInscripcio[i].getLlistaInscripcions().getNumInscrits() < 20){
                 llistaActivitats.eliminar(noPeriodeInscripcio[i].getNom());
+                System.out.println("S'ha eliminat l'activitat online " + noPeriodeInscripcio[i].getNom() + " per tenir menys de 20 inscrits.");
             } else if (noPeriodeInscripcio[i].getPercentatgeOcupacio() < 10){
                 llistaActivitats.eliminar(noPeriodeInscripcio[i].getNom());
+                System.out.println("S'ha eliminat l'activitat " + noPeriodeInscripcio[i].getNom() + " per tenir menys del 10% d'ocupació.");
             }
         }
     }
@@ -712,7 +874,20 @@ public class App {
             System.out.println("1. Estudiant"); 
             System.out.println("2. PDI"); 
             System.out.println("3. PTGAS");
-            int colectiu = Integer.parseInt(teclat.nextLine());
+            int colectiu;
+            while (true) {
+                String input = teclat.nextLine();
+                try {
+                    colectiu = Integer.parseInt(input);
+                    if (colectiu >= 1 && colectiu <= 3) {
+                        break; // Entrada vàlida, sortir del bucle
+                    } else {
+                        System.out.println("Entrada incorrecta. Torna-ho a intentar.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta. Torna-ho a intentar.");
+                }
+            }
             String adreca;
             switch (colectiu) {
                 case 1:
