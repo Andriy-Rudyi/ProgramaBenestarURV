@@ -66,7 +66,7 @@ public class ActivitatUnDia extends Activitat {
     }
     
     @Override
-    public Activitat copia() {
+    public ActivitatUnDia copia() {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         

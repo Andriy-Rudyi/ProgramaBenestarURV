@@ -150,7 +150,7 @@ public class ActivitatPeriodica extends Activitat {
     }
     
     @Override
-    public Activitat copia() {
+    public ActivitatPeriodica copia() {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
