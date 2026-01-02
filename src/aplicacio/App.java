@@ -846,10 +846,14 @@ public class App {
                 String[] parts = teclat.nextLine().split(" ");
 
                 if (parts.length != 3)
-                throw new IllegalArgumentException("Format incorrecte");
+                throw new IllegalArgumentException("Format correcte: DD MM YYYY");
 
                 dia = Integer.parseInt(parts[0]);
-                mes = Integer.parseInt(parts[1]);
+                if (parts[1].equals("09")) mes = 9;
+                else if (parts[1].equals("10")) mes = 10;
+                else if (parts[1].equals("11")) mes = 11;
+                else if (parts[1].equals("12")) mes = 12;
+                else throw new IllegalArgumentException("Mes incorrecte. Només de setembre a desembre (9-12).");
                 any = Integer.parseInt(parts[2]);
 
                 data = new Data(dia, mes, any);
@@ -857,7 +861,7 @@ public class App {
             } catch (InputMismatchException e) {
                 System.out.println("S'ha d'entrar la data en nombres enters. " + e);
             } catch (IllegalArgumentException e) {
-                System.out.println("Format correcte: DD MM YYYY");
+                System.out.println(e.getMessage());
             } catch (DataIncorrectaExcepction e){
                 System.out.println("Data incorrecta, torna a intentar-ho. " + e);         
             }
