@@ -33,17 +33,12 @@ public class Data implements Serializable{
 	 * @param mes
 	 * @param any
 	 */
-    public Data(int dia, int mes, int any) {
+    public Data(int dia, int mes, int any) throws DataIncorrectaExcepction{
         if (esDataCorrecta(dia, mes, any)) { // ens asegurem que és una data valida
 			this.dia = dia;
 			this.mes = mes;
 			this.any = any;
-		} else { // TODO eliminar això i posar excepció
-			System.out.println("Data incorrecta. " + new DataIncorrectaExcepction(dia, mes, any));
-			this.dia = 1;
-			this.mes = 1;
-			this.any = 2000;
-		}
+		} else throw new DataIncorrectaExcepction(dia, mes, any);
     }
 
 	
@@ -90,8 +85,13 @@ public class Data implements Serializable{
 	 * Mètode que calcula i retorna una instància amb el valor del dia següent
 	 * @return la data del dia seguent
 	 */
-    public Data diaSeguent() {
-        Data novaData= new Data(dia, mes, any);
+    public Data diaSeguent(){
+		Data novaData = null;
+		try {
+			novaData = new Data(dia, mes, any);
+		} catch (DataIncorrectaExcepction e) {
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+		}
 		if(novaData.dia == diesMes(novaData.mes, novaData.any)){
 			novaData.dia = 1;
 			if(novaData.mes != 12) novaData.mes = novaData.mes + 1;
@@ -112,7 +112,12 @@ public class Data implements Serializable{
 	 * @return la data del dia anterior
 	 */
 	public Data diaAnterior() {
-		Data novaData = new Data(dia, mes, any);
+		Data novaData = null;
+		try {
+			novaData = new Data(dia, mes, any);
+		} catch (DataIncorrectaExcepction e) {
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+		}
 		if(novaData.dia == 1){
 			if (novaData.mes == 1){
 				novaData.mes = 12;

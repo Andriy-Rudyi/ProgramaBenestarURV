@@ -23,13 +23,21 @@ public class App {
     static LlistaActivitats llistaActivitats = new LlistaActivitats();
     static boolean correcte = false; //pels try catch
     public static void main(String[] args){
-        int opcio;
+        int opcio = 0;
         llistaActivitats = carregarLlistaActivitats("activitats.bin");
         baseDadesUsuaris = carregarBaseDadesUsuaris("usuaris.csv");
-        
         do {
-            mostrarMenuActivitats();
-            opcio = Integer.parseInt(teclat.nextLine());
+            correcte = false;
+            while (!correcte) {
+                try {
+                    mostrarMenuActivitats();
+                    opcio = Integer.parseInt(teclat.nextLine());
+                    correcte = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada incorrecta, torna-ho a intentar." + e);
+                } 
+            }
+            
             switch (opcio) {
                 case 1:
                     opcio1(); 
@@ -95,9 +103,10 @@ public class App {
                     opcio21();
                     break;
                 default:
+                    System.out.println("Entrada incorrecta. Escriu un nombre entre 1 i 22.");
                     break;
             }
-            if (opcio != 22){
+            if (1 <= opcio && opcio <= 21 ){
                 System.out.println("Prèm Enter per a continuar...");
                 teclat.nextLine();
             }
@@ -173,8 +182,7 @@ public class App {
                     else if(num.equals("3")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_PERIODICA).toString();
                     else if(num.equals("4")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_ONLINE).toString();
                     else {
-                        System.out.println("Entrada incorrecta. Torna-ho a intentar.");
-                        correcte = false;  
+                        System.out.println("Entrada incorrecta. Torna-ho a intentar."); 
                     } 
                 } catch (ActivitatDuplicadaException e) {
                     System.out.println("Error inesperat. " + e);
@@ -193,13 +201,11 @@ public class App {
                 else if(num.equals("4")) imprimir = baseDadesUsuaris.obtenirPerColectiu(Usuari.COLECTIU_ESTUDIANTS).toString();
                 else {
                     System.out.println("Entrada incorrecta. Torna-ho a intentar.");
-                    correcte = false;  
                 }
             } else {
                 System.out.println("Entrada incorrecta. Torna-ho a intentar.");
-                correcte = false;  
             }
-        } while (!correcte);
+        } while (imprimir == null);
         System.out.println(imprimir);
     }
 
@@ -233,11 +239,13 @@ public class App {
     private static void opcio7(){
         System.out.println("Introdueix el nom de l'activitat a buscar:");
         String nomActivitat = teclat.nextLine();
-        System.out.println(llistaActivitats.buscar(nomActivitat));
+        if (llistaActivitats.buscar(nomActivitat) == null) System.out.println("Activitat no trobada.");
+        else System.out.println(llistaActivitats.buscar(nomActivitat));
     }
-
-        private static void opcio8(){
-        String alies = teclat.next();
+    
+    private static void opcio8(){
+        System.out.println("Introdueix el nom de l'usuari a buscar:");
+        String alies = teclat.nextLine();
         Usuari usuari= baseDadesUsuaris.buscar(alies);
 
         if (usuari!= null) {
@@ -684,12 +692,12 @@ public class App {
                 data = new Data(dia, mes, any);
                 correcte = true;
             } catch (InputMismatchException e) {
-                System.out.println("S'ha d'entrar la data en nombres enters" + e);
+                System.out.println("S'ha d'entrar la data en nombres enters. " + e);
             } catch (IllegalArgumentException e) {
                 System.out.println("Format correcte: DD MM YYYY");
-            } /*catch (DataIncorrectaExcepction e){
-                System.out.println(e);              TREURE COMENTARI QUAN DATA LLENCI EXCEPCIO EN EL CONSTRUCTOR
-            }*/ 
+            } catch (DataIncorrectaExcepction e){
+                System.out.println("Data incorrecta, torna a intentar-ho. " + e);         
+            }
         }
         return data;
     }

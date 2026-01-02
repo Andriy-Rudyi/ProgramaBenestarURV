@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.excepcions.DataIncorrectaExcepction;
 
 /**
  * Representa una activitat online (asíncrona, gratuïta i sense límit de places)
@@ -41,7 +42,12 @@ public class ActivitatOnline extends Activitat {
      * @return Data de fi (dataInici + periodeVisualitzacio dies)
      */
     public Data getDataFi() {
-        Data dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+        Data dataFi = null;
+		try {
+            dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+		} catch (DataIncorrectaExcepction e) {
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+		}
         for (int i = 0; i < periodeVisualitzacio; i++) {
             dataFi = dataFi.diaSeguent();
         }

@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.excepcions.DataIncorrectaExcepction;
 
 /**
  * Representa una activitat que es repeteix periòdicament cada setmana
@@ -91,7 +92,12 @@ public class ActivitatPeriodica extends Activitat {
      * @return Data de fi (dataInici + numSetmanes setmanes)
      */
     public Data getDataFi() {
-        Data dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+        Data dataFi = null;
+		try {
+            dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+		} catch (DataIncorrectaExcepction e) {
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+		}
         for (int i = 0; i < numSetmanes * 7; i++) {
             dataFi = dataFi.diaSeguent();
         }
