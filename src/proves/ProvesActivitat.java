@@ -2,11 +2,13 @@ package proves;
 
 import dades.Data;
 import dades.activitats.*;
+import dades.excepcions.DataIncorrectaExcepction;
 
 public class ProvesActivitat {
     public static void main(String[] args) {
-
-        provarActivitatOnline();
+        try {
+            provarActivitatOnline();
+        } catch (DataIncorrectaExcepction e) {}
         // provarActivitatUnDia();
         // provarActivitatPeriodica();
         
@@ -15,12 +17,14 @@ public class ProvesActivitat {
 
     }
 
-    public static void provarActivitatOnline() {
+    public static void provarActivitatOnline() throws DataIncorrectaExcepction{
         boolean[] collectiuEstudiants = new boolean []{false, false, true};
         
         ActivitatOnline online = new ActivitatOnline(
             "Classes de catala",
-            collectiuEstudiants, 
+            collectiuEstudiants,
+            
+
             new Data(2, 12, 2025), 
             new Data(11, 12, 2025),
             new Data(1, 1, 2026), 

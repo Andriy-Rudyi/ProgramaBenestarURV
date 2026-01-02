@@ -38,10 +38,10 @@ public class LlistaUsuaris implements Serializable{
      * @param usuari Usuari a afegir
      * @throws UsuariDuplicatException si l'usuari ja existeix
      */
-    public void afegir(Usuari usuari) throws UsuariDuplicatException {
+    public boolean afegir(Usuari usuari) throws UsuariDuplicatException {
         // null check
         if (usuari == null) {
-            return;
+            return false;
         }
         
         // Comprovar si ja existeix
@@ -68,6 +68,7 @@ public class LlistaUsuaris implements Serializable{
         // Inserir l'usuari
         llista[pos] = usuari.copia();
         numUsuaris++;
+        return true;
     }
     
     /**

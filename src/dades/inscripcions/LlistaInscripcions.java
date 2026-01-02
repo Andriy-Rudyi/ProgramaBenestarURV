@@ -36,11 +36,12 @@ public class LlistaInscripcions implements Serializable{
     }
 
     public boolean afegir(Usuari usuari) throws UsuariDuplicatException{
+        if (inscrits.buscar(usuari.getAlies()) != null ) // Per evitar inscriure a la llista d'espera si ja es troba a inscrits
+            throw new UsuariDuplicatException("L'usuari amb alias " + usuari.getAlies() + " ja existeix");
         if (usuari != null && (inscrits.getNumUsuaris() < numPlaces || numPlaces == 0)){
             inscrits.afegir(usuari);
             return true;
-        }
-        else if (!espera.estaPlena()){
+        } else if (!espera.estaPlena()){     
             espera.afegir(usuari);
             return true;
         } else {
@@ -48,11 +49,18 @@ public class LlistaInscripcions implements Serializable{
         }
     }
 
-    public void eliminar(String nom) throws UsuariDuplicatException{
+    public boolean eliminar(String nom){
         if (!inscrits.eliminar(nom)){ 
-            espera.eliminar(nom);
-            inscrits.afegir(espera.treurePrimer());
+            if (espera.eliminar(nom)) return true;
+            return false;
+        } else {
+            try {
+                if(inscrits.afegir(espera.treurePrimer())) return true;
+            } catch (UsuariDuplicatException e) {
+                throw new IllegalStateException("Error intern, s'intenta passar usuari a inscrits quan ja s'hi trobava.");
+            }
         }
+        return false;
     }
 
     public int getNumInscrits(){
@@ -83,6 +91,13 @@ public class LlistaInscripcions implements Serializable{
 
     public LlistaEspera getLlistaEspera() {
     return espera;
+    }
+
+    public LlistaInscripcions copia() {
+        LlistaInscripcions duplicat = new LlistaInscripcions(numPlaces);
+        duplicat.inscrits = inscrits.copia();
+        if (numPlaces != 0) duplicat.espera = espera.copia();
+        return duplicat;
     }
 
 }

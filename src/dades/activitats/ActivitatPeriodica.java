@@ -96,7 +96,7 @@ public class ActivitatPeriodica extends Activitat {
 		try {
             dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
 		} catch (DataIncorrectaExcepction e) {
-			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial " + e);
 		}
         for (int i = 0; i < numSetmanes * 7; i++) {
             dataFi = dataFi.diaSeguent();
@@ -146,7 +146,7 @@ public class ActivitatPeriodica extends Activitat {
                "Inici: " + dataInici + "\n" +
                "Durada: " + numSetmanes + " setmanes\n" +
                "Fi: " + getDataFi() + "\n" +
-               "Centre: " + nomCentre + ", " + ciutat + "\n";
+               "Centre: " + nomCentre + ", " + "Ciutat: " + ciutat + "\n";
     }
     
     @Override
@@ -157,7 +157,8 @@ public class ActivitatPeriodica extends Activitat {
         ActivitatPeriodica copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                           limitPlaces, preu, horari, dataInici,
                                                           numSetmanes, nomCentre, ciutat);
-        //TODO FALTA COPIA LES LLISTES D'INSCRITS
+        copia.llistaInscripcions = this.llistaInscripcions.copia();
+        copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;
     }
 }

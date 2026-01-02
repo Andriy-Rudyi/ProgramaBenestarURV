@@ -46,7 +46,7 @@ public class ActivitatOnline extends Activitat {
 		try {
             dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
 		} catch (DataIncorrectaExcepction e) {
-			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial " + e);
 		}
         for (int i = 0; i < periodeVisualitzacio; i++) {
             dataFi = dataFi.diaSeguent();
@@ -97,7 +97,8 @@ public class ActivitatOnline extends Activitat {
         
         ActivitatOnline copia = new ActivitatOnline(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                      dataInici, periodeVisualitzacio, enllac);
-        //TODO FALTA COPIA LES LLISTES D'INSCRITS
+        copia.llistaInscripcions = this.llistaInscripcions.copia();
+        copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;
     }
 }

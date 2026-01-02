@@ -2,6 +2,8 @@ package dades.usuaris;
 
 import java.io.Serializable;
 
+import dades.excepcions.UsuariDuplicatException;
+
 /**
  * Llista d'espera per a una activitat
  * @author PROG4 - Tiago Amarelle Rodrigues
@@ -25,13 +27,46 @@ public class LlistaEspera implements Serializable{
      * @param usuari Usuari a afegir (no nul)
      * @return true si s'ha afegit, false si la llista està plena o usuari és null
      */
-    public boolean afegir(Usuari usuari) {
+    public boolean afegir(Usuari usuari) throws UsuariDuplicatException{
         if (usuari == null || numUsuaris >= MAX_ESPERA) {
             return false;
         }
-        llista[numUsuaris] = usuari.copia();
-        numUsuaris++;
-        return true;
+        if (buscar(usuari.getAlies()) != null){ 
+            throw new UsuariDuplicatException("L'usuari amb alias " + usuari.getAlies() + " ja existeix");
+        } else {
+            llista[numUsuaris] = usuari.copia();
+            numUsuaris++;
+            return true;
+        }
+    }
+
+    /**
+     * Busca un usuari per alias (cerca binària aprofitant l'ordenació)
+     * @param alies Alias a buscar
+     * @return Usuari trobat o null si no existeix
+     */
+    public Usuari buscar(String alies) {
+        // null check
+        if (alies == null) {
+            return null;
+        }
+
+        int esquerra = 0;
+        int dreta = numUsuaris - 1;
+        
+        while (esquerra <= dreta) {
+            int mig = (esquerra + dreta) / 2;
+            int comparacio = llista[mig].getAlies().compareTo(alies);
+            
+            if (comparacio == 0) {
+                return llista[mig];
+            } else if (comparacio < 0) {
+                esquerra = mig + 1;
+            } else {
+                dreta = mig - 1;
+            }
+        }
+        return null;
     }
 
     /**
@@ -159,9 +194,14 @@ public class LlistaEspera implements Serializable{
 
     public LlistaEspera copia() {
         LlistaEspera copia = new LlistaEspera();
-        for (int i = 0; i < numUsuaris; i++){
+        try {
+            for (int i = 0; i < numUsuaris; i++){
             copia.afegir(llista[i].copia());
+            }
+        } catch (UsuariDuplicatException e) {
+            throw new IllegalStateException("Error intern copiant LlistaEspera");
         }
+        
         return copia;
     }
 }

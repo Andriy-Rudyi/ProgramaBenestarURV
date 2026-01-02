@@ -72,7 +72,8 @@ public class ActivitatUnDia extends Activitat {
         
         ActivitatUnDia copia = new ActivitatUnDia(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                    limitPlaces, preu, data, horari, ciutat);
-        //TODO FALTA COPIA LES LLISTES D'INSCRITS
+        copia.llistaInscripcions = this.llistaInscripcions.copia();
+        copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;
     }
 }

@@ -102,6 +102,8 @@ public class App {
                 case 21:
                     opcio21();
                     break;
+                case 22:
+                    break;
                 default:
                     System.out.println("Entrada incorrecta. Escriu un nombre entre 1 i 22.");
                     break;
@@ -286,13 +288,14 @@ public class App {
         System.out.println("--- INSCRIPCIÓ A UNA ACTIVITAT ---");
         System.out.print("Introdueix l'àlies de l'usuari: ");
         String aliesInscripcio = teclat.nextLine();
+        Usuari usuariInscripcio = baseDadesUsuaris.buscar(aliesInscripcio); 
+        if (usuariInscripcio == null) usuariInscripcio = registrarUsuari(aliesInscripcio);
+        
+        
         System.out.print("Introdueix el nom de l'activitat: ");
         String nomActivitat = teclat.nextLine();
-
-        Usuari usuariInscripcio = baseDadesUsuaris.buscar(aliesInscripcio); 
         Activitat activitatInscripcio = llistaActivitats.buscar(nomActivitat); 
 
-        if (usuariInscripcio == null) usuariInscripcio = registrarUsuari(aliesInscripcio);
         if (activitatInscripcio != null) {
             if (activitatInscripcio.estaEnPeriodeInscripcio(avui)) { 
                 if (activitatInscripcio.esPerCollectiu(usuariInscripcio.getColectiu())) { //
@@ -320,7 +323,7 @@ public class App {
             System.out.println("Error: Fora de termini d'inscripció.");
         }
     } else {
-        System.out.println("Error: Usuari o activitat no trobats.");
+        System.out.println("Error: Activitat no trobada.");
     }
         
     }
@@ -332,7 +335,7 @@ public class App {
         if (act != null) {
             LlistaInscripcions inscripcions = act.getLlistaInscripcions(); 
         
-            System.out.println("\n--- DADES DE: " + act.getNom() + " ---\n");
+            System.out.println("\n--- INSCRIPCIONS DE: " + act.getNom() + " ---\n");
             System.out.println(inscripcions.getLlistaInscrits()); 
        
        
@@ -352,19 +355,19 @@ public class App {
     private static void opcio12() {
         System.out.println("--- BAIXA D'UNA ACTIVITAT ---");
 
-        System.out.println("Introdueix l'àlies de l'usuari a eliminar: ");
-        String aliesBaixa = teclat.nextLine();
         System.out.println("Introdueix el nom de l'activitat: ");
         String nomActBaixa = teclat.nextLine();
-
+        
         Activitat activitatBaixa = llistaActivitats.buscar(nomActBaixa); 
+        
+        System.out.println("Introdueix l'àlies de l'usuari a eliminar: ");
+        String aliesBaixa = teclat.nextLine();
+
 
         if (activitatBaixa != null) {
   
             LlistaInscripcions llista = activitatBaixa.getLlistaInscripcions(); 
-
-        try {
- 
+                
             int inscritsAbans = llista.getNumInscrits(); 
             boolean teniaEspera = (llista.getLlistaEspera() != null && !llista.getLlistaEspera().esBuida());
             llista.eliminar(aliesBaixa);
@@ -376,17 +379,13 @@ public class App {
             } else if (teniaEspera && inscritsDespres == inscritsAbans) {
                 System.out.println("Usuari eliminat. La plaça lliure l'ha ocupat algú de la llista d'espera.");
             } else {
-                System.out.println("Operació realitzada (si l'usuari existia a la llista d'espera o inscrits).");
+                System.out.println("Usuari no trobat.");
             }
 
-        } catch (Exception e) {
-            System.out.println("Error durant l'eliminació: " + e.getMessage());
+        } else {
+            System.out.println("Activitat no trobada.");
         }
-
-    } else {
-        System.out.println("Activitat no trobada.");
-    }
-    }
+        }
 
     private static void opcio13(){
         String nom;

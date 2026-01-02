@@ -90,7 +90,7 @@ public class Data implements Serializable{
 		try {
 			novaData = new Data(dia, mes, any);
 		} catch (DataIncorrectaExcepction e) {
-			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial " + e);
 		}
 		if(novaData.dia == diesMes(novaData.mes, novaData.any)){
 			novaData.dia = 1;
@@ -116,7 +116,7 @@ public class Data implements Serializable{
 		try {
 			novaData = new Data(dia, mes, any);
 		} catch (DataIncorrectaExcepction e) {
-			throw new IllegalStateException("Error intern, invàlida copiant la data inicial");
+			throw new IllegalStateException("Error intern, invàlida copiant la data inicial " + e);
 		}
 		if(novaData.dia == 1){
 			if (novaData.mes == 1){
@@ -181,7 +181,7 @@ public class Data implements Serializable{
 	 * mostrat per pantalla
 	 */
 	public String toString() {
-		return("\tDATA LAB 1 => dia "+dia+" mes "+mes+" any "+any);
+		return(dia+"/"+mes+"/"+any);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
