@@ -30,8 +30,8 @@ public class LlistaInscripcions implements Serializable{
         } else if (numPlaces == 0) {                            // Constructor amb infinites places
             inscrits = new LlistaUsuaris();
             this.numPlaces = 0;
-        } else {                                                // TODO Excecio
-            System.out.println("El número de places no pot ser negatiu");
+        } else {
+            throw new IllegalArgumentException("El número de places no pot ser negatiu");
         }
     }
 
