@@ -39,7 +39,7 @@ public class Ptgas extends Usuari {
 
     @Override
     public String toCSV() {
-        return (PTGAS + ";" + alies + ";" + getCorreuComplet() + ";" + campus + "\n");
+        return (COLECTIU_PTGAS + ";" + alies + ";" + getCorreuComplet() + ";" + campus + "\n");
     }
     
     @Override

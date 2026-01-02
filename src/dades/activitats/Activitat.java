@@ -14,10 +14,10 @@ import dades.usuaris.*;
  * @author PROG1 - Pau Font
  */
 public abstract class Activitat implements Serializable{
-    
-    public static final String COLECTIU_PDI = "PDI";
-    public static final String COLECTIU_PTGAS = "PTGAS";
-    public static final String COLECTIU_ESTUDIANTS = "Estudiants";
+    private static final long serialVersionUID = 1L;
+    public static final String TIPUS_UNDIA = "UN DIA";
+    public static final String TIPUS_PERIODICA = "PERIÒDICA";
+    public static final String TIPUS_ONLINE = "ONLINE";
 
     protected String nom;
     protected boolean[] collectius; // [0]=PDI, [1]=PTGAS, [2]=Estudiants
@@ -128,9 +128,9 @@ public abstract class Activitat implements Serializable{
      */
     public boolean esPerCollectiu(String nomCollectiu) {
         if (nomCollectiu == null) return false;
-        if (nomCollectiu.equals(COLECTIU_PDI)) return collectius[0];
-        if (nomCollectiu.equals(COLECTIU_PTGAS)) return collectius[1];
-        if (nomCollectiu.equals(COLECTIU_ESTUDIANTS)) return collectius[2];
+        if (nomCollectiu.equals(Usuari.COLECTIU_PDI)) return collectius[0];
+        if (nomCollectiu.equals(Usuari.COLECTIU_PTGAS)) return collectius[1];
+        if (nomCollectiu.equals(Usuari.COLECTIU_ESTUDIANTS)) return collectius[2];
         return false;
     }
     

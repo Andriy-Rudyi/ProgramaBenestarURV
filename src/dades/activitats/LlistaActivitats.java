@@ -11,6 +11,7 @@ import dades.excepcions.ActivitatDuplicadaException;
  */
 
 public class LlistaActivitats implements Serializable{
+    private static final long serialVersionUID = 1L;
     private Activitat[] llista;
     private int numActivitats;
     private static final int MIDA_INICIAL = 50;
@@ -122,6 +123,21 @@ public class LlistaActivitats implements Serializable{
             resultat[i] = llista[i];
         }
         return resultat;
+    }
+
+    /**
+     * Retorna subllista per tipus d'activitat
+     * @param tipus Tipus d'activitat (Activitat.TIPUS_UNDIA, Activitat.TIPUS_PERIODICA o Activitat.TIPUS_ONLINE)
+     * @return LlistaActivitats amb subllista per tipus d'activitat
+     */
+    public LlistaActivitats obtenirPerTipus(String tipus) throws ActivitatDuplicadaException{
+        LlistaActivitats llistaPerTipus = new LlistaActivitats();
+        for (int i = 0; i < numActivitats; i++) {
+            if (llista[i].getTipus().equals(tipus) ){
+                llistaPerTipus.afegir(llista[i]);
+            }
+        }
+        return llistaPerTipus;
     }
     
     /**

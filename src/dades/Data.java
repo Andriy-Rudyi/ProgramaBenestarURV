@@ -10,6 +10,7 @@ import dades.excepcions.DataIncorrectaExcepction;
  */
 
 public class Data implements Serializable{
+	private static final long serialVersionUID = 1L;
     private int dia;		//atributs, sempre privats
     private int mes;
     private int any;

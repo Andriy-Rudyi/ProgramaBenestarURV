@@ -47,7 +47,7 @@ public class Estudiant extends Usuari {
 
     @Override
     public String toCSV() {
-        return (ESTUDIANTS + ";" + alies + ";" + getCorreuComplet() + ";" + ensenyament + ";" + anyInici + "\n");
+        return (COLECTIU_ESTUDIANTS + ";" + alies + ";" + getCorreuComplet() + ";" + ensenyament + ";" + anyInici + "\n");
     }
     
     @Override

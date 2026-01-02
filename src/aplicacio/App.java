@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import dades.activitats.*;
@@ -152,7 +153,54 @@ public class App {
     }
 
     private static void opcio2(){
-        System.out.println(llistaActivitats);   //TODO això és per poder fer testing abans de fer la opció completa
+        String imprimir = null;
+        do {
+            System.out.println("De quina llista vols mostrar les dades?");
+            System.out.println("1. Llista d'activitats");
+            System.out.println("2. Llista d'usuaris");
+            correcte = true;
+            String num = teclat.nextLine();
+            if(num.equals("1")){
+                System.out.println("De quin tipus vols veure les activitats?");
+                System.out.println("1. Tots");
+                System.out.println("2. Un dia");
+                System.out.println("3. Periòdiques");
+                System.out.println("4. Online");
+                num = teclat.nextLine();
+                try {
+                    if(num.equals("1")) imprimir = llistaActivitats.toString();
+                    else if(num.equals("2")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_UNDIA).toString();
+                    else if(num.equals("3")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_PERIODICA).toString();
+                    else if(num.equals("4")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_ONLINE).toString();
+                    else {
+                        System.out.println("Entrada incorrecta. Torna-ho a intentar.");
+                        correcte = false;  
+                    } 
+                } catch (ActivitatDuplicadaException e) {
+                    System.out.println("Error inesperat. " + e);
+                }
+                
+            } else if(num.equals("2")){
+                System.out.println("De quin col·lectiu vols veure els usuaris?");
+                System.out.println("1. Tots");
+                System.out.println("2. PTGAS");
+                System.out.println("3. PDI");
+                System.out.println("4. Estudiants");
+                num = teclat.nextLine();
+                if(num.equals("1")) imprimir = baseDadesUsuaris.toString();
+                else if(num.equals("2")) imprimir = baseDadesUsuaris.obtenirPerColectiu(Usuari.COLECTIU_PTGAS).toString();
+                else if(num.equals("3")) imprimir = baseDadesUsuaris.obtenirPerColectiu(Usuari.COLECTIU_PDI).toString();
+                else if(num.equals("4")) imprimir = baseDadesUsuaris.obtenirPerColectiu(Usuari.COLECTIU_ESTUDIANTS).toString();
+                else {
+                    System.out.println("Entrada incorrecta. Torna-ho a intentar.");
+                    correcte = false;  
+                }
+            } else {
+                System.out.println("Entrada incorrecta. Torna-ho a intentar.");
+                correcte = false;  
+            }
+        } while (!correcte);
+        System.out.println(imprimir);
     }
 
     private static void opcio3(){
@@ -635,7 +683,7 @@ public class App {
 
                 data = new Data(dia, mes, any);
                 correcte = true;
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("S'ha d'entrar la data en nombres enters" + e);
             } catch (IllegalArgumentException e) {
                 System.out.println("Format correcte: DD MM YYYY");
@@ -742,7 +790,7 @@ public class App {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFitxer))) {
             return (LlistaActivitats) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("No s'ha trobat el fitxer d'activitats, es crearà una llista buida." + e);
+            System.out.println("Error carregant llista d'activitats, es crearà una llista buida. " + e);
             return new LlistaActivitats();
         }
     }
@@ -758,11 +806,11 @@ public class App {
                 try {
                     linia = f.nextLine().split(";");
                     tipusUsuari = linia[0];
-                    if (tipusUsuari.equals(Usuari.ESTUDIANTS)){
+                    if (tipusUsuari.equals(Usuari.COLECTIU_ESTUDIANTS)){
                         llistaUsuaris.afegir(new Estudiant(linia[1], linia[2], linia[3], Integer.parseInt(linia[4])));
-                    } else if (tipusUsuari.equals(Usuari.PDI)){
+                    } else if (tipusUsuari.equals(Usuari.COLECTIU_PDI)){
                         llistaUsuaris.afegir(new Pdi(linia[1], linia[2], linia[3], linia[4]));
-                    } else if (tipusUsuari.equals(Usuari.PTGAS)){
+                    } else if (tipusUsuari.equals(Usuari.COLECTIU_PTGAS)){
                         llistaUsuaris.afegir(new Ptgas(linia[1], linia[2], linia[3]));
                     } else{
                         System.out.println("Error afegint usuari.");

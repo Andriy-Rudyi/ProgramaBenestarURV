@@ -47,7 +47,7 @@ public class Pdi extends Usuari{
 
     @Override
     public String toCSV() {
-        return (PDI + ";" + alies + ";" + getCorreuComplet() + ";" + departament + ";" + campus + "\n");
+        return (COLECTIU_PDI + ";" + alies + ";" + getCorreuComplet() + ";" + departament + ";" + campus + "\n");
     }
 
     @Override

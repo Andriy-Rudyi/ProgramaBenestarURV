@@ -8,13 +8,13 @@ import java.io.Serializable;
  */
 
 public abstract class Usuari implements Serializable{
+    private static final long serialVersionUID = 1L;
     protected String alies;
     protected String adreca;
 
-
-    public static final String ESTUDIANTS = "Estudiants";
-    public static final String PDI = "PDI";
-    public static final String PTGAS = "PTGAS";
+    public static final String COLECTIU_PDI = "PDI";
+    public static final String COLECTIU_PTGAS = "PTGAS";
+    public static final String COLECTIU_ESTUDIANTS = "Estudiants";
 
     /**
      * Dominis de correu electrònic segons el col·lectiu

@@ -68,7 +68,7 @@ public class ActivitatOnline extends Activitat {
     
     @Override
     public String getTipus() {
-        return "ONLINE";
+        return TIPUS_ONLINE;
     }
     
     @Override

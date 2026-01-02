@@ -130,7 +130,7 @@ public class ActivitatPeriodica extends Activitat {
     
     @Override
     public String getTipus() {
-        return "PERIÒDICA";
+        return TIPUS_PERIODICA;
     }
     
     @Override

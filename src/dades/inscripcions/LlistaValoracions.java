@@ -6,6 +6,7 @@ import dades.excepcions.UsuariDuplicatException;
 import dades.usuaris.Usuari;
 
 public class LlistaValoracions implements Serializable{
+    private static final long serialVersionUID = 1L;
     Usuari[] llistaUsuaris;     /*no usem LlistaUsuaris perquè aquí no volem que les ordeni per alies
                                 ja que si no, els índex de LlistaUsuaris no pertanyeran als de int[] */ 
     int[] valoracions;

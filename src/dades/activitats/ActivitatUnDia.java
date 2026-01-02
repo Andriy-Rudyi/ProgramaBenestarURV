@@ -55,7 +55,7 @@ public class ActivitatUnDia extends Activitat {
     
     @Override
     public String getTipus() {
-        return "UN DIA";
+        return TIPUS_UNDIA;
     }
     
     @Override

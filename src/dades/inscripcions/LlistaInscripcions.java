@@ -12,6 +12,7 @@ import dades.excepcions.UsuariDuplicatException;
  * @author PROG4 - Tiago Amarelle Rodrigues
  */
 public class LlistaInscripcions implements Serializable{
+    private static final long serialVersionUID = 1L;
     private LlistaUsuaris inscrits;
     private LlistaEspera espera;
     int numPlaces;
@@ -29,7 +30,7 @@ public class LlistaInscripcions implements Serializable{
         } else if (numPlaces == 0) {                            // Constructor amb infinites places
             inscrits = new LlistaUsuaris();
             this.numPlaces = 0;
-        } else {                                                // Excecio
+        } else {                                                // TODO Excecio
             System.out.println("El número de places no pot ser negatiu");
         }
     }
@@ -67,6 +68,7 @@ public class LlistaInscripcions implements Serializable{
     }
 
     public boolean teUsuarisEnEspera(){
+        if (numPlaces == 0) return false; //És online
         return !espera.esBuida();
     }
 

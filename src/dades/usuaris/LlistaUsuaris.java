@@ -9,6 +9,7 @@ import dades.excepcions.UsuariDuplicatException;
  * @author PROG1 - Pau Font
  */
 public class LlistaUsuaris implements Serializable{
+    private static final long serialVersionUID = 1L;
     private Usuari[] llista;
     private int numUsuaris;
     private static final int MIDA_INICIAL = 50;
