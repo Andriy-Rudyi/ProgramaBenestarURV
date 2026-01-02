@@ -133,13 +133,13 @@ public class App {
 
     private static void mostrarMenuActivitats() {
         System.out.println("\n===== MENÚ PRINCIPAL ACTIVITATS =====");
-        System.out.println("1. Indicar la data del dia d'avui"); // fet
-        System.out.println("2. Mostrar les dades de les llistes"); // fet
-        System.out.println("3. Mostrar activitats en període d'inscripció"); // fet
-        System.out.println("4. Mostrar activitats amb classe avui"); // fet
-        System.out.println("5. Mostrar activitats actives avui"); // fet
-        System.out.println("6. Mostrar activitats amb places disponibles");// fet
-        System.out.println("7. Mostrar detall d'una activitat a partir del seu nom"); // fet
+        System.out.println("1. Indicar la data del dia d'avui");
+        System.out.println("2. Mostrar les dades de les llistes");
+        System.out.println("3. Mostrar activitats en període d'inscripció");
+        System.out.println("4. Mostrar activitats amb classe avui");
+        System.out.println("5. Mostrar activitats actives avui");
+        System.out.println("6. Mostrar activitats amb places disponibles");
+        System.out.println("7. Mostrar detall d'una activitat a partir del seu nom");
         System.out.println("8. Mostrar detall d'un usuari a partir del seu nom");
         System.out.println("9. Mostrar activitats a les que està apuntat un usuari");
         System.out.println("10. Inscriure's a una activitat");
@@ -909,7 +909,11 @@ public class App {
                         correcte = true;
                     } catch (UsuariDuplicatException e) {
                         System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    }   //més excepcions
+                    } catch (NumberFormatException e) {
+                        System.out.println("Any d'inici invàlid. Torna-ho a intentar.");
+                    } catch (Exception e) {
+                        System.out.println("Error inesperat. " + e);
+                    }
                     break;
                 case 2:
                     try {
@@ -925,7 +929,9 @@ public class App {
                         correcte = true;
                     } catch (UsuariDuplicatException e) {
                         System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    }   //més excepcions
+                    } catch (Exception e) {
+                        System.out.println("Error inesperat. " + e);
+                    }
                     break;
                 case 3:
                     try {
@@ -941,7 +947,9 @@ public class App {
                         correcte = true;
                     } catch (UsuariDuplicatException e) {
                         System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    }   //més excepcions
+                    } catch (Exception e) {
+                        System.out.println("Error inesperat. " + e);
+                    }
                     break;
             
                 default:
@@ -1001,7 +1009,7 @@ public class App {
                     } else if (tipusUsuari.equals(Usuari.COLECTIU_PTGAS)){
                         llistaUsuaris.afegir(new Ptgas(linia[1], linia[2], linia[3]));
                     } else{
-                        System.out.println("Error afegint usuari.");
+                        System.out.println("Error afegint usuari: No existeix el col·lectiu " + tipusUsuari);
                     }
                 } catch (UsuariDuplicatException e) {
                     System.out.println("Usuari duplicat en fitxer. " + e.getMessage());
