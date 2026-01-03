@@ -18,7 +18,11 @@ public class Pdi extends Usuari{
      */
     public Pdi(String alies, String adreca, String departament, String campus){
         this.alies = alies;
-        this.adreca = adreca.split("@")[0];
+        if (!adrecaValida(adreca.split("@")[0])) {
+            throw new IllegalArgumentException("Adreça de correu electrònic no vàlida per a PDI.");
+        } else {
+            this.adreca = adreca.split("@")[0];
+        }
         this.departament = departament;
         this.campus = campus;
     }

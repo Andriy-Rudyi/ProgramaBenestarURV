@@ -17,7 +17,11 @@ public class Estudiant extends Usuari {
      */
     public Estudiant(String alies, String adreca, String ensenyament, int anyInici){
         this.alies = alies;
-        this.adreca = adreca.split("@")[0];
+        if (!adrecaValida(adreca.split("@")[0])) {
+            throw new IllegalArgumentException("Adreça de correu electrònic no vàlida per a Estudiant.");
+        } else {
+            this.adreca = adreca.split("@")[0];
+        }
         this.ensenyament = ensenyament;
         this.anyInici = anyInici;
     }

@@ -16,7 +16,11 @@ public class Ptgas extends Usuari {
      */
     public Ptgas(String alies, String adreca, String campus){
         this.alies = alies;
-        this.adreca = adreca.split("@")[0];
+        if (!adrecaValida(adreca.split("@")[0])) {
+            throw new IllegalArgumentException("Adreça de correu electrònic no vàlida per a PTGAS.");
+        } else {
+            this.adreca = adreca.split("@")[0];
+        }
         this.campus = campus;
     }
     

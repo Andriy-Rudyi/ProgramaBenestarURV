@@ -96,4 +96,38 @@ public abstract class Usuari implements Serializable{
      * @return Nova instància amb les mateixes dades
      */
     public abstract Usuari copia();
+
+    protected boolean adrecaValida(String adreca) {
+
+        if (adreca == null || adreca.isEmpty()) {
+            return false;
+        }
+
+        if (adreca.startsWith(".") || adreca.endsWith(".")) {
+            return false;
+        }
+
+        char anterior = 0;
+
+        for (char c : adreca.toCharArray()) {
+
+            if (!Character.isLetterOrDigit(c)
+                && c != '.'
+                && c != '_'
+                && c != '+'
+                && c != '-') {
+
+                return false;
+            }
+
+            if (c == '.' && anterior == '.') {
+                return false;
+            }
+
+            anterior = c;
+        }
+
+        return true;
+        }
+
 }
