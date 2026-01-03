@@ -215,7 +215,7 @@ public class Data implements Serializable{
 		}
 	}
 
-	private static int diesMes(int mes, int any) { // per saber quants dies te un mes d'un any
+	public static int diesMes(int mes, int any) { // per saber quants dies te un mes d'un any
 		int diesMes;
 		if (mes == 2) {
 			if (esAnyTraspas(any)) {
@@ -242,4 +242,47 @@ public class Data implements Serializable{
 		else if ((data1.any == data2.any) && (data1.mes == data2.mes) && (data1.dia < data2.dia)) return true;
 		else return false;	// Casos: any2 > any1, any1==any2 i mes2 > mes1, any1==any2, mes1==mes2 i dia2>=dia1
 	}
+
+	/**
+     * Calcula el dia de la setmana d'una data (1=Dilluns, ..., 7=Diumenge)
+     * Algorisme de Zeller modificat
+     */
+    public int calcularDiaSetmana() {
+        if (mes < 3) {
+            mes += 12;
+            any--;
+        }
+        int k = any % 100;
+        int j = any / 100;
+        int h = (dia + (13 * (mes + 1)) / 5 + k + k / 4 + j / 4 - 2 * j) % 7;
+        
+        // Convertir: 0=Dissabte, 1=Diumenge, 2=Dilluns,...
+        int diaSetmana = ((h + 5) % 7) + 1;
+        return diaSetmana;
+    }
+
+	/**
+     * Retorna el nom del dia de la setmana
+     * @return Nom del dia
+     */
+    public String getNomDiaSetmana() {
+        String[] dies = {"", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"};
+        if (calcularDiaSetmana() >= 1 && calcularDiaSetmana() <= 7) {
+            return dies[calcularDiaSetmana()];
+        }
+        return "Desconegut";
+    }
+
+	/**
+	 * Retorna el nom del mes
+	 * @param mes Enter que representa el mes [1-12]
+	 * @return Nom del mes
+	 */
+    public static String getNomMes(int mes){
+        String[] mesos = {"Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"};
+        if (mes >= 1 && mes <= 12) {
+            return mesos[mes-1];
+        }
+        return "Desconegut";
+    }
 }
