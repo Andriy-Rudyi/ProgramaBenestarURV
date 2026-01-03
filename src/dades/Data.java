@@ -215,7 +215,7 @@ public class Data implements Serializable{
 		}
 	}
 
-	private static int diesMes(int mes, int any) { // per saber quants dies te un mes d'un any
+	public static int diesMes(int mes, int any) { // per saber quants dies te un mes d'un any
 		int diesMes;
 		if (mes == 2) {
 			if (esAnyTraspas(any)) {
@@ -269,6 +269,19 @@ public class Data implements Serializable{
         String[] dies = {"", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"};
         if (calcularDiaSetmana() >= 1 && calcularDiaSetmana() <= 7) {
             return dies[calcularDiaSetmana()];
+        }
+        return "Desconegut";
+    }
+
+	/**
+	 * Retorna el nom del mes
+	 * @param mes Enter que representa el mes [1-12]
+	 * @return Nom del mes
+	 */
+    public static String getNomMes(int mes){
+        String[] mesos = {"Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"};
+        if (mes >= 1 && mes <= 12) {
+            return mesos[mes-1];
         }
         return "Desconegut";
     }

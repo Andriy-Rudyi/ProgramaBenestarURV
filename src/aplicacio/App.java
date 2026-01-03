@@ -178,17 +178,15 @@ public class App {
                 System.out.println("3. Periòdiques");
                 System.out.println("4. Online");
                 num = teclat.nextLine();
-                try {
-                    if(num.equals("1")) imprimir = llistaActivitats.toString();
-                    else if(num.equals("2")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_UNDIA).toString();
-                    else if(num.equals("3")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_PERIODICA).toString();
-                    else if(num.equals("4")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_ONLINE).toString();
-                    else {
-                        System.out.println("Entrada incorrecta. Torna-ho a intentar."); 
-                    } 
-                } catch (ActivitatDuplicadaException e) {
-                    System.out.println("Error inesperat. " + e);
-                }
+                
+                if(num.equals("1")) imprimir = llistaActivitats.toString();
+                else if(num.equals("2")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_UNDIA).toString();
+                else if(num.equals("3")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_PERIODICA).toString();
+                else if(num.equals("4")) imprimir = llistaActivitats.obtenirPerTipus(Activitat.TIPUS_ONLINE).toString();
+                else {
+                    System.out.println("Entrada incorrecta. Torna-ho a intentar."); 
+                } 
+                
             } else if(num.equals("2")){
                 System.out.println("De quin col·lectiu vols veure els usuaris?");
                 System.out.println("1. Tots");
@@ -665,6 +663,12 @@ public class App {
             } catch (NumberFormatException e) {
                 System.out.println("Entrada incorrecta. Respon 0 o 1.");
             }
+
+        System.out.println("Inici d'inscripcions?");
+        dataIniciInscripcio = llegirData();
+        System.out.println("Fi d'inscripcions?");
+        dataFiInscripcio = llegirData();
+
         }
         System.out.println("Quan comença l'activitat?");
         dataActivitat = llegirData();

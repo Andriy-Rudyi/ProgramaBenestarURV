@@ -130,11 +130,15 @@ public class LlistaActivitats implements Serializable{
      * @param tipus Tipus d'activitat (Activitat.TIPUS_UNDIA, Activitat.TIPUS_PERIODICA o Activitat.TIPUS_ONLINE)
      * @return LlistaActivitats amb subllista per tipus d'activitat
      */
-    public LlistaActivitats obtenirPerTipus(String tipus) throws ActivitatDuplicadaException{
+    public LlistaActivitats obtenirPerTipus(String tipus){
         LlistaActivitats llistaPerTipus = new LlistaActivitats();
         for (int i = 0; i < numActivitats; i++) {
             if (llista[i].getTipus().equals(tipus) ){
-                llistaPerTipus.afegir(llista[i]);
+                try {
+                    llistaPerTipus.afegir(llista[i]);
+                } catch (ActivitatDuplicadaException e) {
+                    throw new IllegalStateException("Error intern obtenint per tipus " + e);
+                }
             }
         }
         return llistaPerTipus;
