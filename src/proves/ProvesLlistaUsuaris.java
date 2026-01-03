@@ -97,7 +97,15 @@ public class ProvesLlistaUsuaris {
         System.out.println(usuaris2.obtenirPerColectiu("test1234"));
 
 
-        
+        System.out.println("Total usuaris: " + usuaris2.obtenirTots());
+        System.out.println("Obtenir l'usuari per índex:" + usuaris2.getUsuari(3));
+        System.out.println("Obtenir el nombre d'usuaris: " + usuaris2.getNumUsuaris());
+        System.out.println("Comprovar si la llista està buida: " + usuaris2.esBuida());
+
+        LlistaUsuaris copiaUsuaris2 = new LlistaUsuaris();
+        copiaUsuaris2 = usuaris2.copia();
+        System.out.println("Còpia de la llista d'usuaris (I tambe la comprovació de toString() ):");
+        System.out.println(copiaUsuaris2);
 
     }
 }

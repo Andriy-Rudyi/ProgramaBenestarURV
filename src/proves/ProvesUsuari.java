@@ -20,8 +20,30 @@ public class ProvesUsuari {
             System.out.println(llista[i]);
         }
         
+        // Proves generals/abstractes (Usuari)
         Usuari duplicat = llista[2].copia();
-        System.out.println(duplicat);
+        System.out.println("Usuari duplicat (copia): " + duplicat);
+        System.out.println("És igual l'usuari original i el duplicat? " + llista[2].equals(duplicat));
+        System.out.println(llista[3].getAdreca() + " és l'adreça de " + llista[3].getAlies());
+        System.out.println(llista[6].getCorreuComplet() + " és el correu complet de " + llista[6].getAlies());
+        System.out.println("El col·lectiu de " + llista[0].getAlies() + " és " + llista[0].getColectiu());
+        System.out.println("Usuari en format CSV:" + llista[5].toCSV());
+        System.out.println("Usuari en format String (NullPointerException inclos):" + llista[2]);
+
+        // Proves específiques
+        // PDI
+        Pdi pdi = (Pdi) llista[1];
+        System.out.println("El departament de " + pdi.getAlies() + " és " + pdi.getDepartament());
+        System.out.println("El campus de " + pdi.getAlies() + " és " + pdi.getCampus());
+
+        // PTGAS
+        Ptgas ptgas = (Ptgas) llista[4];
+        System.out.println("El campus de " + ptgas.getAlies() + " és " + ptgas.getCampus());
+        
+        // Estudiant
+        Estudiant estudiant = (Estudiant) llista[7];
+        System.out.println("L'ensenyament de " + estudiant.getAlies() + " és " + estudiant.getEnsenyament());
+        System.out.println("L'any d'ingrés de " + estudiant.getAlies() + " és " + estudiant.getAnyInici());
     }
 
 }
