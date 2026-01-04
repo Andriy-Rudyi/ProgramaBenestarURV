@@ -3,6 +3,7 @@ package proves;
 import dades.activitats.*;
 import dades.excepcions.DataIncorrectaExcepction;
 import dades.excepcions.ActivitatDuplicadaException;
+import dades.excepcions.DataFiInscripcioException;
 import dades.Data;
 
 public class ProvesLlistaActivitat {
@@ -84,7 +85,7 @@ public class ProvesLlistaActivitat {
 
             };
 
-        } catch (DataIncorrectaExcepction e) {
+        } catch (DataIncorrectaExcepction | DataFiInscripcioException e) {
             System.out.println(e.getMessage());
         }
 
@@ -110,6 +111,8 @@ public class ProvesLlistaActivitat {
         } catch (DataIncorrectaExcepction e) {
             System.out.println(e.getMessage());
         } catch (ActivitatDuplicadaException e) {
+            System.out.println(e.getMessage());
+        } catch (DataFiInscripcioException e) {
             System.out.println(e.getMessage());
         }
 

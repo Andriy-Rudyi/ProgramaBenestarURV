@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.excepcions.DataFiInscripcioException;
 import dades.excepcions.DataIncorrectaExcepction;
 
 /**
@@ -21,10 +22,11 @@ public class ActivitatOnline extends Activitat {
      * @param dataInici Data d'inici de l'activitat
      * @param periodeVisualitzacio Període de visualització en dies
      * @param enllac Enllaç per accedir a l'activitat
+     * @throws DataFiInscripcioException 
      */
     public ActivitatOnline(String nom, boolean[] collectius, Data dataIniciInscripcio,
                            Data dataFiInscripcio, Data dataInici, 
-                           int periodeVisualitzacio, String enllac) {
+                           int periodeVisualitzacio, String enllac) throws DataFiInscripcioException {
         // Les activitats online són gratuïtes (preu = 0) i sense límit de places (limitPlaces = 0)
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 0, 0.0);
         this.dataInici = dataInici;
@@ -95,8 +97,13 @@ public class ActivitatOnline extends Activitat {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
-        ActivitatOnline copia = new ActivitatOnline(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                     dataInici, periodeVisualitzacio, enllac);
+        ActivitatOnline copia = null;
+        try {
+            copia = new ActivitatOnline(nom, col, dataIniciInscripcio, dataFiInscripcio,
+                                                         dataInici, periodeVisualitzacio, enllac);
+        } catch (DataFiInscripcioException e) {
+            System.out.println(e.getMessage());;
+        }
         copia.llistaInscripcions = this.llistaInscripcions.copia();
         copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;

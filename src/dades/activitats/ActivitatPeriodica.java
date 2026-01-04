@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.excepcions.DataFiInscripcioException;
 import dades.excepcions.DataIncorrectaExcepction;
 
 /**
@@ -30,11 +31,12 @@ public class ActivitatPeriodica extends Activitat {
      * @param numSetmanes Número de setmanes que dura
      * @param nomCentre Nom del centre
      * @param ciutat Ciutat on es realitza
+     * @throws DataFiInscripcioException 
      */
     public ActivitatPeriodica(String nom, boolean[] collectius, Data dataIniciInscripcio,
                               Data dataFiInscripcio, int limitPlaces, double preu,
                               String horari, Data dataInici, 
-                              int numSetmanes, String nomCentre, String ciutat) {
+                              int numSetmanes, String nomCentre, String ciutat) throws DataFiInscripcioException {
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu);
         this.diaSetmana = dataInici.calcularDiaSetmana();
         this.horari = horari;
@@ -121,9 +123,14 @@ public class ActivitatPeriodica extends Activitat {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
-        ActivitatPeriodica copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                          limitPlaces, preu, horari, dataInici,
-                                                          numSetmanes, nomCentre, ciutat);
+        ActivitatPeriodica copia = null;
+        try {
+            copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
+                                                              limitPlaces, preu, horari, dataInici,
+                                                              numSetmanes, nomCentre, ciutat);
+        } catch (DataFiInscripcioException e) {
+            System.out.println(e.getMessage());;
+        }
         copia.llistaInscripcions = this.llistaInscripcions.copia();
         copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;

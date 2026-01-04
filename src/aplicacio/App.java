@@ -460,6 +460,12 @@ public class App {
             dataIniciInscripcio = llegirData();
             System.out.println("Fi d'inscripcions?");
             dataFiInscripcio = llegirData();
+
+            // Validació ABANS de crear l'objecte
+            if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
+                System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
+                return; // Torna al menú sense crear res
+            }
             
             System.out.println("Introdueix el nombre de places de l'activitat");
             limitPlaces = Integer.parseInt(teclat.nextLine());
@@ -481,7 +487,7 @@ public class App {
             
             llistaActivitats.afegir(activitat);
             
-        } catch (ActivitatDuplicadaException e) {
+        } catch (ActivitatDuplicadaException | DataFiInscripcioException e) {
             System.out.println(e);
         }
     }
@@ -563,6 +569,12 @@ public class App {
             dataIniciInscripcio = llegirData();
             System.out.println("Fi d'inscripcions?");
             dataFiInscripcio = llegirData();
+
+            // Validació ABANS de crear l'objecte
+            if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
+                System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
+                return; // Torna al menú sense crear res
+            }
             
             System.out.println("Introdueix el nombre de places de l'activitat");
             limitPlaces = Integer.parseInt(teclat.nextLine());
@@ -590,7 +602,7 @@ public class App {
             
             llistaActivitats.afegir(activitat);
             
-        } catch (ActivitatDuplicadaException e) {
+        } catch (ActivitatDuplicadaException | DataFiInscripcioException e) {
             System.out.println(e);
         }
     }
@@ -598,7 +610,7 @@ public class App {
     private static void opcio15(){
         String nom;
         boolean[] collectius = new boolean[3];
-        Activitat activitat;
+        Activitat activitat = null;
         Data dataIniciInscripcio = null;
         Data dataFiInscripcio = null;
         Data dataActivitat = null;
@@ -669,6 +681,12 @@ public class App {
         System.out.println("Fi d'inscripcions?");
         dataFiInscripcio = llegirData();
 
+        // Validació ABANS de crear l'objecte
+            if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
+                System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
+                return; // Torna al menú sense crear res
+            }
+
         }
         System.out.println("Quan comença l'activitat?");
         dataActivitat = llegirData();
@@ -679,8 +697,12 @@ public class App {
         System.out.println("Introdueix l'enllac de l'activitat");
         enllac = teclat.nextLine();
         
-        activitat = new ActivitatOnline(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 
-            dataActivitat, periodeVisualitzacio, enllac);
+        try {
+            activitat = new ActivitatOnline(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 
+                dataActivitat, periodeVisualitzacio, enllac);
+        } catch (DataFiInscripcioException e) {
+            System.out.println(e.getMessage());
+        }
                 
         try {
             llistaActivitats.afegir(activitat);

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import dades.Data;
 import dades.excepcions.ActivitatDuplicadaException;
+import dades.excepcions.DataFiInscripcioException;
 import dades.excepcions.UsuariDuplicatException;
 import dades.inscripcions.*;
 import dades.usuaris.*;
@@ -37,20 +38,27 @@ public abstract class Activitat implements Serializable{
      * @param limitPlaces Límit de places (0 per il·limitat)
      * @param preu Preu de l'activitat
      */
+
+    // mantenir el DataFiInscripcioException al constructor per si algú crea l'activitat des d'un altre lloc.
     public Activitat(String nom, boolean[] collectius, Data dataIniciInscripcio, 
-                     Data dataFiInscripcio, int limitPlaces, double preu) {
-        this.nom = nom;
-        // copia defensiva de l'array de collectius
-        this.collectius = new boolean[3];
-        for (int i = 0; i < 3; i++) {
-            this.collectius[i] = collectius[i];
+                     Data dataFiInscripcio, int limitPlaces, double preu) throws DataFiInscripcioException {
+        
+        if (dataFiInscripcio.esAnterior(dataIniciInscripcio)) {
+            throw new DataFiInscripcioException("Data de fi d'inscripció no pot ser anterior a la data d'inici d'inscripció");
+        } else {
+            this.nom = nom;
+            // copia defensiva de l'array de collectius
+            this.collectius = new boolean[3];
+            for (int i = 0; i < 3; i++) {
+                this.collectius[i] = collectius[i];
+            }
+            this.dataIniciInscripcio = dataIniciInscripcio;
+            this.dataFiInscripcio = dataFiInscripcio;
+            this.limitPlaces = limitPlaces;
+            this.preu = preu;
+            llistaInscripcions = new LlistaInscripcions(limitPlaces);
+            llistaValoracions = new LlistaValoracions(limitPlaces);
         }
-        this.dataIniciInscripcio = dataIniciInscripcio;
-        this.dataFiInscripcio = dataFiInscripcio;
-        this.limitPlaces = limitPlaces;
-        this.preu = preu;
-        llistaInscripcions = new LlistaInscripcions(limitPlaces);
-        llistaValoracions = new LlistaValoracions(limitPlaces);
     }
     
     // Getters

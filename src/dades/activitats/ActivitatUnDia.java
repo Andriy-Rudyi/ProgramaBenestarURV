@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.excepcions.DataFiInscripcioException;
 
 /**
  * Representa una activitat que es realitza en un sol dia (taller o seminari)
@@ -22,10 +23,11 @@ public class ActivitatUnDia extends Activitat {
      * @param data Data en què es realitza l'activitat
      * @param horari Horari de l'activitat
      * @param ciutat Ciutat on es realitza
+     * @throws DataFiInscripcioException 
      */
     public ActivitatUnDia(String nom, boolean[] collectius, Data dataIniciInscripcio,
                           Data dataFiInscripcio, int limitPlaces, double preu,
-                          Data data, String horari, String ciutat) {
+                          Data data, String horari, String ciutat) throws DataFiInscripcioException {
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu);
         this.data = data;
         this.horari = horari;
@@ -70,8 +72,13 @@ public class ActivitatUnDia extends Activitat {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
-        ActivitatUnDia copia = new ActivitatUnDia(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                   limitPlaces, preu, data, horari, ciutat);
+        ActivitatUnDia copia = null;
+        try {
+            copia = new ActivitatUnDia(nom, col, dataIniciInscripcio, dataFiInscripcio,
+                                                       limitPlaces, preu, data, horari, ciutat);
+        } catch (DataFiInscripcioException e) {
+            System.out.println(e.getMessage());
+        }
         copia.llistaInscripcions = this.llistaInscripcions.copia();
         copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;

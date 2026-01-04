@@ -285,4 +285,16 @@ public class Data implements Serializable{
         }
         return "Desconegut";
     }
+
+	/**
+	 * Compara si una data es anterior de l'altra
+	 * @param altra
+	 * @return true si una data es anterior de l'altre, false si no ho es
+	 */
+	public boolean esAnterior(Data altra) {
+    	if (any != altra.getAny()) return any < altra.getAny();
+    	if (mes != altra.getMes()) return mes < altra.getMes();
+    	return dia < altra.getDia();
+	}
+
 }
