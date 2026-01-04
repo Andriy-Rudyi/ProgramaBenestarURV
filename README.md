@@ -10,6 +10,7 @@ L’aplicació permet gestionar:
 
 ## Estructura del projecte
 ```text
+.
 ├── src/            # Codi font Java
 │ ├── aplicacio     # Aplicació
 │ ├── interficie    # Interfície gràfica (Swing)
