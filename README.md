@@ -8,8 +8,8 @@ L’aplicació permet gestionar:
 - Usuaris de la comunitat universitària (PDI, PTGAS i estudiants)
 - Inscripcions, llistes d’espera i valoracions
 
-```text
 ## Estructura del projecte
+```text
 ├── src/            # Codi font Java
 │ ├── aplicacio     # Aplicació
 │ ├── interficie    # Interfície gràfica (Swing)
