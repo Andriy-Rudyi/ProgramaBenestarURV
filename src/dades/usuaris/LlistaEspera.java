@@ -179,6 +179,23 @@ public class LlistaEspera implements Serializable{
         return -1;
     }
 
+    /**
+     * Crea una còpia de la llista espera
+     * @return Nova instància amb les mateixes dades
+     */
+    public LlistaEspera copia() {
+        LlistaEspera copia = new LlistaEspera();
+        try {
+            for (int i = 0; i < numUsuaris; i++){
+            copia.afegir(llista[i].copia());
+            }
+        } catch (UsuariDuplicatException e) {
+            throw new IllegalStateException("Error intern copiant LlistaEspera");
+        }
+        
+        return copia;
+    }
+    
     @Override
     public String toString() {
         if (numUsuaris == 0) {
@@ -192,16 +209,4 @@ public class LlistaEspera implements Serializable{
         return info;
     }
 
-    public LlistaEspera copia() {
-        LlistaEspera copia = new LlistaEspera();
-        try {
-            for (int i = 0; i < numUsuaris; i++){
-            copia.afegir(llista[i].copia());
-            }
-        } catch (UsuariDuplicatException e) {
-            throw new IllegalStateException("Error intern copiant LlistaEspera");
-        }
-        
-        return copia;
-    }
 }

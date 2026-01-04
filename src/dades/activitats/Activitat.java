@@ -59,21 +59,23 @@ public abstract class Activitat implements Serializable{
     /**
      * Obté una còpia de l'array de col.lectius (protecció d'encapsulació)
      * @return Còpia de l'array de col.lectius
-     */
-    public boolean[] getCollectius() { 
-        boolean[] copia = new boolean[3];
-        for (int i = 0; i < 3; i++) {
-            copia[i] = collectius[i];
+    */
+   public boolean[] getCollectius() { 
+       boolean[] copia = new boolean[3];
+       for (int i = 0; i < 3; i++) {
+           copia[i] = collectius[i];
         }
         return copia;
     }
-
+    
     public Data getDataIniciInscripcio() { return dataIniciInscripcio; }
     public Data getDataFiInscripcio() { return dataFiInscripcio; }
     public int getLimitPlaces() { return limitPlaces; }
     public double getPreu() { return preu; }
     public int getNumInscripcions() { return llistaInscripcions.getNumInscrits(); }
-    
+    public LlistaInscripcions getLlistaInscripcions() { return llistaInscripcions; }
+    public LlistaValoracions getLlistaValoracions() { return llistaValoracions; }
+
     
 
     /**
@@ -117,6 +119,12 @@ public abstract class Activitat implements Serializable{
         return true;
     }
 
+    /**
+     * Afegeix un usuari a la llista inscripcions
+     * @param usuari
+     * @throws UsuariDuplicatException
+     * @throws ActivitatDuplicadaException
+     */
     public void inscriureUsuari(Usuari usuari) throws UsuariDuplicatException, ActivitatDuplicadaException{
         llistaInscripcions.afegir(usuari);
     }
@@ -154,7 +162,17 @@ public abstract class Activitat implements Serializable{
         if (collectius[2]) resultat += "Estudiants ";
         return resultat.trim();
     }
-    
+
+    // Delegate check to the internal list (preferred for encapsulation)
+    /**
+     * Comprova si un usuari està inscrit
+     * @param nom
+     * @return true si està inscrit
+     */
+    public boolean teUsuariInscrit(String nom) {
+        return llistaInscripcions != null && llistaInscripcions.teUsuariInscrit(nom);
+    }    
+
     // Mètodes abstractes que implementaran les subclasses
     /**
      * Comprova si l'activitat està activa en una data
@@ -226,18 +244,5 @@ public abstract class Activitat implements Serializable{
         if (obj == null || !(obj instanceof Activitat)) return false;
         Activitat altra = (Activitat) obj;
         return this.nom != null && this.nom.equals(altra.nom);
-    }
-
-    public LlistaInscripcions getLlistaInscripcions() {
-        return llistaInscripcions;
-    }
-
-    public LlistaValoracions getLlistaValoracions() {
-        return llistaValoracions;
-    }
-
-    // Delegate check to the internal list (preferred for encapsulation)
-    public boolean teUsuariInscrit(String nom) {
-        return llistaInscripcions != null && llistaInscripcions.teUsuariInscrit(nom);
-    }
+    }    
 }
