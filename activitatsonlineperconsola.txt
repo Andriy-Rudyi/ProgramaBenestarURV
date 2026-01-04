@@ -1,0 +1,21 @@
+15
+Ciberseguretat Express
+1
+1
+1
+6 10 2025
+10 10 2025
+20 10 2025
+2
+http://aula.urv.cat/ciber
+
+15
+Gestio Temps
+1
+1
+1
+24 10 2025
+30 10 2025
+01 11 2025
+3
+http://aula.urv.cat/temps
