@@ -25,9 +25,7 @@ public class ProvesActivitat {
         
         ActivitatOnline online = new ActivitatOnline(
             "Classes de catala",
-            collectiuEstudiants,
-            
-
+            collectiuEstudiants, 
             new Data(2, 12, 2025), 
             new Data(11, 12, 2025),
             new Data(1, 1, 2026), 
@@ -114,7 +112,6 @@ public class ProvesActivitat {
         System.out.println(" - Data inici: " + periodica.getDataInici());
         System.out.println(" - Data fi: " + periodica.getDataFi());
         System.out.println(" - Horari: " + periodica.getHorari());
-        // System.out.println(" - Nom dia setmana: " + periodica.getNomDiaSetmana());
         System.out.println(" - Informacio especifica: " + periodica.getInformacioEspecifica());
         System.out.println(" - Tipus: " + periodica.getTipus());
         System.out.println(" - Ha acabat el 1/12/2025? " + periodica.haAcabat(new Data(1, 12, 2025)));
