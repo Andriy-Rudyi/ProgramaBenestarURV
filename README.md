@@ -8,6 +8,7 @@ L’aplicació permet gestionar:
 - Usuaris de la comunitat universitària (PDI, PTGAS i estudiants)
 - Inscripcions, llistes d’espera i valoracions
 
+```text
 ## Estructura del projecte
 ├── src/            # Codi font Java
 │ ├── aplicacio     # Aplicació
@@ -19,6 +20,7 @@ L’aplicació permet gestionar:
 ├── lib/            # Llibreries externes (si escau)
 ├── README.md
 └── .gitignore
+```
 
 ## Funcionalitats implementades
 
