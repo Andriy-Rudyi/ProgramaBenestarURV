@@ -395,6 +395,7 @@ public class App {
         int limitPlaces;
         double preu;
         String horari, ciutat;
+        boolean datesValides = false;
         
         try {
             System.out.println("Introdueix el nom de l'activitat");
@@ -456,16 +457,22 @@ public class App {
                     System.out.println("Entrada incorrecta. Respon 0 o 1.");
                 }
             }
-            System.out.println("Inici d'inscripcions?");
-            dataIniciInscripcio = llegirData();
-            System.out.println("Fi d'inscripcions?");
-            dataFiInscripcio = llegirData();
 
-            // Validació ABANS de crear l'objecte
-            if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
-                System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
-                return; // Torna al menú sense crear res
-            }
+            do {
+                System.out.println("Inici d'inscripcions?");
+                dataIniciInscripcio = llegirData();
+                
+                System.out.println("Fi d'inscripcions?");
+                dataFiInscripcio = llegirData();
+                
+                if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
+                    System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
+                    System.out.println("Si us plau, torna a introduir les dates.");
+                } else {
+                    datesValides = true;
+                }
+                
+            } while (!datesValides);
             
             System.out.println("Introdueix el nombre de places de l'activitat");
             limitPlaces = Integer.parseInt(teclat.nextLine());
@@ -503,6 +510,7 @@ public class App {
         int limitPlaces, numSetmanes;
         double preu;
         String horari, nomCentre, ciutat;
+        boolean datesValides = false;
         
         try {
             System.out.println("Introdueix el nom de l'activitat");
@@ -565,16 +573,21 @@ public class App {
                 }
             }
             
-            System.out.println("Inici d'inscripcions?");
-            dataIniciInscripcio = llegirData();
-            System.out.println("Fi d'inscripcions?");
-            dataFiInscripcio = llegirData();
-
-            // Validació ABANS de crear l'objecte
-            if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
-                System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
-                return; // Torna al menú sense crear res
-            }
+            do {
+                System.out.println("Inici d'inscripcions?");
+                dataIniciInscripcio = llegirData();
+                
+                System.out.println("Fi d'inscripcions?");
+                dataFiInscripcio = llegirData();
+                
+                if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
+                    System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
+                    System.out.println("Si us plau, torna a introduir les dates.");
+                } else {
+                    datesValides = true;
+                }
+                
+            } while (!datesValides);
             
             System.out.println("Introdueix el nombre de places de l'activitat");
             limitPlaces = Integer.parseInt(teclat.nextLine());
@@ -616,6 +629,7 @@ public class App {
         Data dataActivitat = null;
         int periodeVisualitzacio;
         String enllac;
+        boolean datesValides = false;
         
         System.out.println("Introdueix el nom de l'activitat");
         nom = teclat.nextLine();
@@ -675,19 +689,25 @@ public class App {
             } catch (NumberFormatException e) {
                 System.out.println("Entrada incorrecta. Respon 0 o 1.");
             }
+        }
 
-        System.out.println("Inici d'inscripcions?");
-        dataIniciInscripcio = llegirData();
-        System.out.println("Fi d'inscripcions?");
-        dataFiInscripcio = llegirData();
-
-        // Validació ABANS de crear l'objecte
+        do {
+            System.out.println("Inici d'inscripcions?");
+            dataIniciInscripcio = llegirData();
+            
+            System.out.println("Fi d'inscripcions?");
+            dataFiInscripcio = llegirData();
+            
             if (!dataIniciInscripcio.esAnterior(dataFiInscripcio)) {
                 System.out.println("Error: La data de fi d'inscripció ha de ser posterior a la d'inici.");
-                return; // Torna al menú sense crear res
+                System.out.println("Si us plau, torna a introduir les dates.");
+            } else {
+                datesValides = true;
             }
+            
+        } while (!datesValides);
 
-        }
+        
         System.out.println("Quan comença l'activitat?");
         dataActivitat = llegirData();
         
