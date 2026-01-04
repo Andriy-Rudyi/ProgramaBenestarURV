@@ -24,8 +24,8 @@ public class App {
     static boolean correcte = false; //pels try catch
     public static void main(String[] args){
         int opcio = 0;
-        llistaActivitats = carregarLlistaActivitats("activitats.bin");
-        baseDadesUsuaris = carregarBaseDadesUsuaris("usuaris.csv");
+        llistaActivitats = carregarLlistaActivitats("data/activitats.bin");
+        baseDadesUsuaris = carregarBaseDadesUsuaris("data/usuaris.csv");
         do {
             correcte = false;
             while (!correcte) {
@@ -119,8 +119,8 @@ public class App {
         while(!correcte){
             String resposta = teclat.next();
             if(resposta.equals("Y")){ 
-                guardarLlistaActivitats("activitats.bin");
-                guardarBaseDadesUsuaris("usuaris.csv");
+                guardarLlistaActivitats("data/activitats.bin");
+                guardarBaseDadesUsuaris("data/usuaris.csv");
                 correcte = true;
                 System.out.println("Fitxer guardat");
             } else if (!resposta.equals("N")){
