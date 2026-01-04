@@ -178,11 +178,7 @@ public class ProvesLlistaActivitat {
         }
 
         // Retorna subllista per tipus d'activitat
-        try {
-            System.out.println("Subllista d'activitats Online:" + llistaActivitats.obtenirPerTipus("Online"));
-        } catch (ActivitatDuplicadaException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.println("Subllista d'activitats Online:" + llistaActivitats.obtenirPerTipus("Online"));
         
         // Obté totes les activitats
         System.out.println("Totes les activitats:" + llistaActivitats.obtenirTotes());
