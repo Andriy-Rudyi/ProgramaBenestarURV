@@ -396,6 +396,7 @@ public class App {
         double preu;
         String horari, ciutat;
         boolean datesValides = false;
+        boolean dataIniciActivitatValida = false;
         
         try {
             System.out.println("Introdueix el nom de l'activitat");
@@ -479,9 +480,19 @@ public class App {
             
             System.out.println("Introdueix el preu de l'activitat");
             preu = Double.parseDouble(teclat.nextLine());
-            
-            System.out.println("Quan es fa l'activitat?");
-            dataActivitat = llegirData();
+
+            do {
+                System.out.println("Quan es fa l'activitat?");
+                dataActivitat = llegirData();
+                
+                if (!dataFiInscripcio.esAnterior(dataActivitat)) {
+                    System.out.println("Error: La data quan es fa l'activitat ha de ser posterior a la de fi d'inscripció.");
+                    System.out.println("Si us plau, torna a introduir la data.");
+                } else {
+                    dataIniciActivitatValida = true;
+                }
+                
+            } while (!dataIniciActivitatValida);
     
             System.out.println("Introdueix l'horari de l'activitat");
             horari = teclat.nextLine();
@@ -511,6 +522,7 @@ public class App {
         double preu;
         String horari, nomCentre, ciutat;
         boolean datesValides = false;
+        boolean dataIniciActivitatValida = false;
         
         try {
             System.out.println("Introdueix el nom de l'activitat");
@@ -594,9 +606,19 @@ public class App {
             
             System.out.println("Introdueix el preu de l'activitat");
             preu = Double.parseDouble(teclat.nextLine());
-            
-            System.out.println("Quin és el primer dia que es fa l'activitat?");
-            dataInici = llegirData();
+
+            do {
+                System.out.println("Quin és el primer dia que es fa l'activitat?");
+                dataInici = llegirData();
+                
+                if (!dataFiInscripcio.esAnterior(dataInici)) {
+                    System.out.println("Error: La data del primer dia en què es fa l'activitat ha de ser posterior a la data de fi d'inscripció.");
+                    System.out.println("Si us plau, torna a introduir la data.");
+                } else {
+                    dataIniciActivitatValida = true;
+                }
+                
+            } while (!dataIniciActivitatValida);
 
             System.out.println("Introdueix el nombre de setmanes que es fa l'activitat");
             numSetmanes = Integer.parseInt(teclat.nextLine());
@@ -630,6 +652,7 @@ public class App {
         int periodeVisualitzacio;
         String enllac;
         boolean datesValides = false;
+        boolean dataIniciActivitatValida = false;
         
         System.out.println("Introdueix el nom de l'activitat");
         nom = teclat.nextLine();
@@ -707,9 +730,18 @@ public class App {
             
         } while (!datesValides);
 
-        
-        System.out.println("Quan comença l'activitat?");
-        dataActivitat = llegirData();
+        do {
+                System.out.println("Quan comença l'activitat?");
+                dataActivitat = llegirData();
+                
+                if (!dataFiInscripcio.esAnterior(dataActivitat)) {
+                    System.out.println("Error: La data en què comença l'activitat ha de ser posterior a la data de fi d'inscripció");
+                    System.out.println("Si us plau, torna a introduir la data.");
+                } else {
+                    dataIniciActivitatValida = true;
+                }
+                
+            } while (!dataIniciActivitatValida);
         
         System.out.println("Introdueix el nombre de dies que estarà disponible l'activitat");
         periodeVisualitzacio = Integer.parseInt(teclat.nextLine());
