@@ -26,6 +26,7 @@ public abstract class Activitat implements Serializable{
     protected Data dataFiInscripcio;
     protected int limitPlaces;
     protected double preu;
+    protected Data dataIniciActivitat;
     protected LlistaInscripcions llistaInscripcions;
     protected LlistaValoracions llistaValoracions;
     
@@ -41,7 +42,7 @@ public abstract class Activitat implements Serializable{
 
     // mantenir el DataFiInscripcioException al constructor per si algú crea l'activitat des d'un altre lloc.
     public Activitat(String nom, boolean[] collectius, Data dataIniciInscripcio, 
-                     Data dataFiInscripcio, int limitPlaces, double preu) throws DataFiInscripcioException {
+                     Data dataFiInscripcio, int limitPlaces, double preu, Data dataIniciActivitat) throws DataFiInscripcioException {
         
         if (dataFiInscripcio.esAnterior(dataIniciInscripcio)) {
             throw new DataFiInscripcioException("Data de fi d'inscripció no pot ser anterior a la data d'inici d'inscripció");
@@ -56,6 +57,7 @@ public abstract class Activitat implements Serializable{
             this.dataFiInscripcio = dataFiInscripcio;
             this.limitPlaces = limitPlaces;
             this.preu = preu;
+            this.dataIniciActivitat = dataIniciActivitat;
             llistaInscripcions = new LlistaInscripcions(limitPlaces);
             llistaValoracions = new LlistaValoracions(limitPlaces);
         }

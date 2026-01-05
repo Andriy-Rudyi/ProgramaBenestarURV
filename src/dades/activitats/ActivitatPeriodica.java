@@ -12,7 +12,7 @@ import dades.excepcions.DataIncorrectaExcepction;
 public class ActivitatPeriodica extends Activitat {
     private int diaSetmana;
     private String horari;
-    private Data dataInici;
+    // private Data dataInici;
     private int numSetmanes;
     private String nomCentre;
     private String ciutat;
@@ -27,7 +27,7 @@ public class ActivitatPeriodica extends Activitat {
      * @param preu Preu total de l'activitat
      * @param diaSetmana Dia de la setmana (1-7)
      * @param horari Horari de l'activitat
-     * @param dataInici Data d'inici de l'activitat
+     * @param dataIniciActivitat Data d'inici de l'activitat
      * @param numSetmanes Número de setmanes que dura
      * @param nomCentre Nom del centre
      * @param ciutat Ciutat on es realitza
@@ -35,12 +35,12 @@ public class ActivitatPeriodica extends Activitat {
      */
     public ActivitatPeriodica(String nom, boolean[] collectius, Data dataIniciInscripcio,
                               Data dataFiInscripcio, int limitPlaces, double preu,
-                              String horari, Data dataInici, 
+                              String horari, Data dataIniciActivitat, 
                               int numSetmanes, String nomCentre, String ciutat) throws DataFiInscripcioException {
-        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu);
-        this.diaSetmana = dataInici.calcularDiaSetmana();
+        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu, dataIniciActivitat);
+        this.diaSetmana = dataIniciActivitat.calcularDiaSetmana();
         this.horari = horari;
-        this.dataInici = dataInici;
+        // this.dataInici = dataInici;
         this.numSetmanes = numSetmanes;
         this.nomCentre = nomCentre;
         this.ciutat = ciutat;
@@ -49,7 +49,7 @@ public class ActivitatPeriodica extends Activitat {
     // Getters
     public int getDiaSetmana() { return diaSetmana; }
     public String getHorari() { return horari; }
-    public Data getDataInici() { return dataInici; }
+    public Data getDataInici() { return dataIniciActivitat; }
     public int getNumSetmanes() { return numSetmanes; }
     public String getNomCentre() { return nomCentre; }
     public String getCiutat() { return ciutat; }
@@ -75,7 +75,7 @@ public class ActivitatPeriodica extends Activitat {
     public Data getDataFi() {
         Data dataFi = null;
 		try {
-            dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+            dataFi = new Data(dataIniciActivitat.getDia(), dataIniciActivitat.getMes(), dataIniciActivitat.getAny());
 		} catch (DataIncorrectaExcepction e) {
 			throw new IllegalStateException("Error intern, invàlida copiant la data inicial " + e);
 		}
@@ -88,7 +88,7 @@ public class ActivitatPeriodica extends Activitat {
     @Override
     public boolean estaActiva(Data dataAvui) {
         Data dataFi = getDataFi();
-        return !dataAvui.dataInferiorAltra(dataInici) && !dataFi.dataInferiorAltra(dataAvui);
+        return !dataAvui.dataInferiorAltra(dataIniciActivitat) && !dataFi.dataInferiorAltra(dataAvui);
     }
     
     @Override
@@ -110,9 +110,9 @@ public class ActivitatPeriodica extends Activitat {
     
     @Override
     public String getInformacioEspecifica() {
-        return "Dia: " + dataInici.getNomDiaSetmana() + "\n" +
+        return "Dia: " + dataIniciActivitat.getNomDiaSetmana() + "\n" +
                "Horari: " + horari + "\n" +
-               "Inici: " + dataInici + "\n" +
+               "Inici: " + dataIniciActivitat + "\n" +
                "Durada: " + numSetmanes + " setmanes\n" +
                "Fi: " + getDataFi() + "\n" +
                "Centre: " + nomCentre + ", " + "Ciutat: " + ciutat + "\n";
@@ -126,7 +126,7 @@ public class ActivitatPeriodica extends Activitat {
         ActivitatPeriodica copia = null;
         try {
             copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                              limitPlaces, preu, horari, dataInici,
+                                                              limitPlaces, preu, horari, dataIniciActivitat,
                                                               numSetmanes, nomCentre, ciutat);
         } catch (DataFiInscripcioException e) {
             System.out.println(e.getMessage());;

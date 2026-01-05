@@ -8,7 +8,7 @@ import dades.excepcions.DataFiInscripcioException;
  * @author PROG
  */
 public class ActivitatUnDia extends Activitat {
-    private Data data;
+    // private Data data;
     private String horari;
     private String ciutat;
     
@@ -20,39 +20,39 @@ public class ActivitatUnDia extends Activitat {
      * @param dataFiInscripcio Fi del període d'inscripció
      * @param limitPlaces Límit de places
      * @param preu Preu de l'activitat
-     * @param data Data en què es realitza l'activitat
+     * @param dataIniciActivitat Data en què es realitza l'activitat
      * @param horari Horari de l'activitat
      * @param ciutat Ciutat on es realitza
      * @throws DataFiInscripcioException 
      */
     public ActivitatUnDia(String nom, boolean[] collectius, Data dataIniciInscripcio,
                           Data dataFiInscripcio, int limitPlaces, double preu,
-                          Data data, String horari, String ciutat) throws DataFiInscripcioException {
-        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu);
-        this.data = data;
+                          Data dataIniciActivitat, String horari, String ciutat) throws DataFiInscripcioException {
+        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu, dataIniciActivitat);
+        // this.data = data;
         this.horari = horari;
         this.ciutat = ciutat;
     }
     
     // Getters específics
-    public Data getData() { return data; }
+    public Data getData() { return dataIniciActivitat; }
     public String getHorari() { return horari; }
     public String getCiutat() { return ciutat; }
     
     @Override
     public boolean estaActiva(Data dataAvui) {
         // Una activitat d'un dia està activa només el dia que es realitza
-        return data.equals(dataAvui);
+        return dataIniciActivitat.equals(dataAvui);
     }
     
     @Override
     public boolean teClasseAvui(Data dataAvui) {
-        return data.equals(dataAvui);
+        return dataIniciActivitat.equals(dataAvui);
     }
     
     @Override
     public boolean haAcabat(Data dataAvui) {
-        return data.dataInferiorAltra(dataAvui);
+        return dataIniciActivitat.dataInferiorAltra(dataAvui);
     }
     
     @Override
@@ -62,7 +62,7 @@ public class ActivitatUnDia extends Activitat {
     
     @Override
     public String getInformacioEspecifica() {
-        return "Data: " + data + "\n" +
+        return "Data: " + dataIniciActivitat + "\n" +
                "Horari: " + horari + "\n" +
                "Ciutat: " + ciutat + "\n";
     }
@@ -75,7 +75,7 @@ public class ActivitatUnDia extends Activitat {
         ActivitatUnDia copia = null;
         try {
             copia = new ActivitatUnDia(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                       limitPlaces, preu, data, horari, ciutat);
+                                                       limitPlaces, preu, dataIniciActivitat, horari, ciutat);
         } catch (DataFiInscripcioException e) {
             System.out.println(e.getMessage());
         }
