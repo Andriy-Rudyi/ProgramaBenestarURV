@@ -9,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.concurrent.CancellationException;
 
 import dades.activitats.*;
 import dades.excepcions.*;
