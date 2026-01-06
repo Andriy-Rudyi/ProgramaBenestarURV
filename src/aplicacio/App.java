@@ -1064,12 +1064,14 @@ public class App {
                 throw new IllegalArgumentException("Format correcte: DD MM YYYY");
 
                 dia = Integer.parseInt(parts[0]);
-                if (parts[1].equals("9") | parts[1].equals("09")) mes = 9;
+                if (parts[1].equals("9") || parts[1].equals("09")) mes = 9;
                 else if (parts[1].equals("10")) mes = 10;
                 else if (parts[1].equals("11")) mes = 11;
                 else if (parts[1].equals("12")) mes = 12;
                 else throw new IllegalArgumentException("Mes incorrecte. Només de setembre a desembre (9-12).");
-                any = Integer.parseInt(parts[2]);
+                // any = Integer.parseInt(parts[2]);
+                if (parts[2].equals("2025")) any = 2025;
+                else throw new IllegalArgumentException("Any incorrecte. Només s'accepta 2025.");
 
                 data = new Data(dia, mes, any);
                 correcte = true;
