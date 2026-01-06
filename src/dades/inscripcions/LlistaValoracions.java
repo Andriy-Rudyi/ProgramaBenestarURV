@@ -12,6 +12,11 @@ public class LlistaValoracions implements Serializable{
     int[] valoracions;
     int numValoracions;
 
+    /**
+    * Constructor de LlistaValoracions
+    * @param numPlaces Número de places de l'activitat (0 per places il·limitades)
+    * @throws IllegalArgumentException Si el número de places és negatiu
+    */
     public LlistaValoracions(int numPlaces){
         if (numPlaces > 0) {
             llistaUsuaris = new Usuari[numPlaces];
@@ -22,7 +27,8 @@ public class LlistaValoracions implements Serializable{
             valoracions = new int[1];
             numValoracions = 0;
         } else {
-            System.out.println("El número de places no pot ser negatiu");
+            // System.out.println("El número de places no pot ser negatiu");
+            throw new IllegalArgumentException("El número de places no pot ser negatiu");
         }
     }
 

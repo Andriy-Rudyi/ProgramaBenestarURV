@@ -9,7 +9,6 @@ import dades.excepcions.DataIncorrectaExcepction;
  * @author PROG
  */
 public class ActivitatOnline extends Activitat {
-    // private Data dataInici;
     private int periodeVisualitzacio; // en dies
     private String enllac;
     
@@ -29,7 +28,6 @@ public class ActivitatOnline extends Activitat {
                            int periodeVisualitzacio, String enllac) throws DataFiInscripcioException {
         // Les activitats online són gratuïtes (preu = 0) i sense límit de places (limitPlaces = 0)
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 0, 0.0, dataIniciActivitat);
-        // this.dataInici = dataInici;
         this.periodeVisualitzacio = periodeVisualitzacio;
         this.enllac = enllac;
     }

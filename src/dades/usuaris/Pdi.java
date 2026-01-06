@@ -14,7 +14,7 @@ public class Pdi extends Usuari{
      * @param adreca Part del correu abans de @urv.cat
      * @param departament Departament on treballa
      * @param campus Campus on treballa
-     * @throws ColectiuInvalidException si el col·lectiu no és "PDI"
+     * @throws IllegalArgumentException Si l'adreça de correu electrònic no és vàlida per a PDI
      */
     public Pdi(String alies, String adreca, String departament, String campus){
         this.alies = alies;

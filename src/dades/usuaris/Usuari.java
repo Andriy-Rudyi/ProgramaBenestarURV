@@ -97,6 +97,19 @@ public abstract class Usuari implements Serializable{
      */
     public abstract Usuari copia();
 
+    /**
+     * Comprova si una adreça (per exemple, el nom d'usuari d'un correu electrònic)
+     * és vàlida segons unes regles bàsiques de format.
+     *
+     * L'adreça es considera vàlida si:
+     * - No és nul·la ni buida
+     * - No comença ni acaba amb un punt
+     * - No conté dos punts consecutius
+     * - Només conté lletres, números o els caràcters especials: . _ + -
+     *
+     * @param adreca cadena de text amb l'adreça a validar
+     * @return true si l'adreça és vàlida; false en cas contrari
+     */
     protected boolean adrecaValida(String adreca) {
 
         if (adreca == null || adreca.isEmpty()) {

@@ -38,6 +38,8 @@ public abstract class Activitat implements Serializable{
      * @param dataFiInscripcio Data de fi del període d'inscripció
      * @param limitPlaces Límit de places (0 per il·limitat)
      * @param preu Preu de l'activitat
+     * @param dataIniciActivitat Data d'inici de l'activitat
+     * @throws DataFiInscripcioException Si la data de fi d'inscripció és anterior a la data d'inici d'inscripció
      */
 
     // mantenir el DataFiInscripcioException al constructor per si algú crea l'activitat des d'un altre lloc.
@@ -118,11 +120,14 @@ public abstract class Activitat implements Serializable{
     
     /**
      * Afegeix una valoració a l'activitat
+     * @param avui Data actual per comprovar si l'activitat està activa
+     * @param usuari Usuari que realitza la valoració
      * @param valoracio Nota entre 0 i 10
-     * @return true si la valoració s'ha afegit correctament
+     * @return true si la valoració s'ha afegit correctament, false si la valoració és invàlida o l'activitat està activa
+     * @throws UsuariDuplicatException Si l'usuari ja ha valorat l'activitat
      */
     public boolean afegirValoracio(Data avui, Usuari usuari, int valoracio) throws UsuariDuplicatException{
-        if (valoracio < 0 || valoracio > 10 || this.estaActiva(avui)) {     //CAL COMPROVAR USUARI INSCRIT.
+        if (valoracio < 0 || valoracio > 10 || this.estaActiva(avui) || !this.teUsuariInscrit(usuari.getAlies())) {     //CAL COMPROVAR USUARI INSCRIT.
             return false;
         }
         llistaValoracions.afegirValoracio(usuari, valoracio);
@@ -130,10 +135,10 @@ public abstract class Activitat implements Serializable{
     }
 
     /**
-     * Afegeix un usuari a la llista inscripcions
-     * @param usuari
-     * @throws UsuariDuplicatException
-     * @throws ActivitatDuplicadaException
+     * Afegeix un usuari a la llista d'inscripcions
+     * @param usuari L'usuari que es vol inscriure a l'activitat
+     * @throws UsuariDuplicatException Si l'usuari ja està inscrit a l'activitat
+     * @throws ActivitatDuplicadaException Si l'activitat ja està duplicada
      */
     public void inscriureUsuari(Usuari usuari) throws UsuariDuplicatException, ActivitatDuplicadaException{
         llistaInscripcions.afegir(usuari);

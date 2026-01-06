@@ -8,7 +8,6 @@ import dades.excepcions.DataFiInscripcioException;
  * @author PROG
  */
 public class ActivitatUnDia extends Activitat {
-    // private Data data;
     private String horari;
     private String ciutat;
     
@@ -29,7 +28,6 @@ public class ActivitatUnDia extends Activitat {
                           Data dataFiInscripcio, int limitPlaces, double preu,
                           Data dataIniciActivitat, String horari, String ciutat) throws DataFiInscripcioException {
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu, dataIniciActivitat);
-        // this.data = data;
         this.horari = horari;
         this.ciutat = ciutat;
     }

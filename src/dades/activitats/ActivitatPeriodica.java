@@ -12,7 +12,6 @@ import dades.excepcions.DataIncorrectaExcepction;
 public class ActivitatPeriodica extends Activitat {
     private int diaSetmana;
     private String horari;
-    // private Data dataInici;
     private int numSetmanes;
     private String nomCentre;
     private String ciutat;
@@ -40,7 +39,6 @@ public class ActivitatPeriodica extends Activitat {
         super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu, dataIniciActivitat);
         this.diaSetmana = dataIniciActivitat.calcularDiaSetmana();
         this.horari = horari;
-        // this.dataInici = dataInici;
         this.numSetmanes = numSetmanes;
         this.nomCentre = nomCentre;
         this.ciutat = ciutat;
@@ -53,20 +51,6 @@ public class ActivitatPeriodica extends Activitat {
     public int getNumSetmanes() { return numSetmanes; }
     public String getNomCentre() { return nomCentre; }
     public String getCiutat() { return ciutat; }
-    
-    
-    // substiuït pel metode getDataFi()
-    //
-    // /**
-    //  * Afegeix setmanes a una data
-    //  */
-    // private Data afegirSetmanes(Data data, int setmanes) {
-    //     Data nova = new Data(data.getDia(), data.getMes(), data.getAny());
-    //     for (int i = 0; i < setmanes * 7; i++) {
-    //         nova = nova.diaSeguent();
-    //     }
-    //     return nova;
-    // }
     
     /**
      * Calcula la data de fi de l'activitat

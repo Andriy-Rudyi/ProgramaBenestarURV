@@ -184,40 +184,10 @@ public class Data implements Serializable{
 		return(dia+"/"+mes+"/"+any);
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////
-	/// 
-    // Mètodes de classe (STATIC).
-	// no s'apliquen sobre el contingut d'una instància de data sinó sobre valors
-	// que es reben per paràmetre.
-	// són mètodes auxiliars i per això estan definits com a private dins la classe
-	// no són accessibles des de la classe Aplicacio (App.java)
-
-	private static boolean esDataCorrecta(int dia, int mes, int any) {
-		boolean hoEs=true;
-		if (dia < 1 || dia > 31) { // dia incorrecte
-			hoEs= false;
-		}
-		else if (mes < 1 || mes > 12) { // mes incorrecte
-			hoEs= false;
-		}
-		else if (dia > diesMes(mes, any)) { // dia del mes incorrecte
-			hoEs= false;
-		}
-		return hoEs;
-	}
-
-	private static boolean esAnyTraspas(int any) { // ens estalviem crear una instancia de data
-		if ((any % 4 == 0) && ((any % 100 != 0) || (any % 400 == 0))) {
-			return true;
-		} 
-		else {
-			return false;
-		}
-	}
-
+	
 	public static int diesMes(int mes, int any) { // per saber quants dies te un mes d'un any
-		int diesMes;
-		if (mes == 2) {
+	int diesMes;
+	if (mes == 2) {
 			if (esAnyTraspas(any)) {
 				diesMes = 29;
 			} 
@@ -244,11 +214,11 @@ public class Data implements Serializable{
 	}
 
 	/**
-     * Calcula el dia de la setmana d'una data (1=Dilluns, ..., 7=Diumenge)
-     * Algorisme de Zeller modificat
-     */
+	 * Calcula el dia de la setmana d'una data (1=Dilluns, ..., 7=Diumenge)
+	 * Algorisme de Zeller modificat
+	*/
     public int calcularDiaSetmana() {
-        if (mes < 3) {
+		if (mes < 3) {
             mes += 12;
             any--;
         }
@@ -260,24 +230,24 @@ public class Data implements Serializable{
         int diaSetmana = ((h + 5) % 7) + 1;
         return diaSetmana;
     }
-
+	
 	/**
      * Retorna el nom del dia de la setmana
-     * @return Nom del dia
+	 * @return Nom del dia
      */
-    public String getNomDiaSetmana() {
+	public String getNomDiaSetmana() {
         String[] dies = {"", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"};
         if (calcularDiaSetmana() >= 1 && calcularDiaSetmana() <= 7) {
-            return dies[calcularDiaSetmana()];
+			return dies[calcularDiaSetmana()];
         }
         return "Desconegut";
     }
-
+	
 	/**
 	 * Retorna el nom del mes
 	 * @param mes Enter que representa el mes [1-12]
 	 * @return Nom del mes
-	 */
+	*/
     public static String getNomMes(int mes){
         String[] mesos = {"Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"};
         if (mes >= 1 && mes <= 12) {
@@ -290,11 +260,42 @@ public class Data implements Serializable{
 	 * Compara si una data es anterior de l'altra
 	 * @param altra
 	 * @return true si una data es anterior de l'altre, false si no ho es
-	 */
+	*/
 	public boolean esAnterior(Data altra) {
-    	if (any != altra.getAny()) return any < altra.getAny();
+		if (any != altra.getAny()) return any < altra.getAny();
     	if (mes != altra.getMes()) return mes < altra.getMes();
     	return dia < altra.getDia();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	/// 
+	// Mètodes de classe (STATIC).
+	// no s'apliquen sobre el contingut d'una instància de data sinó sobre valors
+	// que es reben per paràmetre.
+	// són mètodes auxiliars i per això estan definits com a private dins la classe
+	// no són accessibles des de la classe Aplicacio (App.java)
+
+	private static boolean esDataCorrecta(int dia, int mes, int any) {
+		boolean hoEs=true;
+		if (dia < 1 || dia > 31) { // dia incorrecte
+			hoEs= false;
+		}
+		else if (mes < 1 || mes > 12) { // mes incorrecte
+			hoEs= false;
+		}
+		else if (dia > diesMes(mes, any)) { // dia del mes incorrecte
+			hoEs= false;
+		}
+		return hoEs;
+	}
+
+	private static boolean esAnyTraspas(int any) { // ens estalviem crear una instancia de data
+		if ((any % 4 == 0) && ((any % 100 != 0) || (any % 400 == 0))) {
+			return true;
+		} 
+		else {
+			return false;
+		}
 	}
 
 }

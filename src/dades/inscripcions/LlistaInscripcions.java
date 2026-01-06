@@ -17,11 +17,11 @@ public class LlistaInscripcions implements Serializable{
     private LlistaEspera espera;
     int numPlaces;
 
-    // public LlistaInscripcions(){    
-    //     inscrits = new LlistaUsuaris();
-    //     numPlaces = 0;
-    // }
-
+    /**
+     * Constructor de LlistaInscripcions
+     * @param numPlaces Número de places disponibles (0 per places il·limitades)
+     * @throws IllegalArgumentException Si el número de places és negatiu
+     */
     public LlistaInscripcions(int numPlaces){
         if (numPlaces > 0){                                     // Constructor amb places limitades
             inscrits = new LlistaUsuaris();         
@@ -35,6 +35,12 @@ public class LlistaInscripcions implements Serializable{
         }
     }
 
+    /**
+     * Afegeix un usuari a la llista d'inscrits o a la llista d'espera
+     * @param usuari Usuari que es vol inscriure
+     * @return true si l'usuari s'ha afegit correctament (a inscrits o a espera), false si no s'ha pogut afegir
+     * @throws UsuariDuplicatException Si l'usuari ja està inscrit a l'activitat
+     */
     public boolean afegir(Usuari usuari) throws UsuariDuplicatException{
         if (inscrits.buscar(usuari.getAlies()) != null ) // Per evitar inscriure a la llista d'espera si ja es troba a inscrits
             throw new UsuariDuplicatException("L'usuari amb alias " + usuari.getAlies() + " ja existeix");
@@ -49,6 +55,13 @@ public class LlistaInscripcions implements Serializable{
         }
     }
 
+    /**
+     * Elimina un usuari de la llista d'inscrits o de la llista d'espera.
+     * Si s'elimina un inscrit i hi ha usuaris en espera, el primer de la llista d'espera passa a inscrits.
+     * @param nom Àlies de l'usuari a eliminar
+     * @return true si l'usuari s'ha eliminat correctament, false si no s'ha trobat
+     * @throws IllegalStateException Si hi ha un error intern en passar un usuari d'espera a inscrits
+     */
     public boolean eliminar(String nom){
         if (!inscrits.eliminar(nom)){ 
             if (espera.eliminar(nom)) return true;
@@ -93,6 +106,10 @@ public class LlistaInscripcions implements Serializable{
     return espera;
     }
 
+    /**
+     * Crea una còpia de la llista d'inscripcions
+     * @return Nova instància de LlistaInscripcions amb còpies de les llistes d'inscrits i espera
+     */
     public LlistaInscripcions copia() {
         LlistaInscripcions duplicat = new LlistaInscripcions(numPlaces);
         duplicat.inscrits = inscrits.copia();
