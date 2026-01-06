@@ -133,6 +133,7 @@ public class App {
 
     private static void mostrarMenuActivitats() {
         System.out.println("\n===== MENÚ PRINCIPAL ACTIVITATS =====");
+        System.out.println("Data actual: " + avui);
         System.out.println("1. Indicar la data del dia d'avui");
         System.out.println("2. Mostrar les dades de les llistes");
         System.out.println("3. Mostrar activitats en període d'inscripció");
