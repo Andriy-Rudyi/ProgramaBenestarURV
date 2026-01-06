@@ -27,7 +27,6 @@ public class LlistaValoracions implements Serializable{
             valoracions = new int[1];
             numValoracions = 0;
         } else {
-            // System.out.println("El número de places no pot ser negatiu");
             throw new IllegalArgumentException("El número de places no pot ser negatiu");
         }
     }

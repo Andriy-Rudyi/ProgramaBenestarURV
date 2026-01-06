@@ -127,7 +127,7 @@ public abstract class Activitat implements Serializable{
      * @throws UsuariDuplicatException Si l'usuari ja ha valorat l'activitat
      */
     public boolean afegirValoracio(Data avui, Usuari usuari, int valoracio) throws UsuariDuplicatException{
-        if (valoracio < 0 || valoracio > 10 || this.estaActiva(avui) || !this.teUsuariInscrit(usuari.getAlies())) {     //CAL COMPROVAR USUARI INSCRIT.
+        if (valoracio < 0 || valoracio > 10 || this.estaActiva(avui) || !this.teUsuariInscrit(usuari.getAlies())) {
             return false;
         }
         llistaValoracions.afegirValoracio(usuari, valoracio);
