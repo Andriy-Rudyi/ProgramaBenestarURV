@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.concurrent.CancellationException;
 
 import dades.activitats.*;
 import dades.excepcions.*;
@@ -159,8 +160,13 @@ public class App {
     }
 
     private static void opcio1(){  
-        System.out.println("Introdueix la data d'avui:");
-        avui = llegirData();
+        // System.out.println("Introdueix la data d'avui:");
+        try {
+            avui = llegirData();
+        } catch (CancelarOperacioException e) {
+            System.out.println("Creació d'activitat cancel·lada.");
+            return;
+        }
     }
 
     private static void opcio2(){
