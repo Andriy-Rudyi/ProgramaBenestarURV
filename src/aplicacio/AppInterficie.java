@@ -144,8 +144,6 @@ public class AppInterficie extends JFrame {
             for (int i = 0; i < activitatsDia.length; i++){
                 Activitat a = activitatsDia[i];
                 JButton textBoto = new JButton(a.getNom());
-                textBoto.setBorderPainted(false);
-                textBoto.setContentAreaFilled(false);
                 textBoto.setFocusPainted(false);
                 textBoto.setOpaque(false);
                 textBoto.setHorizontalAlignment(SwingConstants.LEFT);
