@@ -44,7 +44,7 @@ public class AppInterficie extends JFrame {
 
     public JPanel panellSuperior() {
         
-        JPanel panellSuperior = new JPanel(new GridLayout(1, 5));
+        JPanel panellSuperior = new JPanel(new GridLayout(1, 5));   // BUIT | BUIT | PANELL_MES | BUIT | PANELLDRETA
 
         // dos components buides per centrar panellMes
         panellSuperior.add(new JLabel()); 
@@ -57,7 +57,7 @@ public class AppInterficie extends JFrame {
         botoPosterior.addActionListener(accioCanviarMes);
         
         panellMes.add(botoAnterior, BorderLayout.WEST);
-        panellMes.add(etiquetaMesAny, BorderLayout.CENTER);  //SwingConstants.CENTER per centrar el text dins del seu lloc
+        panellMes.add(etiquetaMesAny, BorderLayout.CENTER);  
         panellMes.add(botoPosterior, BorderLayout.EAST);
         panellSuperior.add(panellMes);
         
@@ -121,7 +121,7 @@ public class AppInterficie extends JFrame {
     public void asignarColorBoto(JButton boto, int dia, int mes, int any) throws DataIncorrectaExcepction{
         boto.setOpaque(true);
         boto.setBorderPainted(true);
-        if ((colectiu == "Totes" && llistaActivitats.obtenirActives(new Data(dia, mes, any)).length != 0 ) ||
+        if ((colectiu.equals("Totes") && llistaActivitats.obtenirActives(new Data(dia, mes, any)).length != 0 ) ||
         (llistaActivitats.obtenirPerTipus(colectiu).obtenirActives(new Data(dia, mes, any)).length != 0) ) boto.setBackground(new Color(255, 223, 0));
         else boto.setBackground(new Color(245, 245, 245));
     }
@@ -144,8 +144,6 @@ public class AppInterficie extends JFrame {
             for (int i = 0; i < activitatsDia.length; i++){
                 Activitat a = activitatsDia[i];
                 JButton textBoto = new JButton(a.getNom());
-                textBoto.setBorderPainted(false);
-                textBoto.setContentAreaFilled(false);
                 textBoto.setFocusPainted(false);
                 textBoto.setOpaque(false);
                 textBoto.setHorizontalAlignment(SwingConstants.LEFT);
