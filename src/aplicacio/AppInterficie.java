@@ -177,7 +177,7 @@ public class AppInterficie extends JFrame {
     }
 
     public static void main(String[] args) {
-        llistaActivitats = App.carregarLlistaActivitats("data/activitats.bin");
+        llistaActivitats = LlistaActivitats.carregarLlistaActivitats("data/activitats.bin");
         try {
             new AppInterficie("Finestra principal", 9, 2025);
         } catch (DataIncorrectaExcepction e) {

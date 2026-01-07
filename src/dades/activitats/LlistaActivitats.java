@@ -1,5 +1,10 @@
 package dades.activitats;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import dades.Data;
@@ -273,6 +278,25 @@ public class LlistaActivitats implements Serializable{
     
     public boolean esBuida() { return numActivitats == 0; }
     
+    public static LlistaActivitats carregarLlistaActivitats(String nomFitxer) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFitxer))) {
+            return (LlistaActivitats) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error carregant llista d'activitats, es crearà una llista buida. " + e);
+            return new LlistaActivitats();
+        }
+    }
+
+    public void guardarLlistaActivitats(String nomFitxer) {
+        try{ 
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomFitxer)); 
+            oos.writeObject(this); // Guarda la lista completa
+            oos.close();
+        } catch (IOException e) {
+            System.err.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
     @Override
     public String toString() {
         String info = "LLISTA ACTIVITATS amb " + numActivitats + " activitats:\n";
