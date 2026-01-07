@@ -1,5 +1,10 @@
 package dades.activitats;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import dades.Data;
@@ -273,6 +278,39 @@ public class LlistaActivitats implements Serializable{
     
     public boolean esBuida() { return numActivitats == 0; }
     
+    /**
+     * Carrega una llista d'activitats des d'un fitxer mitjançant serialització.
+     * Si es produeix algun error durant la lectura, es crea i es retorna
+     * una LlistaActivitats buida.
+     *
+     * @param nomFitxer nom del fitxer des d'on es carregarà la llista d'activitats
+     * @return la llista d'activitats carregada o una llista buida en cas d'error
+     */
+    public static LlistaActivitats carregarLlistaActivitats(String nomFitxer) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFitxer))) {
+            return (LlistaActivitats) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error carregant llista d'activitats, es crearà una llista buida. " + e);
+            return new LlistaActivitats();
+        }
+    }
+
+    /**
+     * Desa la llista d'activitats actual en un fitxer mitjançant serialització.
+     * Es guarda l'objecte complet de la llista d'activitats.
+     *
+     * @param nomFitxer nom del fitxer on es desarà la llista d'activitats
+     */
+    public void guardarLlistaActivitats(String nomFitxer) {
+        try{ 
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomFitxer)); 
+            oos.writeObject(this); // Guarda la lista completa
+            oos.close();
+        } catch (IOException e) {
+            System.err.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
     @Override
     public String toString() {
         String info = "LLISTA ACTIVITATS amb " + numActivitats + " activitats:\n";

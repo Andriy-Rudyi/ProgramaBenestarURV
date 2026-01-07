@@ -1,12 +1,5 @@
 package aplicacio;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -24,8 +17,8 @@ public class App {
     static boolean correcte = false; //pels try catch
     public static void main(String[] args){
         int opcio = 0;
-        llistaActivitats = carregarLlistaActivitats("data/activitats.bin");
-        baseDadesUsuaris = carregarBaseDadesUsuaris("data/usuaris.csv");
+        llistaActivitats = LlistaActivitats.carregarLlistaActivitats("data/activitats.bin");
+        baseDadesUsuaris.carregarBaseDadesUsuaris("data/usuaris.csv");
         do {
             correcte = false;
             while (!correcte) {
@@ -34,7 +27,7 @@ public class App {
                     opcio = Integer.parseInt(teclat.nextLine());
                     correcte = true;
                 } catch (NumberFormatException e) {
-                    System.out.println("Entrada incorrecta, torna-ho a intentar." + e);
+                    System.out.println("Entrada incorrecta, torna-ho a intentar.");
                 } 
             }
             
@@ -119,8 +112,8 @@ public class App {
         while(!correcte){
             String resposta = teclat.next(); // Check if llegirText() is needed to cancel saving and return to the menu
             if(resposta.equals("Y")){ 
-                guardarLlistaActivitats("data/activitats.bin");
-                guardarBaseDadesUsuaris("data/usuaris.csv");
+                llistaActivitats.guardarLlistaActivitats("data/activitats.bin");
+                baseDadesUsuaris.guardarBaseDadesUsuaris("data/usuaris.csv");
                 correcte = true;
                 System.out.println("Fitxer guardat");
             } else if (!resposta.equals("N")){
@@ -160,7 +153,6 @@ public class App {
     }
 
     private static void opcio1(){  
-        // System.out.println("Introdueix la data d'avui:");
         try {
             avui = llegirData();
         } catch (CancelarOperacioException e) {
@@ -179,7 +171,6 @@ public class App {
                 System.out.println("1. Llista d'activitats");
                 System.out.println("2. Llista d'usuaris");
                 correcte = true;
-                // String num = teclat.nextLine();
                 String num = llegirText();
                 if(num.equals("1")){
                     System.out.println("De quin tipus vols veure les activitats?");
@@ -187,7 +178,6 @@ public class App {
                     System.out.println("2. Un dia");
                     System.out.println("3. Periòdiques");
                     System.out.println("4. Online");
-                    // num = teclat.nextLine();
                     num = llegirText();
                     
                     if(num.equals("1")) imprimir = llistaActivitats.toString();
@@ -204,7 +194,6 @@ public class App {
                     System.out.println("2. PTGAS");
                     System.out.println("3. PDI");
                     System.out.println("4. Estudiants");
-                    // num = teclat.nextLine();
                     num = llegirText();
                     if(num.equals("1")) imprimir = baseDadesUsuaris.toString();
                     else if(num.equals("2")) imprimir = baseDadesUsuaris.obtenirPerColectiu(Usuari.COLECTIU_PTGAS).toString();
@@ -254,7 +243,6 @@ public class App {
     private static void opcio7(){
         try {
             System.out.println("Introdueix el nom de l'activitat a buscar:");
-            // String nomActivitat = teclat.nextLine();
             String nomActivitat = llegirText();
             if (llistaActivitats.buscar(nomActivitat) == null) System.out.println("Activitat no trobada.");
             else System.out.println(llistaActivitats.buscar(nomActivitat));
@@ -268,7 +256,6 @@ public class App {
     private static void opcio8(){
         try {
             System.out.println("Introdueix el nom de l'usuari a buscar:");
-            // String alies = teclat.nextLine();
             String alies = llegirText();
             Usuari usuari= baseDadesUsuaris.buscar(alies);
 
@@ -288,7 +275,6 @@ public class App {
     private static void opcio9(){
         try {
             System.out.println("Introdueix l'àlies de l'usuari per veure les seves activitats:");
-            // String alies = teclat.nextLine();
             String alies = llegirText();
             Usuari usuari = baseDadesUsuaris.buscar(alies);
 
@@ -321,7 +307,6 @@ public class App {
         
         try {
             System.out.print("Introdueix el nom de l'activitat: ");
-            // String nomActivitat = teclat.nextLine();
             String nomActivitat = llegirText();
             Activitat activitatInscripcio = llistaActivitats.buscar(nomActivitat); 
             
@@ -329,7 +314,6 @@ public class App {
                 if (activitatInscripcio.estaEnPeriodeInscripcio(avui)) { 
 
                     System.out.print("Introdueix l'àlies de l'usuari: ");
-                    // String aliesInscripcio = teclat.nextLine();
                     String aliesInscripcio = llegirText();
                     Usuari usuariInscripcio = baseDadesUsuaris.buscar(aliesInscripcio); 
                     if (usuariInscripcio == null) usuariInscripcio = registrarUsuari(aliesInscripcio);
@@ -369,7 +353,6 @@ public class App {
     private static void opcio11(){
         try {
             System.out.print("Nom de l'activitat: ");
-            // Activitat act = llistaActivitats.buscar(teclat.nextLine()); 
             Activitat act = llistaActivitats.buscar(llegirText());
 
             if (act != null) {
@@ -398,13 +381,11 @@ public class App {
         System.out.println("--- BAIXA D'UNA ACTIVITAT ---");
         try {
             System.out.println("Introdueix el nom de l'activitat: ");
-            // String nomActBaixa = teclat.nextLine();
             String nomActBaixa = llegirText();
             
             Activitat activitatBaixa = llistaActivitats.buscar(nomActBaixa); 
             
             System.out.println("Introdueix l'àlies de l'usuari a eliminar: ");
-            // String aliesBaixa = teclat.nextLine();
             String aliesBaixa = llegirText();
 
 
@@ -450,7 +431,6 @@ public class App {
         
         try {
             System.out.println("Introdueix el nom de l'activitat");
-            // nom = teclat.nextLine();
             nom = llegirText();
             System.out.println("Colectius (respon 0 per false, 1 per true)"); 
             System.out.println("És per PDI?");
@@ -527,11 +507,9 @@ public class App {
             } while (!datesValides);
             
             System.out.println("Introdueix el nombre de places de l'activitat");
-            // limitPlaces = Integer.parseInt(teclat.nextLine());
             limitPlaces = llegirEnter();
             
             System.out.println("Introdueix el preu de l'activitat");
-            // preu = Double.parseDouble(teclat.nextLine());
             preu = llegirDouble();
 
             do {
@@ -548,11 +526,9 @@ public class App {
             } while (!dataIniciActivitatValida);
     
             System.out.println("Introdueix l'horari de l'activitat");
-            // horari = teclat.nextLine();
             horari = llegirText();
             
             System.out.println("Introdueix la ciutat de l'activitat");
-            // ciutat = teclat.nextLine();
             ciutat = llegirText();
     
             activitat = new ActivitatUnDia(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 
@@ -584,7 +560,6 @@ public class App {
         
         try {
             System.out.println("Introdueix el nom de l'activitat");
-            // nom = teclat.nextLine();
             nom = llegirText();
             System.out.println("Colectius (respon 0 per false, 1 per true)"); 
             System.out.println("És per PDI?");
@@ -661,11 +636,9 @@ public class App {
             } while (!datesValides);
             
             System.out.println("Introdueix el nombre de places de l'activitat");
-            // limitPlaces = Integer.parseInt(teclat.nextLine);
             limitPlaces = llegirEnter();
             
             System.out.println("Introdueix el preu de l'activitat");
-            // preu = Double.parseDouble(teclat.nextLine());
             preu = llegirDouble();
 
             do {
@@ -682,19 +655,15 @@ public class App {
             } while (!dataIniciActivitatValida);
 
             System.out.println("Introdueix el nombre de setmanes que es fa l'activitat");
-            // numSetmanes = Integer.parseInt(teclat.nextLine());
             numSetmanes = llegirEnter();
     
             System.out.println("Introdueix l'horari de l'activitat");
-            // horari = teclat.nextLine();
             horari = llegirText();
             
             System.out.println("Introdueix el nom del centre on es fa l'activitat");
-            // nomCentre = teclat.nextLine();
             nomCentre = llegirText();
 
             System.out.println("Introdueix la ciutat de l'activitat");
-            // ciutat = teclat.nextLine();
             ciutat = llegirText();
     
             activitat = new ActivitatPeriodica(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, 
@@ -724,7 +693,6 @@ public class App {
        
         try {
             System.out.println("Introdueix el nom de l'activitat");
-            // nom = teclat.nextLine();
             nom = llegirText();
             System.out.println("Colectius (respon 0 per false, 1 per true)"); 
             System.out.println("És per PDI?");
@@ -814,11 +782,9 @@ public class App {
                 } while (!dataIniciActivitatValida);
             
             System.out.println("Introdueix el nombre de dies que estarà disponible l'activitat");
-            // periodeVisualitzacio = Integer.parseInt(teclat.nextLine());
             periodeVisualitzacio = llegirEnter();
             
             System.out.println("Introdueix l'enllac de l'activitat");
-            // enllac = teclat.nextLine();
             enllac = llegirText();
         } catch (CancelarOperacioException e) {
             System.out.println("Creació d'activitat cancel·lada.");
@@ -844,13 +810,11 @@ public class App {
     public static void opcio16(){
         try {
             System.out.println("Introdueix el nom de l'activitat a valorar:");
-            // String nomActivitat = teclat.nextLine();
             String nomActivitat = llegirText();
             Activitat activitat = llistaActivitats.buscar(nomActivitat);
             if (activitat == null) System.out.println("Activitat no trobada.");
             else {
                 System.out.println("Introdueix el nom de l'usuari que valora:");
-                // String nomUsuari = teclat.nextLine();
                 String nomUsuari = llegirText();
                 if (!activitat.teUsuariInscrit(nomUsuari)) System.out.println("Usuari no inscrit.");
                 else {
@@ -863,7 +827,6 @@ public class App {
                                 correcte = false;
                                 while (!correcte) {
                                     try {
-                                        // valoracio = Integer.parseInt(teclat.nextLine());
                                         valoracio = llegirEnter();
                                         if (valoracio < 1 || valoracio > 10) {
                                             System.out.println("Valoració invàlida. Ha de ser entre 1 i 10. Torna-ho a intentar:");
@@ -877,9 +840,6 @@ public class App {
                                     }
                                 }
                             } while (!correcte);
-                            
-                            // activitat.afegirValoracio(avui, usuari, valoracio);
-                            // System.out.println("Valoració afegida.");
                         } catch (UsuariDuplicatException e) {
                             System.out.println("L'usuari ja ha valorat aquesta activitat: " + e.getMessage());
                         }
@@ -906,7 +866,6 @@ public class App {
     private static void opcio18(){
         try {
             System.out.println("Introdueix l'àlies de l'usuari per veure les seves valoracions:");
-            // String alies = teclat.nextLine();
             String alies = llegirText();
             Usuari usuari = baseDadesUsuaris.buscar(alies);
 
@@ -940,7 +899,6 @@ public class App {
     private static void opcio19(){
         try {
             System.out.println("Introdueix el nom del col·lectiu (Estudiants / PDI / PTGAS):");
-            // String colectiu = teclat.nextLine();
             String colectiu = llegirText();
             double sumaValoracions = 0;
             int totalValoracions = 0;
@@ -971,7 +929,6 @@ public class App {
     private static void opcio20(){
         try {
             System.out.println("Introdueix el nom del col·lectiu (Estudiants / PDI / PTGAS):");
-            // String colectiu = teclat.nextLine();
             String colectiu = llegirText();
             Usuari usuariMesActiu = null;
             int maxInscripcions = 0;
@@ -1057,7 +1014,6 @@ public class App {
             System.out.println("Introdueix la data en el següent format DD MM YYYY:");
             String input = llegirText();
             try {
-                // String[] parts = teclat.nextLine().split(" ");
                 String[] parts = input.split(" ");
 
                 if (parts.length != 3)
@@ -1069,7 +1025,6 @@ public class App {
                 else if (parts[1].equals("11")) mes = 11;
                 else if (parts[1].equals("12")) mes = 12;
                 else throw new IllegalArgumentException("Mes incorrecte. Només de setembre a desembre (9-12).");
-                // any = Integer.parseInt(parts[2]);
                 if (parts[2].equals("2025")) any = 2025;
                 else throw new IllegalArgumentException("Any incorrecte. Només s'accepta 2025.");
 
@@ -1097,7 +1052,6 @@ public class App {
             System.out.println("3. PTGAS");
             int colectiu;
             while (true) {
-                // String input = teclat.nextLine();
                 String input = llegirText();
                 try {
                     colectiu = Integer.parseInt(input);
@@ -1115,15 +1069,12 @@ public class App {
                 case 1:
                     try {
                         System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
-                        // adreca = teclat.nextLine();
                         adreca = llegirText();
                         String ensenyament;
                         int anyInici;
                         System.out.println("Introdueix el teu ensenyament");
-                        // ensenyament = teclat.nextLine();
                         ensenyament = llegirText();
                         System.out.println("Introdueix el any d'inici del teu ensenyament");
-                        // anyInici = Integer.parseInt(teclat.nextLine());
                         anyInici = llegirEnter();
                         usuari = new Estudiant(nom, adreca, ensenyament, anyInici);
                         baseDadesUsuaris.afegir(usuari);
@@ -1139,14 +1090,11 @@ public class App {
                 case 2:
                     try {
                         System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
-                        // adreca = teclat.nextLine();
                         adreca = llegirText();
                         String departament, campus;
                         System.out.println("Introdueix el teu departament");
-                        // departament = teclat.nextLine();
                         departament = llegirText();
                         System.out.println("Introdueix el teu campus");
-                        // campus = teclat.nextLine();
                         campus = llegirText();
                         usuari = new Pdi(nom, adreca, departament, campus);
                         baseDadesUsuaris.afegir(usuari);
@@ -1159,14 +1107,10 @@ public class App {
                     break;
                 case 3:
                     try {
-                        // System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
-                        // adreca = teclat.nextLine();
                         System.out.println("Introdueix la teva adreça (només el d'abans de \"@\" )");
-                        // adreca = teclat.nextLine();
                         adreca = llegirText();
                         String campus;
                         System.out.println("Introdueix el teu campus");
-                        // campus = teclat.nextLine();
                         campus = llegirText();
                         usuari = new Ptgas(nom, adreca, campus);
                         baseDadesUsuaris.afegir(usuari);
@@ -1186,66 +1130,4 @@ public class App {
     
     }
 
-    private static void guardarLlistaActivitats(String nomFitxer) {
-        try{ 
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomFitxer)); 
-            oos.writeObject(llistaActivitats); // Guarda la lista completa
-            oos.close();
-        } catch (IOException e) {
-            System.err.println("Error al guardar: " + e.getMessage());
-        }
-    }
-
-    private static void guardarBaseDadesUsuaris(String nomFitxer) {
-        try{ 
-            BufferedWriter w = new BufferedWriter(new FileWriter(nomFitxer));
-            for (int i = 0; i < baseDadesUsuaris.getNumUsuaris(); i++){
-                w.append(baseDadesUsuaris.getUsuari(i).toCSV());
-            }
-            w.close();
-        } catch (IOException e) {
-            System.err.println("Error al guardar: " + e.getMessage());
-        }
-    }
-
-    public static LlistaActivitats carregarLlistaActivitats(String nomFitxer) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFitxer))) {
-            return (LlistaActivitats) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error carregant llista d'activitats, es crearà una llista buida. " + e);
-            return new LlistaActivitats();
-        }
-    }
-
-    public static LlistaUsuaris carregarBaseDadesUsuaris(String nomFitxer) {
-        try{ 
-            Scanner f = new Scanner(new File(nomFitxer));
-            f.useDelimiter(";");
-            LlistaUsuaris llistaUsuaris = new LlistaUsuaris();
-            String[] linia;
-            String tipusUsuari;
-            while (f.hasNext()){
-                try {
-                    linia = f.nextLine().split(";");
-                    tipusUsuari = linia[0];
-                    if (tipusUsuari.equals(Usuari.COLECTIU_ESTUDIANTS)){
-                        llistaUsuaris.afegir(new Estudiant(linia[1], linia[2], linia[3], Integer.parseInt(linia[4])));
-                    } else if (tipusUsuari.equals(Usuari.COLECTIU_PDI)){
-                        llistaUsuaris.afegir(new Pdi(linia[1], linia[2], linia[3], linia[4]));
-                    } else if (tipusUsuari.equals(Usuari.COLECTIU_PTGAS)){
-                        llistaUsuaris.afegir(new Ptgas(linia[1], linia[2], linia[3]));
-                    } else{
-                        System.out.println("Error afegint usuari: No existeix el col·lectiu " + tipusUsuari);
-                    }
-                } catch (UsuariDuplicatException e) {
-                    System.out.println("Usuari duplicat en fitxer. " + e.getMessage());
-                }
-            }
-            f.close();
-            return llistaUsuaris;
-        } catch (IOException e) {
-            System.out.println("Error llegint base de usuaris." + e);
-            return new LlistaUsuaris();
-        }
-    }
 }

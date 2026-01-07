@@ -1,6 +1,11 @@
 package dades.usuaris;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Scanner;
 
 import dades.excepcions.UsuariDuplicatException;
 
@@ -208,6 +213,64 @@ public class LlistaUsuaris implements Serializable{
         }
         
         return copia;
+    }
+
+    /**
+     * Carrega la base de dades d'usuaris des d'un fitxer de text.
+     * Cada línia del fitxer ha de tenir format CSV amb separador ';'.
+     * El primer camp indica el tipus d'usuari.
+     * Els usuaris duplicats són ignorats i es mostra un missatge per consola.
+     *
+     * @param nomFitxer nom del fitxer des d'on es carregaran els usuaris
+     */
+    public void carregarBaseDadesUsuaris(String nomFitxer) {
+        try{ 
+            Scanner f = new Scanner(new File(nomFitxer));
+            f.useDelimiter(";");
+            // LlistaUsuaris llistaUsuaris = new LlistaUsuaris();
+            String[] linia;
+            String tipusUsuari;
+            while (f.hasNext()){
+                try {
+                    linia = f.nextLine().split(";");
+                    tipusUsuari = linia[0];
+                    if (tipusUsuari.equals(Usuari.COLECTIU_ESTUDIANTS)){
+                        this.afegir(new Estudiant(linia[1], linia[2], linia[3], Integer.parseInt(linia[4])));
+                    } else if (tipusUsuari.equals(Usuari.COLECTIU_PDI)){
+                        this.afegir(new Pdi(linia[1], linia[2], linia[3], linia[4]));
+                    } else if (tipusUsuari.equals(Usuari.COLECTIU_PTGAS)){
+                        this.afegir(new Ptgas(linia[1], linia[2], linia[3]));
+                    } else{
+                        System.out.println("Error afegint usuari: No existeix el col·lectiu " + tipusUsuari);
+                    }
+                } catch (UsuariDuplicatException e) {
+                    System.out.println("Usuari duplicat en fitxer. " + e.getMessage());
+                }
+            }
+            f.close();
+            // return this;
+        } catch (IOException e) {
+            System.out.println("Error llegint base de usuaris." + e);
+            // return new LlistaUsuaris();
+        }
+    }
+
+    /**
+     * Desa la base de dades d'usuaris en un fitxer de text.
+     * Cada usuari es desa en format CSV mitjançant el mètode toCSV().
+     *
+     * @param nomFitxer nom del fitxer on es desarà la base de dades d'usuaris
+     */
+    public void guardarBaseDadesUsuaris(String nomFitxer) {
+        try{ 
+            BufferedWriter w = new BufferedWriter(new FileWriter(nomFitxer));
+            for (int i = 0; i < this.getNumUsuaris(); i++){
+                w.append(this.getUsuari(i).toCSV());
+            }
+            w.close();
+        } catch (IOException e) {
+            System.err.println("Error al guardar: " + e.getMessage());
+        }
     }
     
     /**
