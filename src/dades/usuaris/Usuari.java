@@ -110,37 +110,37 @@ public abstract class Usuari implements Serializable{
      * @param adreca cadena de text amb l'adreça a validar
      * @return true si l'adreça és vàlida; false en cas contrari
      */
-    protected boolean adrecaValida(String adreca) {
+    // protected boolean adrecaValida(String adreca) {
 
-        if (adreca == null || adreca.isEmpty()) {
-            return false;
-        }
+    //     if (adreca == null || adreca.isEmpty()) {
+    //         return false;
+    //     }
 
-        if (adreca.startsWith(".") || adreca.endsWith(".")) {
-            return false;
-        }
+    //     if (adreca.startsWith(".") || adreca.endsWith(".")) {
+    //         return false;
+    //     }
 
-        char anterior = 0;
+    //     char anterior = 0;
 
-        for (char c : adreca.toCharArray()) {
+    //     for (char c : adreca.toCharArray()) {
 
-            if (!Character.isLetterOrDigit(c)
-                && c != '.'
-                && c != '_'
-                && c != '+'
-                && c != '-') {
+    //         if (!Character.isLetterOrDigit(c)
+    //             && c != '.'
+    //             && c != '_'
+    //             && c != '+'
+    //             && c != '-') {
 
-                return false;
-            }
+    //             return false;
+    //         }
 
-            if (c == '.' && anterior == '.') {
-                return false;
-            }
+    //         if (c == '.' && anterior == '.') {
+    //             return false;
+    //         }
 
-            anterior = c;
-        }
+    //         anterior = c;
+    //     }
 
-        return true;
-        }
+    //     return true;
+    //     }
 
 }

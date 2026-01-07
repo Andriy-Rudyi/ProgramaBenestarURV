@@ -215,6 +215,14 @@ public class LlistaUsuaris implements Serializable{
         return copia;
     }
 
+    /**
+     * Carrega la base de dades d'usuaris des d'un fitxer de text.
+     * Cada línia del fitxer ha de tenir format CSV amb separador ';'.
+     * El primer camp indica el tipus d'usuari.
+     * Els usuaris duplicats són ignorats i es mostra un missatge per consola.
+     *
+     * @param nomFitxer nom del fitxer des d'on es carregaran els usuaris
+     */
     public void carregarBaseDadesUsuaris(String nomFitxer) {
         try{ 
             Scanner f = new Scanner(new File(nomFitxer));
@@ -247,6 +255,12 @@ public class LlistaUsuaris implements Serializable{
         }
     }
 
+    /**
+     * Desa la base de dades d'usuaris en un fitxer de text.
+     * Cada usuari es desa en format CSV mitjançant el mètode toCSV().
+     *
+     * @param nomFitxer nom del fitxer on es desarà la base de dades d'usuaris
+     */
     public void guardarBaseDadesUsuaris(String nomFitxer) {
         try{ 
             BufferedWriter w = new BufferedWriter(new FileWriter(nomFitxer));

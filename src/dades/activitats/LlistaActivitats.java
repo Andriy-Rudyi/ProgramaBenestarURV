@@ -278,6 +278,14 @@ public class LlistaActivitats implements Serializable{
     
     public boolean esBuida() { return numActivitats == 0; }
     
+    /**
+     * Carrega una llista d'activitats des d'un fitxer mitjançant serialització.
+     * Si es produeix algun error durant la lectura, es crea i es retorna
+     * una LlistaActivitats buida.
+     *
+     * @param nomFitxer nom del fitxer des d'on es carregarà la llista d'activitats
+     * @return la llista d'activitats carregada o una llista buida en cas d'error
+     */
     public static LlistaActivitats carregarLlistaActivitats(String nomFitxer) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFitxer))) {
             return (LlistaActivitats) ois.readObject();
@@ -287,6 +295,12 @@ public class LlistaActivitats implements Serializable{
         }
     }
 
+    /**
+     * Desa la llista d'activitats actual en un fitxer mitjançant serialització.
+     * Es guarda l'objecte complet de la llista d'activitats.
+     *
+     * @param nomFitxer nom del fitxer on es desarà la llista d'activitats
+     */
     public void guardarLlistaActivitats(String nomFitxer) {
         try{ 
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomFitxer)); 
