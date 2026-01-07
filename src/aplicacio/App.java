@@ -1,6 +1,5 @@
 package aplicacio;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import dades.activitats.*;
@@ -31,6 +30,11 @@ public class App {
                 } 
             }
             
+            switch (opcio) {
+                case 1, 2, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 22 -> 
+                System.out.println("\n(per cancel·lar la operació, escriu \"q\")");
+            }
+
             switch (opcio) {
                 case 1:
                     opcio1(); 
@@ -96,30 +100,37 @@ public class App {
                     opcio21();
                     break;
                 case 22:
+                    System.out.println("Vols sobreescriure les dades actuals per les anteriors? Y/N");
+                    correcte = false;
+                    try {
+                        while(!correcte){
+                        String resposta = llegirText(); // Check if llegirText() is needed to cancel saving and return to the menu
+                        if(resposta.equals("Y")){ 
+                            llistaActivitats.guardarLlistaActivitats("data/activitats.bin");
+                            baseDadesUsuaris.guardarBaseDadesUsuaris("data/usuaris.csv");
+                            correcte = true;
+                            System.out.println("Fitxer guardat");
+                        } else if (!resposta.equals("N")){
+                            System.out.println("Resposta incorrecta. Respon Y o N");
+                        } else correcte = true;
+                        }
+                    } catch (CancelarOperacioException e) {
+                        System.out.println("Operació cancel·lada");
+                        opcio = -1; // Perquè torni al menú
+                    }
+                    
                     break;
                 default:
                     System.out.println("Entrada incorrecta. Escriu un nombre entre 1 i 22.");
                     break;
             }
-            if (1 <= opcio && opcio <= 21 ){
+            if ( (1 <= opcio && opcio <= 21) || opcio == -1 ){
                 System.out.println("Prèm Enter per a continuar...");
                 teclat.nextLine();
             }
         } while (opcio != 22);
 
-        System.out.println("Vols sobreescriure les dades actuals per les anteriors? Y/N");
-        correcte = false;
-        while(!correcte){
-            String resposta = teclat.next(); // Check if llegirText() is needed to cancel saving and return to the menu
-            if(resposta.equals("Y")){ 
-                llistaActivitats.guardarLlistaActivitats("data/activitats.bin");
-                baseDadesUsuaris.guardarBaseDadesUsuaris("data/usuaris.csv");
-                correcte = true;
-                System.out.println("Fitxer guardat");
-            } else if (!resposta.equals("N")){
-                System.out.println("Resposta incorrecta. Respon Y o N");
-            } else correcte = true;
-        }
+        
         System.out.println("Tancant programa...");
         teclat.close();
     }
@@ -150,13 +161,14 @@ public class App {
         System.out.println("21. Donar de baixa activitats amb poca participació");
         System.out.println("22. Sortir de l'aplicació");
         System.out.print("\nSelecciona una opció: ");
+
     }
 
     private static void opcio1(){  
         try {
             avui = llegirData();
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return;
         }
     }
@@ -165,7 +177,7 @@ public class App {
         String imprimir = null;
         do {
             try {
-                
+
             
                 System.out.println("De quina llista vols mostrar les dades?");
                 System.out.println("1. Llista d'activitats");
@@ -206,7 +218,7 @@ public class App {
                     System.out.println("Entrada incorrecta. Torna-ho a intentar.");
                 }
             } catch (CancelarOperacioException e) {
-                System.out.println("Creació d'activitat cancel·lada.");
+                System.out.println("Operació cancel·lada.");
                 return; 
             }
         } while (imprimir == null);
@@ -247,7 +259,7 @@ public class App {
             if (llistaActivitats.buscar(nomActivitat) == null) System.out.println("Activitat no trobada.");
             else System.out.println(llistaActivitats.buscar(nomActivitat));
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return; 
         }
         
@@ -266,7 +278,7 @@ public class App {
                 System.out.println("No s'ha trobat cap usuari amb l'àlies: " + alies);
             }
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return;
         }
         
@@ -297,7 +309,7 @@ public class App {
                 System.out.println("Error: No existeix cap usuari amb l'àlies " + alies);
             }
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return;
         }
     }
@@ -323,13 +335,13 @@ public class App {
                     
                         LlistaInscripcions llista = activitatInscripcio.getLlistaInscripcions();
                         int inscritsAbans = llista.getNumInscrits(); 
+                        int esperaAbans = llista.getLlistaEspera().getNumUsuaris();
                         llista.afegir(usuariInscripcio); 
                         if (llista.getNumInscrits() > inscritsAbans) {
                             System.out.println("Usuari inscrit oficialment.");
-                        } 
-                        else { 
+                        } else if (llista.getLlistaEspera().getNumUsuaris() > esperaAbans){ 
                             System.out.println("Activitat plena: L'usuari ha anat a la LLISTA D'ESPERA."); 
-                        }
+                        } else System.out.println("Activitat i llista d'espera plenes: No s'accepten més inscripcions");
                         } catch (UsuariDuplicatException e) {
                             System.out.println("Error: " + e.getMessage());
                         }
@@ -345,7 +357,7 @@ public class App {
                     }
                 
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Inscripció cancel·lada.");
             return;
         } 
     }
@@ -394,14 +406,15 @@ public class App {
                 LlistaInscripcions llista = activitatBaixa.getLlistaInscripcions(); 
                     
                 int inscritsAbans = llista.getNumInscrits(); 
-                boolean teniaEspera = (llista.getLlistaEspera() != null && !llista.getLlistaEspera().esBuida());
+                int esperaAbans = llista.getLlistaEspera().getNumUsuaris();
                 llista.eliminar(aliesBaixa);
 
                 int inscritsDespres = llista.getNumInscrits();
+                int esperaDespres = llista.getLlistaEspera().getNumUsuaris();
                 
                 if (inscritsDespres < inscritsAbans) {
                     System.out.println("L'usuari ha estat eliminat. S'ha alliberat una plaça.");
-                } else if (teniaEspera && inscritsDespres == inscritsAbans) {
+                } else if ( (esperaDespres < esperaAbans) && inscritsDespres == inscritsAbans) {
                     System.out.println("Usuari eliminat. La plaça lliure l'ha ocupat algú de la llista d'espera.");
                 } else {
                     System.out.println("Usuari no trobat.");
@@ -539,8 +552,10 @@ public class App {
         } catch (CancelarOperacioException e) {
             System.out.println("Creació d'activitat cancel·lada.");
             return; 
-        } catch (ActivitatDuplicadaException | DataFiInscripcioException e) {
+        } catch (ActivitatDuplicadaException e) {
             System.out.println(e);
+        } catch (DataFiInscripcioException e) {
+            throw new IllegalArgumentException("Error intern. " + e); 
         }
     }
 
@@ -674,8 +689,10 @@ public class App {
         } catch (CancelarOperacioException e) {
             System.out.println("Creació d'activitat cancel·lada.");
             return; 
-        } catch (ActivitatDuplicadaException | DataFiInscripcioException e) {
+        } catch (ActivitatDuplicadaException e) {
             System.out.println(e);
+        } catch (DataFiInscripcioException e) {
+            throw new IllegalArgumentException("Error intern. " + e); 
         }
     }
 
@@ -795,7 +812,7 @@ public class App {
             activitat = new ActivitatOnline(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 
                 dataActivitat, periodeVisualitzacio, enllac);
         } catch (DataFiInscripcioException e) {
-            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Error intern. " + e); 
         }
                 
         try {
@@ -849,7 +866,7 @@ public class App {
                 }
             }
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return;
         }
         
@@ -889,7 +906,7 @@ public class App {
                 System.out.println("Error: No existeix cap usuari amb l'àlies " + alies);
             }
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return;
         }
         
@@ -921,7 +938,7 @@ public class App {
                 System.out.println("No hi ha valoracions per al col·lectiu " + colectiu);
             }
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return;
         }
     }
@@ -957,7 +974,7 @@ public class App {
                 System.out.println("No s'han trobat usuaris per al col·lectiu " + colectiu);
             }
         } catch (CancelarOperacioException e) {
-            System.out.println("Creació d'activitat cancel·lada.");
+            System.out.println("Operació cancel·lada.");
             return;
         }
         
@@ -965,15 +982,19 @@ public class App {
 
     private static void opcio21(){
         Activitat[] noPeriodeInscripcio = llistaActivitats.obtenirEnNoPeriodeInscripcio(avui);
+        int eliminades = 0;
         for (int i = 0; i < noPeriodeInscripcio.length; i++){
             if (noPeriodeInscripcio[i] instanceof ActivitatOnline && noPeriodeInscripcio[i].getLlistaInscripcions().getNumInscrits() < 20){
                 llistaActivitats.eliminar(noPeriodeInscripcio[i].getNom());
                 System.out.println("S'ha eliminat l'activitat online " + noPeriodeInscripcio[i].getNom() + " per tenir menys de 20 inscrits.");
+                eliminades++;
             } else if (noPeriodeInscripcio[i].getPercentatgeOcupacio() < 10){
                 llistaActivitats.eliminar(noPeriodeInscripcio[i].getNom());
                 System.out.println("S'ha eliminat l'activitat " + noPeriodeInscripcio[i].getNom() + " per tenir menys del 10% d'ocupació.");
+                eliminades++;
             }
         }
+        if(eliminades == 0) System.out.println("No s'han donat de baixa activitats.");
     }
 
     private static String llegirText() {
@@ -1020,20 +1041,17 @@ public class App {
                 throw new IllegalArgumentException("Format correcte: DD MM YYYY");
 
                 dia = Integer.parseInt(parts[0]);
-                if (parts[1].equals("9") || parts[1].equals("09")) mes = 9;
-                else if (parts[1].equals("10")) mes = 10;
-                else if (parts[1].equals("11")) mes = 11;
-                else if (parts[1].equals("12")) mes = 12;
-                else throw new IllegalArgumentException("Mes incorrecte. Només de setembre a desembre (9-12).");
-                if (parts[2].equals("2025")) any = 2025;
-                else throw new IllegalArgumentException("Any incorrecte. Només s'accepta 2025.");
+                mes = Integer.parseInt(parts[1]);
+                any = Integer.parseInt(parts[2]);
+                if (mes < 9) throw new IllegalArgumentException("Mes incorrecte. Només de setembre a desembre (9-12).");
+                if (any != 2025) throw new IllegalArgumentException("Any incorrecte. Només s'accepta 2025.");
 
                 data = new Data(dia, mes, any);
                 correcte = true;
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("S'ha d'entrar la data en nombres enters. " + e);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                System.out.println("Algun paràmetre és invàlid. " + e);
             } catch (DataIncorrectaExcepction e){
                 System.out.println("Data incorrecta, torna a intentar-ho. " + e);         
             }
@@ -1051,7 +1069,7 @@ public class App {
             System.out.println("2. PDI"); 
             System.out.println("3. PTGAS");
             int colectiu;
-            while (true) {
+            /* while (true) {
                 String input = llegirText();
                 try {
                     colectiu = Integer.parseInt(input);
@@ -1063,7 +1081,15 @@ public class App {
                 } catch (NumberFormatException e) {
                     System.out.println("Entrada incorrecta. Torna-ho a intentar.");
                 }
+            } */
+            while(true) {
+                colectiu = llegirEnter();
+                if(colectiu >= 1 && colectiu <= 3) {
+                    break;
+                }
+                System.out.println("Entrada incorrecta. Torna-ho a intentar.");
             }
+
             String adreca;
             switch (colectiu) {
                 case 1:
@@ -1083,8 +1109,6 @@ public class App {
                         System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
                     } catch (NumberFormatException e) {
                         System.out.println("Any d'inici invàlid. Torna-ho a intentar.");
-                    } catch (Exception e) {
-                        System.out.println("Error inesperat. " + e);
                     }
                     break;
                 case 2:
@@ -1101,8 +1125,6 @@ public class App {
                         correcte = true;
                     } catch (UsuariDuplicatException e) {
                         System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    } catch (Exception e) {
-                        System.out.println("Error inesperat. " + e);
                     }
                     break;
                 case 3:
@@ -1117,8 +1139,6 @@ public class App {
                         correcte = true;
                     } catch (UsuariDuplicatException e) {
                         System.out.println("Error inesperat. " + e);    //Ja hem comprovat que no estarà duplicat
-                    } catch (Exception e) {
-                        System.out.println("Error inesperat. " + e);
                     }
                     break;
             
