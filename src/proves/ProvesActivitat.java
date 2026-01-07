@@ -2,32 +2,31 @@ package proves;
 
 import dades.Data;
 import dades.activitats.*;
+import dades.excepcions.DataFiInscripcioException;
 import dades.excepcions.DataIncorrectaExcepction;
 
 public class ProvesActivitat {
     public static void main(String[] args) {
         try {
             provarActivitatOnline();
-        } catch (DataIncorrectaExcepction e) {}
+        } catch (DataIncorrectaExcepction | DataFiInscripcioException e) {}
         
         try {
             provarActivitatUnDia();
-        } catch (DataIncorrectaExcepction e) {}
+        } catch (DataIncorrectaExcepction | DataFiInscripcioException e) {}
         
         try {
             provarActivitatPeriodica();
-        } catch (DataIncorrectaExcepction e) {}
+        } catch (DataIncorrectaExcepction | DataFiInscripcioException e) {}
 
     }
 
-    public static void provarActivitatOnline() throws DataIncorrectaExcepction{
+    public static void provarActivitatOnline() throws DataIncorrectaExcepction, DataFiInscripcioException{
         boolean[] collectiuEstudiants = new boolean []{false, false, true};
         
         ActivitatOnline online = new ActivitatOnline(
             "Classes de catala",
-            collectiuEstudiants,
-            
-
+            collectiuEstudiants, 
             new Data(2, 12, 2025), 
             new Data(11, 12, 2025),
             new Data(1, 1, 2026), 
@@ -57,7 +56,7 @@ public class ProvesActivitat {
 
     }
 
-    public static void provarActivitatUnDia() throws DataIncorrectaExcepction {
+    public static void provarActivitatUnDia() throws DataIncorrectaExcepction, DataFiInscripcioException {
         boolean[] collectiuGeneral = new boolean []{true, true, true};
 
         ActivitatUnDia unDia = new ActivitatUnDia(
@@ -90,7 +89,7 @@ public class ProvesActivitat {
         System.out.println(copiaUnDia);
     }
     
-    public static void provarActivitatPeriodica() throws DataIncorrectaExcepction {
+    public static void provarActivitatPeriodica() throws DataIncorrectaExcepction, DataFiInscripcioException {
         boolean[] collectiuGeneral = new boolean []{true, true, true};
 
         ActivitatPeriodica periodica = new ActivitatPeriodica(
@@ -114,7 +113,6 @@ public class ProvesActivitat {
         System.out.println(" - Data inici: " + periodica.getDataInici());
         System.out.println(" - Data fi: " + periodica.getDataFi());
         System.out.println(" - Horari: " + periodica.getHorari());
-        // System.out.println(" - Nom dia setmana: " + periodica.getNomDiaSetmana());
         System.out.println(" - Informacio especifica: " + periodica.getInformacioEspecifica());
         System.out.println(" - Tipus: " + periodica.getTipus());
         System.out.println(" - Ha acabat el 1/12/2025? " + periodica.haAcabat(new Data(1, 12, 2025)));

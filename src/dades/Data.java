@@ -20,8 +20,8 @@ public class Data implements Serializable{
 	 */
 	public Data() {
 		this.dia = 1;
-		this.mes = 1;
-		this.any = 2000;
+		this.mes = 9;
+		this.any = 2025;
 	}
 
 
@@ -184,40 +184,15 @@ public class Data implements Serializable{
 		return(dia+"/"+mes+"/"+any);
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////
-	/// 
-    // Mètodes de classe (STATIC).
-	// no s'apliquen sobre el contingut d'una instància de data sinó sobre valors
-	// que es reben per paràmetre.
-	// són mètodes auxiliars i per això estan definits com a private dins la classe
-	// no són accessibles des de la classe Aplicacio (App.java)
-
-	private static boolean esDataCorrecta(int dia, int mes, int any) {
-		boolean hoEs=true;
-		if (dia < 1 || dia > 31) { // dia incorrecte
-			hoEs= false;
-		}
-		else if (mes < 1 || mes > 12) { // mes incorrecte
-			hoEs= false;
-		}
-		else if (dia > diesMes(mes, any)) { // dia del mes incorrecte
-			hoEs= false;
-		}
-		return hoEs;
-	}
-
-	private static boolean esAnyTraspas(int any) { // ens estalviem crear una instancia de data
-		if ((any % 4 == 0) && ((any % 100 != 0) || (any % 400 == 0))) {
-			return true;
-		} 
-		else {
-			return false;
-		}
-	}
-
+	/**
+	 * Calcula el número de dies que té un mes en un any determinat
+	 * @param mes Número del mes (1-12)
+	 * @param any Any per comprovar si és de traspàs
+	 * @return Nombre de dies del mes (28, 29, 30 o 31)
+	 */
 	public static int diesMes(int mes, int any) { // per saber quants dies te un mes d'un any
-		int diesMes;
-		if (mes == 2) {
+	int diesMes;
+	if (mes == 2) {
 			if (esAnyTraspas(any)) {
 				diesMes = 29;
 			} 
@@ -236,6 +211,12 @@ public class Data implements Serializable{
 		return diesMes;
 	}
 
+	/**
+	 * Comprova si una data és anterior a una altra
+	 * @param data1 Primera data a comparar
+	 * @param data2 Segona data a comparar
+	 * @return true si data1 és anterior a data2, false en cas contrari
+	 */
 	private static boolean esInferiorAltra(Data data1, Data data2){ //Retorna true si data1 es inferior a data2 
 		if (data1.any < data2.any) return true; 
 		else if ((data1.any == data2.any) && (data1.mes < data2.mes)) return true; 
@@ -244,11 +225,11 @@ public class Data implements Serializable{
 	}
 
 	/**
-     * Calcula el dia de la setmana d'una data (1=Dilluns, ..., 7=Diumenge)
-     * Algorisme de Zeller modificat
-     */
+	 * Calcula el dia de la setmana d'una data (1=Dilluns, ..., 7=Diumenge)
+	 * Algorisme de Zeller modificat
+	*/
     public int calcularDiaSetmana() {
-        if (mes < 3) {
+		if (mes < 3) {
             mes += 12;
             any--;
         }
@@ -260,24 +241,24 @@ public class Data implements Serializable{
         int diaSetmana = ((h + 5) % 7) + 1;
         return diaSetmana;
     }
-
+	
 	/**
      * Retorna el nom del dia de la setmana
-     * @return Nom del dia
+	 * @return Nom del dia
      */
-    public String getNomDiaSetmana() {
+	public String getNomDiaSetmana() {
         String[] dies = {"", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"};
         if (calcularDiaSetmana() >= 1 && calcularDiaSetmana() <= 7) {
-            return dies[calcularDiaSetmana()];
+			return dies[calcularDiaSetmana()];
         }
         return "Desconegut";
     }
-
+	
 	/**
 	 * Retorna el nom del mes
 	 * @param mes Enter que representa el mes [1-12]
 	 * @return Nom del mes
-	 */
+	*/
     public static String getNomMes(int mes){
         String[] mesos = {"Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"};
         if (mes >= 1 && mes <= 12) {
@@ -285,4 +266,59 @@ public class Data implements Serializable{
         }
         return "Desconegut";
     }
+
+	/**
+	 * Compara si una data es anterior de l'altra
+	 * @param altra
+	 * @return true si una data es anterior de l'altre, false si no ho es
+	*/
+	public boolean esAnterior(Data altra) {
+		if (any != altra.getAny()) return any < altra.getAny();
+    	if (mes != altra.getMes()) return mes < altra.getMes();
+    	return dia < altra.getDia();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	/// 
+	// Mètodes de classe (STATIC).
+	// no s'apliquen sobre el contingut d'una instància de data sinó sobre valors
+	// que es reben per paràmetre.
+	// són mètodes auxiliars i per això estan definits com a private dins la classe
+	// no són accessibles des de la classe Aplicacio (App.java)
+
+	/**
+	 * Valida si una data és correcta
+	 * @param dia Dia del mes (1-31)
+	 * @param mes Mes de l'any (1-12)
+	 * @param any Any
+	 * @return true si la data és vàlida, false en cas contrari
+	 */
+	private static boolean esDataCorrecta(int dia, int mes, int any) {
+		boolean hoEs=true;
+		if (dia < 1 || dia > 31) { // dia incorrecte
+			hoEs= false;
+		}
+		else if (mes < 1 || mes > 12) { // mes incorrecte
+			hoEs= false;
+		}
+		else if (dia > diesMes(mes, any)) { // dia del mes incorrecte
+			hoEs= false;
+		}
+		return hoEs;
+	}
+
+	/**
+	 * Determina si un any és de traspàs
+	 * @param any Any a comprovar
+	 * @return true si l'any és de traspàs, false en cas contrari
+	 */
+	private static boolean esAnyTraspas(int any) { // ens estalviem crear una instancia de data
+		if ((any % 4 == 0) && ((any % 100 != 0) || (any % 400 == 0))) {
+			return true;
+		} 
+		else {
+			return false;
+		}
+	}
+
 }

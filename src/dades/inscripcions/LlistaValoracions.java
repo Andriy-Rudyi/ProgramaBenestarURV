@@ -12,6 +12,11 @@ public class LlistaValoracions implements Serializable{
     int[] valoracions;
     int numValoracions;
 
+    /**
+    * Constructor de LlistaValoracions
+    * @param numPlaces Número de places de l'activitat (0 per places il·limitades)
+    * @throws IllegalArgumentException Si el número de places és negatiu
+    */
     public LlistaValoracions(int numPlaces){
         if (numPlaces > 0) {
             llistaUsuaris = new Usuari[numPlaces];
@@ -22,22 +27,9 @@ public class LlistaValoracions implements Serializable{
             valoracions = new int[1];
             numValoracions = 0;
         } else {
-            System.out.println("El número de places no pot ser negatiu");
+            throw new IllegalArgumentException("El número de places no pot ser negatiu");
         }
     }
-
-    // public LlistaInscripcions(int numPlaces){
-    //     if (numPlaces > 0){                                     // Constructor amb places limitades
-    //         inscrits = new LlistaUsuaris();         
-    //         this.numPlaces = numPlaces;
-    //         espera = new LlistaEspera();
-    //     } else if (numPlaces == 0) {                            // Constructor amb infinites places
-    //         inscrits = new LlistaUsuaris();
-    //         this.numPlaces = 0;
-    //     } else {                                                // Excecio
-    //         System.out.println("El número de places no pot ser negatiu");
-    //     }
-    // }
 
     public int getNumValoracions(){ return numValoracions; }
 
@@ -48,7 +40,32 @@ public class LlistaValoracions implements Serializable{
         }
         return ( (double) sumaValoracions ) / numValoracions ;
     }
+    
+    public Usuari getUsuari(int index) {
+        if (index < 0 || index >= numValoracions) return null;
+        return llistaUsuaris[index];
+    }
 
+    public boolean teValoracioDeUsuari(Usuari usuari) {
+        for(int i = 0; i < numValoracions; i++){
+            if (usuari.equals(llistaUsuaris[i])) return true;
+        }
+        return false;
+    }
+
+    public int getValoracioDeUsuari(Usuari usuari) {
+        for(int i = 0; i < numValoracions; i++){
+            if (usuari.equals(llistaUsuaris[i])) return valoracions[i];
+        }
+        return -1; // No té valoració
+    }
+
+    /**
+     * Afegeix una valoracio a la llista valoracions
+     * @param usuari
+     * @param valoracio
+     * @throws UsuariDuplicatException
+     */
     public void afegirValoracio(Usuari usuari, int valoracio) throws UsuariDuplicatException{
         // null check
         if (usuari == null) {
@@ -79,25 +96,10 @@ public class LlistaValoracions implements Serializable{
         numValoracions++;
     }
 
-    public Usuari getUsuari(int index) {
-        if (index < 0 || index >= numValoracions) return null;
-        return llistaUsuaris[index];
-    }
-
-    public boolean teValoracioDeUsuari(Usuari usuari) {
-        for(int i = 0; i < numValoracions; i++){
-            if (usuari.equals(llistaUsuaris[i])) return true;
-        }
-        return false;
-    }
-
-    public int getValoracioDeUsuari(Usuari usuari) {
-        for(int i = 0; i < numValoracions; i++){
-            if (usuari.equals(llistaUsuaris[i])) return valoracions[i];
-        }
-        return -1; // No té valoració
-    }
-
+    /**
+     * Crea una còpia de la llista valoracions
+     * @return Nova instància amb les mateixes dades
+     */
     public LlistaValoracions copia() {
         LlistaValoracions copia = new LlistaValoracions(llistaUsuaris.length);
         copia.numValoracions = numValoracions;

@@ -1,5 +1,6 @@
 package dades.activitats;
 import dades.Data;
+import dades.excepcions.DataFiInscripcioException;
 import dades.excepcions.DataIncorrectaExcepction;
 
 /**
@@ -10,7 +11,6 @@ import dades.excepcions.DataIncorrectaExcepction;
 public class ActivitatPeriodica extends Activitat {
     private int diaSetmana;
     private String horari;
-    private Data dataInici;
     private int numSetmanes;
     private String nomCentre;
     private String ciutat;
@@ -25,19 +25,19 @@ public class ActivitatPeriodica extends Activitat {
      * @param preu Preu total de l'activitat
      * @param diaSetmana Dia de la setmana (1-7)
      * @param horari Horari de l'activitat
-     * @param dataInici Data d'inici de l'activitat
+     * @param dataIniciActivitat Data d'inici de l'activitat
      * @param numSetmanes Número de setmanes que dura
      * @param nomCentre Nom del centre
      * @param ciutat Ciutat on es realitza
+     * @throws DataFiInscripcioException 
      */
     public ActivitatPeriodica(String nom, boolean[] collectius, Data dataIniciInscripcio,
                               Data dataFiInscripcio, int limitPlaces, double preu,
-                              String horari, Data dataInici, 
-                              int numSetmanes, String nomCentre, String ciutat) {
-        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu);
-        this.diaSetmana = dataInici.calcularDiaSetmana();
+                              String horari, Data dataIniciActivitat, 
+                              int numSetmanes, String nomCentre, String ciutat) throws DataFiInscripcioException {
+        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, limitPlaces, preu, dataIniciActivitat);
+        this.diaSetmana = dataIniciActivitat.calcularDiaSetmana();
         this.horari = horari;
-        this.dataInici = dataInici;
         this.numSetmanes = numSetmanes;
         this.nomCentre = nomCentre;
         this.ciutat = ciutat;
@@ -46,24 +46,10 @@ public class ActivitatPeriodica extends Activitat {
     // Getters
     public int getDiaSetmana() { return diaSetmana; }
     public String getHorari() { return horari; }
-    public Data getDataInici() { return dataInici; }
+    public Data getDataInici() { return dataIniciActivitat; }
     public int getNumSetmanes() { return numSetmanes; }
     public String getNomCentre() { return nomCentre; }
     public String getCiutat() { return ciutat; }
-    
-    
-    // substiuït pel metode getDataFi()
-    //
-    // /**
-    //  * Afegeix setmanes a una data
-    //  */
-    // private Data afegirSetmanes(Data data, int setmanes) {
-    //     Data nova = new Data(data.getDia(), data.getMes(), data.getAny());
-    //     for (int i = 0; i < setmanes * 7; i++) {
-    //         nova = nova.diaSeguent();
-    //     }
-    //     return nova;
-    // }
     
     /**
      * Calcula la data de fi de l'activitat
@@ -72,7 +58,7 @@ public class ActivitatPeriodica extends Activitat {
     public Data getDataFi() {
         Data dataFi = null;
 		try {
-            dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+            dataFi = new Data(dataIniciActivitat.getDia(), dataIniciActivitat.getMes(), dataIniciActivitat.getAny());
 		} catch (DataIncorrectaExcepction e) {
 			throw new IllegalStateException("Error intern, invàlida copiant la data inicial " + e);
 		}
@@ -85,7 +71,7 @@ public class ActivitatPeriodica extends Activitat {
     @Override
     public boolean estaActiva(Data dataAvui) {
         Data dataFi = getDataFi();
-        return !dataAvui.dataInferiorAltra(dataInici) && !dataFi.dataInferiorAltra(dataAvui);
+        return !dataAvui.dataInferiorAltra(dataIniciActivitat) && !dataFi.dataInferiorAltra(dataAvui);
     }
     
     @Override
@@ -107,9 +93,9 @@ public class ActivitatPeriodica extends Activitat {
     
     @Override
     public String getInformacioEspecifica() {
-        return "Dia: " + dataInici.getNomDiaSetmana() + "\n" +
+        return "Dia: " + dataIniciActivitat.getNomDiaSetmana() + "\n" +
                "Horari: " + horari + "\n" +
-               "Inici: " + dataInici + "\n" +
+               "Inici: " + dataIniciActivitat + "\n" +
                "Durada: " + numSetmanes + " setmanes\n" +
                "Fi: " + getDataFi() + "\n" +
                "Centre: " + nomCentre + ", " + "Ciutat: " + ciutat + "\n";
@@ -120,9 +106,14 @@ public class ActivitatPeriodica extends Activitat {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
-        ActivitatPeriodica copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                          limitPlaces, preu, horari, dataInici,
-                                                          numSetmanes, nomCentre, ciutat);
+        ActivitatPeriodica copia = null;
+        try {
+            copia = new ActivitatPeriodica(nom, col, dataIniciInscripcio, dataFiInscripcio,
+                                                              limitPlaces, preu, horari, dataIniciActivitat,
+                                                              numSetmanes, nomCentre, ciutat);
+        } catch (DataFiInscripcioException e) {
+            System.out.println(e.getMessage());;
+        }
         copia.llistaInscripcions = this.llistaInscripcions.copia();
         copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;

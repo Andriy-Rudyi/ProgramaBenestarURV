@@ -1,6 +1,7 @@
 package dades.activitats;
 
 import dades.Data;
+import dades.excepcions.DataFiInscripcioException;
 import dades.excepcions.DataIncorrectaExcepction;
 
 /**
@@ -8,7 +9,6 @@ import dades.excepcions.DataIncorrectaExcepction;
  * @author PROG
  */
 public class ActivitatOnline extends Activitat {
-    private Data dataInici;
     private int periodeVisualitzacio; // en dies
     private String enllac;
     
@@ -18,22 +18,22 @@ public class ActivitatOnline extends Activitat {
      * @param collectius Col·lectius als quals s'ofereix [PDI, PTGAS, Estudiants]
      * @param dataIniciInscripcio Inici del període d'inscripció
      * @param dataFiInscripcio Fi del període d'inscripció
-     * @param dataInici Data d'inici de l'activitat
+     * @param dataIniciActivitat Data d'inici de l'activitat
      * @param periodeVisualitzacio Període de visualització en dies
      * @param enllac Enllaç per accedir a l'activitat
+     * @throws DataFiInscripcioException 
      */
     public ActivitatOnline(String nom, boolean[] collectius, Data dataIniciInscripcio,
-                           Data dataFiInscripcio, Data dataInici, 
-                           int periodeVisualitzacio, String enllac) {
+                           Data dataFiInscripcio, Data dataIniciActivitat, 
+                           int periodeVisualitzacio, String enllac) throws DataFiInscripcioException {
         // Les activitats online són gratuïtes (preu = 0) i sense límit de places (limitPlaces = 0)
-        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 0, 0.0);
-        this.dataInici = dataInici;
+        super(nom, collectius, dataIniciInscripcio, dataFiInscripcio, 0, 0.0, dataIniciActivitat);
         this.periodeVisualitzacio = periodeVisualitzacio;
         this.enllac = enllac;
     }
     
     // Getters específics
-    public Data getDataInici() { return dataInici; }
+    public Data getDataInici() { return dataIniciActivitat; }
     public int getPeriodeVisualitzacio() { return periodeVisualitzacio; }
     public String getEnllac() { return enllac; }
     
@@ -44,7 +44,7 @@ public class ActivitatOnline extends Activitat {
     public Data getDataFi() {
         Data dataFi = null;
 		try {
-            dataFi = new Data(dataInici.getDia(), dataInici.getMes(), dataInici.getAny());
+            dataFi = new Data(dataIniciActivitat.getDia(), dataIniciActivitat.getMes(), dataIniciActivitat.getAny());
 		} catch (DataIncorrectaExcepction e) {
 			throw new IllegalStateException("Error intern, invàlida copiant la data inicial " + e);
 		}
@@ -57,7 +57,7 @@ public class ActivitatOnline extends Activitat {
     @Override
     public boolean estaActiva(Data dataAvui) {
         Data dataFi = getDataFi();
-        return !dataAvui.dataInferiorAltra(dataInici) && !dataFi.dataInferiorAltra(dataAvui);
+        return !dataAvui.dataInferiorAltra(dataIniciActivitat) && !dataFi.dataInferiorAltra(dataAvui);
     }
     
     @Override
@@ -79,7 +79,7 @@ public class ActivitatOnline extends Activitat {
     
     @Override
     public String getInformacioEspecifica() {
-        return "\nData inici: " + dataInici + "\n" +
+        return "\nData inici: " + dataIniciActivitat + "\n" +
                "Període visualització: " + periodeVisualitzacio + " dies\n" +
                "Data fi: " + getDataFi() + "\n" +
                "Enllaç: " + enllac + "\n";
@@ -95,8 +95,13 @@ public class ActivitatOnline extends Activitat {
         boolean[] col = new boolean[3];
         for (int i = 0; i < 3; i++) col[i] = collectius[i];
         
-        ActivitatOnline copia = new ActivitatOnline(nom, col, dataIniciInscripcio, dataFiInscripcio,
-                                                     dataInici, periodeVisualitzacio, enllac);
+        ActivitatOnline copia = null;
+        try {
+            copia = new ActivitatOnline(nom, col, dataIniciInscripcio, dataFiInscripcio,
+                                                         dataIniciActivitat, periodeVisualitzacio, enllac);
+        } catch (DataFiInscripcioException e) {
+            System.out.println(e.getMessage());;
+        }
         copia.llistaInscripcions = this.llistaInscripcions.copia();
         copia.llistaValoracions = this.llistaValoracions.copia();
         return copia;

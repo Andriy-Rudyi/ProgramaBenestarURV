@@ -191,6 +191,25 @@ public class LlistaUsuaris implements Serializable{
      */
     public boolean esBuida() { return numUsuaris == 0; }
     
+    
+    /**
+     * Crea una còpia de la llista usuaris
+     * @return Nova instància amb les mateixes dades
+    */
+   public LlistaUsuaris copia() {
+       LlistaUsuaris copia = new LlistaUsuaris();
+       
+       for (int i = 0; i < numUsuaris; i++){
+           try {
+               copia.afegir(this.llista[i].copia());
+            } catch (UsuariDuplicatException e) {
+                System.out.println("Error inesperat copiant usuari. " + e);
+            }
+        }
+        
+        return copia;
+    }
+    
     /**
      * Obté una representació en text de la llista
      * @return Cadena amb tots els usuaris
@@ -202,20 +221,6 @@ public class LlistaUsuaris implements Serializable{
             info += llista[i].toString();
         }
         return info;
-    }
-
-    public LlistaUsuaris copia() {
-        LlistaUsuaris copia = new LlistaUsuaris();
-
-        for (int i = 0; i < numUsuaris; i++){
-            try {
-                copia.afegir(this.llista[i].copia());
-            } catch (UsuariDuplicatException e) {
-                System.out.println("Error inesperat copiant usuari. " + e);
-            }
-        }
-
-        return copia;
     }
 }
 
