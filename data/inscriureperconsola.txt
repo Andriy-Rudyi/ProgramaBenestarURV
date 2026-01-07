@@ -7,7 +7,7 @@ Salsa
 1
 1
 01 09 2025
-31 12 2025
+31 10 2025
 5
 15.0
 20 11 2025
@@ -33,3 +33,43 @@ Neus
 10
 Salsa
 Xenia
+
+10
+Salsa
+Abel
+
+10
+Salsa
+Adria
+
+10
+Salsa
+Aina
+
+10
+Salsa
+Alicia
+
+10
+Salsa
+Anna
+
+10
+Salsa
+Arnau
+
+10
+Salsa
+Bernat
+
+10
+Salsa
+Berta
+
+10
+Salsa
+Biel
+
+10
+Salsa
+Blanca
