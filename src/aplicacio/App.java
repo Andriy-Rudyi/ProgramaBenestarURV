@@ -1081,8 +1081,6 @@ public class App {
                 System.out.println(e.getMessage());
             } catch (DataIncorrectaExcepction e){
                 System.out.println("Data incorrecta, torna a intentar-ho. " + e);         
-            } catch (Exception e) {
-                System.out.println("Data incorrecta, torna a intentar-ho. " + e);
             }
         }
         return data;
