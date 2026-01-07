@@ -125,7 +125,7 @@ public class LlistaActivitats implements Serializable{
     public Activitat[] obtenirTotes() {
         Activitat[] resultat = new Activitat[numActivitats];
         for (int i = 0; i < numActivitats; i++) {
-            resultat[i] = llista[i];
+            resultat[i] = llista[i].copia();
         }
         return resultat;
     }

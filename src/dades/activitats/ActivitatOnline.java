@@ -21,7 +21,7 @@ public class ActivitatOnline extends Activitat {
      * @param dataIniciActivitat Data d'inici de l'activitat
      * @param periodeVisualitzacio Període de visualització en dies
      * @param enllac Enllaç per accedir a l'activitat
-     * @throws DataFiInscripcioException 
+     * @throws DataFiInscripcioException Si la data de fi d'inscripcions no és posterior a la d'inici d'inscripcions
      */
     public ActivitatOnline(String nom, boolean[] collectius, Data dataIniciInscripcio,
                            Data dataFiInscripcio, Data dataIniciActivitat, 
@@ -33,7 +33,7 @@ public class ActivitatOnline extends Activitat {
     }
     
     // Getters específics
-    public Data getDataInici() { return dataIniciActivitat; }
+    public Data getDataInici() { return dataIniciActivitat.copia(); }
     public int getPeriodeVisualitzacio() { return periodeVisualitzacio; }
     public String getEnllac() { return enllac; }
     
@@ -100,7 +100,7 @@ public class ActivitatOnline extends Activitat {
             copia = new ActivitatOnline(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                          dataIniciActivitat, periodeVisualitzacio, enllac);
         } catch (DataFiInscripcioException e) {
-            System.out.println(e.getMessage());;
+            throw new IllegalStateException("Error intern. " + e);
         }
         copia.llistaInscripcions = this.llistaInscripcions.copia();
         copia.llistaValoracions = this.llistaValoracions.copia();

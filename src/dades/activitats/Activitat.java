@@ -3,7 +3,6 @@ package dades.activitats;
 import java.io.Serializable;
 
 import dades.Data;
-import dades.excepcions.ActivitatDuplicadaException;
 import dades.excepcions.DataFiInscripcioException;
 import dades.excepcions.UsuariDuplicatException;
 import dades.inscripcions.*;
@@ -39,7 +38,7 @@ public abstract class Activitat implements Serializable{
      * @param limitPlaces Límit de places (0 per il·limitat)
      * @param preu Preu de l'activitat
      * @param dataIniciActivitat Data d'inici de l'activitat
-     * @throws DataFiInscripcioException Si la data de fi d'inscripció és anterior a la data d'inici d'inscripció
+     * @throws DataFiInscripcioException Si la data de fi d'inscripcions no és posterior a la d'inici d'inscripcions
      */
 
     // mantenir el DataFiInscripcioException al constructor per si algú crea l'activitat des d'un altre lloc.
@@ -80,13 +79,13 @@ public abstract class Activitat implements Serializable{
         return copia;
     }
     
-    public Data getDataIniciInscripcio() { return dataIniciInscripcio; }
-    public Data getDataFiInscripcio() { return dataFiInscripcio; }
+    public Data getDataIniciInscripcio() { return dataIniciInscripcio.copia(); }
+    public Data getDataFiInscripcio() { return dataFiInscripcio.copia(); }
     public int getLimitPlaces() { return limitPlaces; }
     public double getPreu() { return preu; }
     public int getNumInscripcions() { return llistaInscripcions.getNumInscrits(); }
-    public LlistaInscripcions getLlistaInscripcions() { return llistaInscripcions; }
-    public LlistaValoracions getLlistaValoracions() { return llistaValoracions; }
+    public LlistaInscripcions getLlistaInscripcions() { return llistaInscripcions.copia(); }
+    public LlistaValoracions getLlistaValoracions() { return llistaValoracions.copia(); }
 
     
 
@@ -138,9 +137,8 @@ public abstract class Activitat implements Serializable{
      * Afegeix un usuari a la llista d'inscripcions
      * @param usuari L'usuari que es vol inscriure a l'activitat
      * @throws UsuariDuplicatException Si l'usuari ja està inscrit a l'activitat
-     * @throws ActivitatDuplicadaException Si l'activitat ja està duplicada
      */
-    public void inscriureUsuari(Usuari usuari) throws UsuariDuplicatException, ActivitatDuplicadaException{
+    public void inscriureUsuari(Usuari usuari) throws UsuariDuplicatException{
         llistaInscripcions.afegir(usuari);
     }
     

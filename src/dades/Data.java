@@ -277,6 +277,19 @@ public class Data implements Serializable{
     	if (mes != altra.getMes()) return mes < altra.getMes();
     	return dia < altra.getDia();
 	}
+
+	/**
+	 * Retorna una copia de la data
+	 * @return copia de la data
+	 */
+	public Data copia(){
+		try {
+			return new Data(dia, mes, any);
+		} catch (DataIncorrectaExcepction e) {
+			throw new IllegalStateException("Error intern copiant data. " + e);
+		}
+		
+	}
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	/// 

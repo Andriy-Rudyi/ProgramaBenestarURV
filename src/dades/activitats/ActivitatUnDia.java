@@ -22,7 +22,7 @@ public class ActivitatUnDia extends Activitat {
      * @param dataIniciActivitat Data en què es realitza l'activitat
      * @param horari Horari de l'activitat
      * @param ciutat Ciutat on es realitza
-     * @throws DataFiInscripcioException 
+     * @throws DataFiInscripcioException Si la data de fi d'inscripcions no és posterior a la d'inici d'inscripcions
      */
     public ActivitatUnDia(String nom, boolean[] collectius, Data dataIniciInscripcio,
                           Data dataFiInscripcio, int limitPlaces, double preu,
@@ -33,7 +33,7 @@ public class ActivitatUnDia extends Activitat {
     }
     
     // Getters específics
-    public Data getData() { return dataIniciActivitat; }
+    public Data getData() { return dataIniciActivitat.copia(); }
     public String getHorari() { return horari; }
     public String getCiutat() { return ciutat; }
     
@@ -75,7 +75,7 @@ public class ActivitatUnDia extends Activitat {
             copia = new ActivitatUnDia(nom, col, dataIniciInscripcio, dataFiInscripcio,
                                                        limitPlaces, preu, dataIniciActivitat, horari, ciutat);
         } catch (DataFiInscripcioException e) {
-            System.out.println(e.getMessage());
+            throw new IllegalStateException("Error intern. " + e);
         }
         copia.llistaInscripcions = this.llistaInscripcions.copia();
         copia.llistaValoracions = this.llistaValoracions.copia();

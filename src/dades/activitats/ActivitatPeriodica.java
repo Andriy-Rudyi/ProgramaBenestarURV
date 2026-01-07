@@ -24,13 +24,12 @@ public class ActivitatPeriodica extends Activitat {
      * @param dataFiInscripcio Fi període inscripció
      * @param limitPlaces Límit de places
      * @param preu Preu total de l'activitat
-     * @param diaSetmana Dia de la setmana (1-7)
      * @param horari Horari de l'activitat
      * @param dataIniciActivitat Data d'inici de l'activitat
      * @param numSetmanes Número de setmanes que dura
      * @param nomCentre Nom del centre
      * @param ciutat Ciutat on es realitza
-     * @throws DataFiInscripcioException 
+     * @throws DataFiInscripcioException Si la data de fi d'inscripcions no és posterior a la d'inici d'inscripcions
      */
     public ActivitatPeriodica(String nom, boolean[] collectius, Data dataIniciInscripcio,
                               Data dataFiInscripcio, int limitPlaces, double preu,

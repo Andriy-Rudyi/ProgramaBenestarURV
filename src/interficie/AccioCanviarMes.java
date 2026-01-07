@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import aplicacio.AppInterficie;
+import dades.excepcions.DataIncorrectaExcepction;
 
 public class AccioCanviarMes implements ActionListener {
 	
@@ -22,7 +23,7 @@ public class AccioCanviarMes implements ActionListener {
         else if (s.equals(">")) finestra.augmentarMes();
         try {
             finestra.dibuixarCalendari(finestra.getMes(), finestra.getAny());
-        } catch (Exception e) {
+        } catch (DataIncorrectaExcepction e) {
             throw new IllegalStateException("Error intern. " + e);
         }
 	}
