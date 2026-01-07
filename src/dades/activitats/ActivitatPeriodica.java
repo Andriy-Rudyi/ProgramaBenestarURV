@@ -1,5 +1,4 @@
 package dades.activitats;
-
 import dades.Data;
 import dades.excepcions.DataIncorrectaExcepction;
 
