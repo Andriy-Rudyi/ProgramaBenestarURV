@@ -6,7 +6,6 @@ import dades.excepcions.UsuariDuplicatException;
 
 /**
  * Llista d'espera per a una activitat
- * @author PROG4 - Tiago Amarelle Rodrigues
  */
 
 public class LlistaEspera implements Serializable{

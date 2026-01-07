@@ -5,7 +5,6 @@ import dades.excepcions.DataFiInscripcioException;
 
 /**
  * Representa una activitat que es realitza en un sol dia (taller o seminari)
- * @author PROG
  */
 public class ActivitatUnDia extends Activitat {
     private String horari;

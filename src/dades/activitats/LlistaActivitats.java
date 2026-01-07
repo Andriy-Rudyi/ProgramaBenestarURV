@@ -12,7 +12,6 @@ import dades.excepcions.ActivitatDuplicadaException;
 
 /**
  * Llista d'activitats ordenada per nom per facilitar les cerques
- * @author PROG3 - Andriy Rudyy
  */
 
 public class LlistaActivitats implements Serializable{

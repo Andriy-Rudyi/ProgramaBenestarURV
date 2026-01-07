@@ -9,7 +9,6 @@ import dades.excepcions.UsuariDuplicatException;
 
 /**
  * Llista d'inscripcions que s'inclourà dins de cada activitat. 
- * @author PROG4 - Tiago Amarelle Rodrigues
  */
 public class LlistaInscripcions implements Serializable{
     private static final long serialVersionUID = 1L;

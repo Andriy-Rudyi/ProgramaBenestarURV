@@ -11,7 +11,6 @@ import dades.excepcions.UsuariDuplicatException;
 
 /**
  * Llista d'usuaris ordenada per alias per facilitar les cerques
- * @author PROG1 - Pau Font
  */
 public class LlistaUsuaris implements Serializable{
     private static final long serialVersionUID = 1L;

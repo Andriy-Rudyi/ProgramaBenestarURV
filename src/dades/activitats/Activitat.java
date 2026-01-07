@@ -12,7 +12,6 @@ import dades.usuaris.*;
 /**
  * Classe abstracta que representa una activitat del programa Benestar URV.
  * Conté els atributs i mètodes comuns a tots els tipus d'activitats.
- * @author PROG1 - Pau Font
  */
 public abstract class Activitat implements Serializable{
     private static final long serialVersionUID = 1L;

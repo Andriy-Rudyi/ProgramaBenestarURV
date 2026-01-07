@@ -6,7 +6,6 @@ import dades.excepcions.DataIncorrectaExcepction;
 
 /**
  * Representa una activitat que es repeteix periòdicament cada setmana
- * @author PROG3 - Andriy Rudyy
  */
 
 public class ActivitatPeriodica extends Activitat {

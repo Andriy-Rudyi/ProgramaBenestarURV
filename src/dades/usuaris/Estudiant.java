@@ -2,7 +2,6 @@ package dades.usuaris;
 
 /**
  * Representa un estudiant de la URV
- * @author PROG1 - Pau Font
  */
 public class Estudiant extends Usuari {
     private String ensenyament;

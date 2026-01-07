@@ -2,7 +2,6 @@ package dades.usuaris;
 
 /**
  * Representa un membre del Personal Tècnic i de Gestió i Administració (PTGAS) de la URV
- * @author PROG3 - Andriy Rudyy
  */
 
 public class Ptgas extends Usuari {

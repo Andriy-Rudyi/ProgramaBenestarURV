@@ -2,7 +2,6 @@ package dades.usuaris;
 
 /**
  * Representa un membre del Personal Docent i Investigador (PDI) de la URV
- * @author PROG4 - Tiago Amarelle Rodrigues
  */
 public class Pdi extends Usuari{
     private String departament;

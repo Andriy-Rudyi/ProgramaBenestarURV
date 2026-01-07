@@ -6,7 +6,6 @@ import dades.excepcions.DataIncorrectaExcepction;
 
 /**
  * Representa una activitat online (asíncrona, gratuïta i sense límit de places)
- * @author PROG
  */
 public class ActivitatOnline extends Activitat {
     private int periodeVisualitzacio; // en dies

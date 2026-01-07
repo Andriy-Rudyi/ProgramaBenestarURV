@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * Classe Pare Usuari
- * @author PROG4 - Tiago Amarelle Rodrigues
  */
 
 public abstract class Usuari implements Serializable{
